@@ -41,7 +41,17 @@ def create_mask():
     hsv_res = cv2.bitwise_and(image,image, mask=hsv_mask)
     gray_res = cv2.bitwise_and(image,image, mask=gray_mask)
 
+    #Create empty image 
+    mask = np.ones(image.shape, dtype=np.uint8) * 255
+    #Find contor, aka white space in the gray scale mask 
+    cnts = cv2.findContours(gray_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    #Draw Contors to the mask 
+    cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+    for c in cnts:
+        cv2.drawContours(mask, [c], -1, (36, 255, 12), thickness=5)
+
     cv2.imshow("Original", image) 
+    cv2.imshow("contor", mask)   
     cv2.imshow("gray", gray) 
     cv2.imshow("hsv", hsv) 
     cv2.imshow("hsv mask", hsv_mask) 
@@ -89,7 +99,7 @@ def create_mask_live():
         cv2.imshow("hsv mask", hsv_mask) 
         cv2.imshow("gray mask", gray_mask) 
         cv2.imshow("gray_hsv", gray_res) 
-        k = cv.waitKey(5) & 0xFF
+        k = cv2.waitKey(5) & 0xFF
         if k == 27:
             break
 
