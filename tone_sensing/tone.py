@@ -57,8 +57,8 @@ RECORD_SECONDS = 3          # recording time
 
 #record piano sound, remove the silent parts and save the new audio
 def piano_sound():
-    os.remove('/Users/emmarobinson/Downloads/piano_audio.wav')
-    os.remove('/Users/emmarobinson/Downloads/piano_audio_new.wav')        
+    os.remove('/Users/emmarobinson/Downloads/piano_audio.wav') #change this according to your computer file
+    os.remove('/Users/emmarobinson/Downloads/piano_audio_new.wav')   #change this according to your computer file      
 
     p = pyaudio.PyAudio()
 
@@ -67,7 +67,7 @@ def piano_sound():
         format=FORMAT,
         channels=CHANNELS,
         rate=RATE,
-        input_device_index =3,
+        input_device_index =3, #change this according to your mic port
         input=True,
         output=True,
         frames_per_buffer=CHUNK
@@ -85,7 +85,7 @@ def piano_sound():
     stream.close()
 
     p.terminate()
-    file_path='/Users/emmarobinson/Downloads/piano_audio.wav'
+    file_path='/Users/emmarobinson/Downloads/piano_audio.wav' #change this according to your computer file
     file_name = file_path.split('/')[-1]
     wf = wave.open(file_path, "wb")
     # set the channels
@@ -98,8 +98,7 @@ def piano_sound():
     wf.writeframes(b"".join(frames))
     # close the file
     wf.close()
-    file_path='/Users/emmarobinson/Downloads/piano_audio.wav'
-    file_name = file_path.split('/')[-1]
+
     sound = AudioSegment.from_file(file_path, format = 'wav') 
     audio_chunks = split_on_silence(sound
                                 ,min_silence_len = 100
@@ -111,13 +110,13 @@ def piano_sound():
     combined = AudioSegment.empty()
     for chunk in audio_chunks:
         combined += chunk
-    combined.export(f'/Users/emmarobinson/Downloads/piano_audio_new.wav', format = 'wav')
+    combined.export(f'/Users/emmarobinson/Downloads/piano_audio_new.wav', format = 'wav') #change this according to your computer file
 
 piano_sound()
 
 #get information about the audio file
-rate, data = wav.read('/Users/emmarobinson/Downloads/piano_audio.wav')
-audio_segment = AudioSegment.from_file('/Users/emmarobinson/Downloads/piano_audio.wav')
+rate, data = wav.read('/Users/emmarobinson/Downloads/piano_audio.wav') #change this according to your computer file
+audio_segment = AudioSegment.from_file('/Users/emmarobinson/Downloads/piano_audio.wav') #change this according to your computer file
 
 duration = len(audio_segment)/1000
 
@@ -161,7 +160,6 @@ for i in range(len(decoded_freqs)):
     note=closest_val(note_freqs,decoded_freqs[i])
     index = note_freqs.index(note)
     played_note=keys[index]
-return played_note
 
 x=0
 if played_note==c_major_scale[x]:
