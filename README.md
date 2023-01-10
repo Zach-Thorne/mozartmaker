@@ -5,7 +5,8 @@ In order to correctly run this project you need the following python libraries
 - OpenCV
 - Numpy
 - Matplot 
-- tkinter 
+- tkinter
+- PyQt6
 
 ## Work to be done
 ### Projection 
