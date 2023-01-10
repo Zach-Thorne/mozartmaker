@@ -1,0 +1,3 @@
+
+# Ignore env subfolder for Jupyter Notebook
+/tone_sensing/env/*
