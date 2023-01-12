@@ -40,8 +40,9 @@ def create_basic_song():
     song[2][26] = 1
     song[3][27] = 1
     song[4][28] = 1
-
-    print(song)
+    
+    print('length song: ', len(song))
+    print('length song0: ', len(song[0]))
 
     #for i in range(basic_song_length): 
     #    song[i,i] = 1 
@@ -50,12 +51,11 @@ def create_basic_song():
 #Will light correct keys up gren ideally
 def project_song(root, canvas, screen_width, screen_height, song):
     rec_width = math.floor((screen_width-20)/c.num_white_keys)
-    total_elem = song.size
-    print("song size: ", song.size)
-    notes = math.floor(total_elem/c.num_white_keys)
-    print(c.num_white_keys)
-    print("notes: ", notes)
-    for i in range(notes):
+    #total_elem = song.size
+    #notes = math.floor(total_elem/c.num_white_keys)
+    #print(notes)
+    #for i in range(notes):
+    for i in range(len(song)):
         for j in range(len(song[i])):
             #If the element array is one, light up the corresponding Key green
             if(song[i,j] == 1):
@@ -81,6 +81,7 @@ def project_song(root, canvas, screen_width, screen_height, song):
 
             canvas.pack()
         input("Press Enter to continue...")
+
             
 if __name__ == "__main__":
 
@@ -92,7 +93,7 @@ if __name__ == "__main__":
     #Initialize Canvas
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    canvas = Canvas(width =screen_width, height=screen_height)
+    canvas = Canvas(width=screen_width, height=screen_height)
 
     #TODO uncomment once we able to make shit fully work
     #root.attributes('-fullscreen', True)

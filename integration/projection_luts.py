@@ -129,121 +129,121 @@ def white_lut(j):
 def note_lut(j):
     if(j=='C2'):
         return 0 
-    if(j=='C#2' or 'Db2'):
+    if(j=='C#2' or j=='Db2'):
         return 1 
     if(j=='D2'):
         return 2 
-    if(j=='D#2' or 'Eb2'):
+    if(j=='D#2' or j=='Eb2'):
         return 3 
     if(j=='E2'):
         return 4 
     if(j=='F2'):
         return 5 
-    if(j=='F#2' or 'Gb2'):
+    if(j=='F#2' or j=='Gb2'):
         return 6 
     if(j=='G2'):
         return 7 
-    if(j=='G#2' or 'Ab2'):
+    if(j=='G#2' or j=='Ab2'):
         return 8 
     if(j=='A2'):
         return 9 
-    if(j=='A#2' or 'Bb2'):
+    if(j=='A#2' or j=='Bb2'):
         return 10 
     if(j=='B2'):
         return 11 
     if(j=='C3'):
         return 12 
-    if(j=='C#3' or 'Db3'):
+    if(j=='C#3' or j=='Db3'):
         return 13 
     if(j=='D3'):
         return 14 
-    if(j=='D#3' or 'Eb3'):
+    if(j=='D#3' or j=='Eb3'):
         return 15 
     if(j=='E3'):
         return 16 
     if(j=='F3'):
         return 17 
-    if(j=='F#3' or 'Gb3'):
+    if(j=='F#3' or j=='Gb3'):
         return 18 
     if(j=='G3'):
         return 19 
-    if(j=='G#3' or 'Ab3'):
+    if(j=='G#3' or j=='Ab3'):
         return 20 
     if(j=='A3'):
         return 21 
-    if(j=='A#3' or 'Bb2'):
+    if(j=='A#3' or j=='Bb2'):
         return 22 
     if(j=='B3'):
         return 23 
     if(j=='C4'):
         return 24 
-    if(j=='C#4' or 'Db4'):
+    if(j=='C#4' or j=='Db4'):
         return 25 
     if(j=='D4'):
         return 26 
-    if(j=='D#4' or 'Eb4'):
+    if(j=='D#4' or j=='Eb4'):
         return 27 
     if(j=='E4'):
         return 28 
     if(j=='F4'):
         return 29 
-    if(j=='F#4' or 'Gb4'):
+    if(j=='F#4' or j=='Gb4'):
         return 30 
     if(j=='G4'):
         return 31 
-    if(j=='G#4' or 'Ab4'):
+    if(j=='G#4' or j=='Ab4'):
         return 32 
     if(j=='A4'):
         return 33 
-    if(j=='A#4' or 'Bb4'):
+    if(j=='A#4' or j=='Bb4'):
         return 34 
     if(j=='B4'):
         return 35
     if(j=='C5'):
         return 36 
-    if(j=='C#5' or 'Db5'):
+    if(j=='C#5' or j=='Db5'):
         return 37 
     if(j=='D5'):
         return 38 
-    if(j=='D#5' or 'Eb5'):
+    if(j=='D#5' or j=='Eb5'):
         return 39 
     if(j=='E5'):
         return 40 
     if(j=='F5'):
         return 41 
-    if(j=='F#5' or 'Gb5'):
+    if(j=='F#5' or j=='Gb5'):
         return 42 
     if(j=='G5'):
         return 43 
-    if(j=='G#5' or 'Ab5'):
+    if(j=='G#5' or j=='Ab5'):
         return 44 
     if(j=='A5'):
         return 45 
-    if(j=='A#5' or 'Bb5'):
+    if(j=='A#5' or j=='Bb5'):
         return 46 
     if(j=='B5'):
         return 47
     if(j=='C6'):
         return 48 
-    if(j=='C#6' or 'Db6'):
+    if(j=='C#6' or j=='Db6'):
         return 49 
     if(j=='D6'):
         return 50 
-    if(j=='D#6' or 'Eb6'):
+    if(j=='D#6' or j=='Eb6'):
         return 51 
     if(j=='E6'):
         return 52 
     if(j=='F6'):
         return 53 
-    if(j=='F#6' or 'Gb6'):
+    if(j=='F#6' or j=='Gb6'):
         return 54 
     if(j=='G6'):
         return 55 
-    if(j=='G#6' or 'Ab6'):
+    if(j=='G#6' or j=='Ab6'):
         return 56 
     if(j=='A6'):
         return 57 
-    if(j=='A#6' or 'Bb6'):
+    if(j=='A#6' or j=='Bb6'):
         return 58 
     if(j=='B6'):
         return 59   
