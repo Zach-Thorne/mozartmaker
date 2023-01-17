@@ -1,33 +1,13 @@
 import pyaudio
-import os
-import struct
 import numpy as np
-import matplotlib.pyplot as plt
-from PyQt5 import QtWidgets, QtCore
-import PyQt5 as pg
 import scipy
 from scipy.fftpack import fft
-import time
-from tkinter import TclError
 from scipy.io import wavfile as wav
 import wave
-import soundfile as sf
 from pydub import AudioSegment
-from pyqtgraph.Qt import QtWidgets, QtCore
-import math
-from collections import Counter
 from pydub.utils import get_array_type
-import array
 from pydub.silence import split_on_silence
 import constants as c
-
-# #A hard coded c major scale with frequencies
-# c_major_scale_freqs=[]
-# c_major_scale=['C4', 'D4', 'E4', 'F4', 'G4']
-# for i in range(len(c.keys)):
-#     for j in range(5):
-#         if c_major_scale[j]==c.keys[i]:
-#             c_major_scale_freqs.append(c.note_freqs[i])
 
 #A function for making sure you can find the closest value in a list
 def closest_val(input_list, val):
@@ -37,6 +17,15 @@ def closest_val(input_list, val):
   i = (np.abs(arr - val)).argmin()
 
   return arr[i]
+
+def device_identification():
+    p = pyaudio.PyAudio()
+    info = p.get_host_api_info_by_index(0)
+    numdevices = info.get('deviceCount')
+
+    for i in range(0, numdevices):
+        if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+            print("Input Device id ", i, " - ", p.get_device_info_by_host_api_device_index(0, i).get('name'))
 
 #record piano sound, remove the silent parts and save the new audio
 def piano_sound():
@@ -50,7 +39,7 @@ def piano_sound():
         format = c.FORMAT,
         channels = c.CHANNELS,
         rate = c.RATE,
-        input_device_index =3, #change this according to your mic port
+        input_device_index = 1, #change this according to your mic port
         input=True,
         output=True,
         frames_per_buffer = c.CHUNK
@@ -68,8 +57,8 @@ def piano_sound():
     stream.close()
 
     p.terminate()
-    file_path='/Users/emmarobinson/Downloads/piano_audio.wav' #change this according to your computer file
-    file_name = file_path.split('/')[-1]
+    file_path='D:\\Users\\Documents\\Connor\\piano_audio.wav' #change this according to your computer file
+    file_name = file_path.split('\\')[-1]
     wf = wave.open(file_path, "wb")
     # set the channels
     wf.setnchannels(c.CHANNELS)
@@ -93,14 +82,11 @@ def piano_sound():
     combined = AudioSegment.empty()
     for chunk in audio_chunks:
         combined += chunk
-    combined.export(f'/Users/emmarobinson/Downloads/piano_audio_new.wav', format = 'wav') #change this according to your computer file
+    combined.export(f'D:\\Users\\Documents\\Connor\\piano_audio_new.wav', format = 'wav') #change this according to your computer file
 
-#get the frequency of the piano note played
-def get_freq(bit):
-
-    #get information about the audio file
-    rate, data = wav.read('/Users/emmarobinson/Downloads/piano_audio.wav') #change this according to your computer file
-    audio_segment = AudioSegment.from_file('/Users/emmarobinson/Downloads/piano_audio.wav') #change this according to your computer file
+def get_bits():
+    rate, data = wav.read('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
+    audio_segment = AudioSegment.from_file('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
 
     duration = len(audio_segment)/1000
 
@@ -109,6 +95,20 @@ def get_freq(bit):
 
     # number of bits in the audio data to decode
     bits = int(len(data) / chunk)
+    return bits
+
+#get the frequency of the piano note played
+def get_freq(bit):
+
+    #get information about the audio file
+    rate, data = wav.read('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
+    audio_segment = AudioSegment.from_file('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
+
+    duration = len(audio_segment)/1000
+
+    # calculate the length of our chunk in the np.array using sample rate       samples/s * s = samples
+    chunk = int(rate * duration)
+    
     # start position of the current bit
     strt = (chunk * bit) 
     

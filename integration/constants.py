@@ -32,4 +32,4 @@ CHUNK = 1024*2                  # samples per frame
 FORMAT = pyaudio.paInt16        # audio format 
 CHANNELS = 1                    # single channel for microphone
 RATE = 44100                    # samples per second
-RECORD_SECONDS = 3              # recording time
+RECORD_SECONDS = 0.5              # recording time. Minimum time needed to record for integration file is 0.5s

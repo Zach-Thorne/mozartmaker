@@ -24,7 +24,7 @@ if __name__ == "__main__":
     #A hard coded c major scale with frequencies
     c_major_scale_freqs = []
     projection_index = []
-    c_major_scale = ['C4', 'D4', 'E4', 'F4', 'G4']
+    c_major_scale = ['F4', 'G4', 'A4', 'A#4', 'C5']
     scale_test = np.zeros((len(c_major_scale), constants.total_keys))
     for i in range(len(c_major_scale)):
         projection_index.append(projection_luts.note_lut(c_major_scale[i]))
@@ -40,4 +40,6 @@ if __name__ == "__main__":
     #print("C major scale frequencies: ", c_major_scale_freqs)
     #print("scale test: ", scale_test)
     
-    projection.project_song(root, canvas, screen_width, screen_height, scale_test)
+    projection.project_song(root, canvas, screen_width, screen_height, scale_test, c_major_scale)
+    inital = projection.create_default(root, canvas, screen_width, screen_height)
+    #root.mainloop()

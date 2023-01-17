@@ -7,6 +7,8 @@ import tk
 from tkinter import *
 from projection_luts import black_lut, white_lut
 import constants as c
+import tone
+#import integration
 
 #NOTE Look into if this would make more sense being a class 
 #Sets up default shape for keyboard
@@ -49,12 +51,13 @@ def create_basic_song():
     return song
 
 #Will light correct keys up gren ideally
-def project_song(root, canvas, screen_width, screen_height, song):
+def project_song(root, canvas, screen_width, screen_height, song, notes):
     rec_width = math.floor((screen_width-20)/c.num_white_keys)
     #total_elem = song.size
     #notes = math.floor(total_elem/c.num_white_keys)
     #print(notes)
     #for i in range(notes):
+    x_index = 0
     for i in range(len(song)):
         for j in range(len(song[i])):
             #If the element array is one, light up the corresponding Key green
@@ -80,7 +83,33 @@ def project_song(root, canvas, screen_width, screen_height, song):
                     canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="white",width = 2)
 
             canvas.pack()
-        input("Press Enter to continue...")
+        input("Press Enter to start 3 second recording window")
+        #tone.device_identification()
+        tone.piano_sound()
+        #start = time.time()
+        decoded_freqs = [tone.get_freq(bit) for bit in range(tone.get_bits())]
+
+        for i in range(len(decoded_freqs)):
+            note = tone.closest_val(c.note_freqs,decoded_freqs[i])
+            index = c.note_freqs.index(note)
+            played_note = c.keys[index]
+        #end = time.time()
+        #print('total time: ', end-start)
+
+        print("played note is: ", played_note)
+        print("correct note is: ", notes[x_index])
+
+        if played_note == notes[x_index]:
+            print('Note is correct!\n')
+            x_index += 1
+            continue
+        else:
+            print('Note not correct\n')
+            # if played_note == notes[x_index]:
+            #     print("this is correct") 
+            #     x_index += x_index
+            #     break
+            
 
             
 if __name__ == "__main__":
@@ -109,7 +138,7 @@ if __name__ == "__main__":
 
     #Once song selected will project it
     #TODO Add conditional to only do this in training mode
-    project_song(root, canvas, screen_width, screen_height, song)
+    project_song(root, canvas, screen_width, screen_height, song, song)
 
     #Return to inital state 
     inital = create_default(root, canvas, screen_width, screen_height)
