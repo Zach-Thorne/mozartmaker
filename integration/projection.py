@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import tk
+import wave
+import sys
 from tkinter import *
 from projection_luts import black_lut, white_lut
 import constants as c
@@ -83,10 +85,18 @@ def project_song(root, canvas, screen_width, screen_height, song, notes):
                     canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="white",width = 2)
 
             canvas.pack()
-        input("Press Enter to start 3 second recording window")
+        input("Press Enter to start recording window")
         #tone.device_identification()
         tone.piano_sound()
-        #start = time.time()
+        # start = time.time()
+        # spf = wave.open("piano_audio.wav", "r")
+        # signal = spf.readframes(-1)
+        # signal = np.fromstring(signal, dtype=np.int16)
+        # plt.figure(1)
+        # plt.title("Signal Wave...")
+        # plt.plot(signal)
+        # plt.show()
+
         decoded_freqs = [tone.get_freq(bit) for bit in range(tone.get_bits())]
 
         for i in range(len(decoded_freqs)):

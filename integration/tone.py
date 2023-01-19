@@ -4,6 +4,7 @@ import scipy
 from scipy.fftpack import fft
 from scipy.io import wavfile as wav
 import wave
+import matplotlib.pyplot as plt
 from pydub import AudioSegment
 from pydub.utils import get_array_type
 from pydub.silence import split_on_silence
@@ -119,13 +120,30 @@ def get_freq(bit):
     sliced = data[strt:end]
 
     w = np.fft.fft(sliced)
-    w=np.absolute(w)
+    plt.figure(1)
+    plt.title("Signal Wave...")
+    plt.plot(w)
+    plt.show(block=False)
+    w = np.absolute(w)
+    plt.figure(2)
+    plt.title("Signal Wave...")
+    plt.plot(w)
+    plt.show(block=False)
     freqs = np.fft.fftfreq(len(w))
 
+    plt.figure(3)
+    plt.title("Signal Wave...")
+    plt.plot(freqs)
+    plt.show(block=False)
+
     # Find the peak in the coefficients
+    #Change w to be half of the index that it usually is to only get the left half of the freq spectrum
     idx = np.argmax(np.abs(w))
+    print("idx: ", idx)
     freq = freqs[idx]
+    print("freq: ", freq)
     freq_in_hertz = abs(freq * rate)
+    print("freq in hertz: ", freq_in_hertz)
     return freq_in_hertz
 
 #decoded_freqs = [get_freq(bit) for bit in range(bits)]
