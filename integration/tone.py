@@ -9,6 +9,7 @@ from pydub import AudioSegment
 from pydub.utils import get_array_type
 from pydub.silence import split_on_silence
 import constants as c
+from array import array
 
 #A function for making sure you can find the closest value in a list
 def closest_val(input_list, val):
@@ -47,10 +48,22 @@ def piano_sound():
     )
     frames = []
     print("* recording")
-    for i in range(0, int(c.RATE / c.CHUNK * c.RECORD_SECONDS)):
-        data = stream.read(c.CHUNK)
-        stream.write(data, c.CHUNK)
-        frames.append(data)
+
+
+    while True:
+        
+        data = stream.read(c.CHUNK, exception_on_overflow = False)
+        data_chunk = array('h',data)
+        vol = max(data_chunk)
+        if vol >= 400:
+            print("* recording")
+            for i in range(0, int(c.RATE / c.CHUNK * c.RECORD_SECONDS)):
+                stream.write(data, c.CHUNK)
+                frames.append(data)
+            break
+
+        else:
+            print("* waiting")
 
     print("* done")
 
