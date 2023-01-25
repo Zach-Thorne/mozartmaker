@@ -28,8 +28,8 @@ keys = keys[start:end+1]        #Notes of a piano
 note_freqs = list(([2**((n+1-49)/12)*base_freq for n in range(len(keys))]))     #frequency of each key on a piano in order
 
 # FOR RECORDING
-CHUNK = 1024*2                  # samples per frame
+CHUNK = 1024*4                  # samples per frame
 FORMAT = pyaudio.paInt16        # audio format 
 CHANNELS = 1                    # single channel for microphone
-RATE = 44100                    # samples per second
+RATE = 48000                    # samples per second
 RECORD_SECONDS = 0.5              # recording time. Minimum time needed to record for integration file is 0.5s
