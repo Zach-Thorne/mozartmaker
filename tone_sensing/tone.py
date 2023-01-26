@@ -123,7 +123,7 @@ def piano_sound():
 
 piano_sound()
 
-#get information about the audio file
+#get frequency of audio file using crepes algorithm (Convolutional Representation for Pitch Estimation)
 sr, audio = wav.read('/Users/emmarobinson/Downloads/piano_audio.wav') #change this according to your computer file
 time, frequency, confidence, activation = crepe.predict(audio, sr, viterbi=True, model_capacity="small")
 freq1=np.array([np.mean(frequency)])
