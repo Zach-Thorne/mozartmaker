@@ -11,6 +11,7 @@ from pydub.silence import split_on_silence
 import constants as c
 from array import array
 import crepe
+import time
 
 #A function for making sure you can find the closest value in a list
 def closest_val(input_list, val):
@@ -50,21 +51,25 @@ def piano_sound():
     frames = []
     print("* recording")
 
+    for i in range(0, int(c.RATE / c.CHUNK * c.RECORD_SECONDS)):
+        data = stream.read(c.CHUNK)
+        stream.write(data, c.CHUNK)
+        frames.append(data)
 
-    while True:
+    # while True:
         
-        data = stream.read(c.CHUNK, exception_on_overflow = False)
-        data_chunk = array('h',data)
-        vol = max(data_chunk)
-        if vol >= 400:
-            print("* recording")
-            for i in range(0, int(c.RATE / c.CHUNK * c.RECORD_SECONDS)):
-                stream.write(data, c.CHUNK)
-                frames.append(data)
-            break
+    #     data = stream.read(c.CHUNK, exception_on_overflow = False)
+    #     data_chunk = array('h',data)
+    #     vol = max(data_chunk)
+    #     if vol >= 400:
+    #         print("* recording")
+    #         for i in range(0, int(c.RATE / c.CHUNK * c.RECORD_SECONDS)):
+    #             stream.write(data, c.CHUNK)
+    #             frames.append(data)
+    #         break
 
-        else:
-            print("* waiting")
+    #     else:
+    #         print("* waiting")
 
     print("* done")
 
@@ -72,7 +77,8 @@ def piano_sound():
     stream.close()
 
     p.terminate()
-    file_path='C:\\Users\\Garret\\piano_audio.wav' #change this according to your computer file
+    #file_path='C:\\Users\\Garret\\piano_audio.wav' #change this according to your computer file
+    file_path='D:\\Users\\Documents\\Connor\\piano_audio.wav' #change this according to your computer file
     file_name = file_path.split('\\')[-1]
     wf = wave.open(file_path, "wb")
     # set the channels
@@ -97,11 +103,14 @@ def piano_sound():
     combined = AudioSegment.empty()
     for chunk in audio_chunks:
         combined += chunk
-    combined.export(f'C:\\Users\\Garret\\piano_audio_new.wav', format = 'wav') #change this according to your computer file
+    #combined.export(f'C:\\Users\\Garret\\piano_audio_new.wav', format = 'wav') #change this according to your computer file
+    combined.export(f'D:\\Users\\Documents\\Connor\\piano_audio_new.wav', format = 'wav') #change this according to your computer file
 
 def get_bits():
-    rate, data = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
-    audio_segment = AudioSegment.from_file('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
+    #rate, data = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
+    rate, data = wav.read('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
+    #audio_segment = AudioSegment.from_file('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
+    audio_segment = AudioSegment.from_file('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
 
     duration = len(audio_segment)/1000
 
@@ -116,8 +125,10 @@ def get_bits():
 def get_freq(bit):
 
     #get information about the audio file
-    rate, data = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
-    audio_segment = AudioSegment.from_file('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
+    #rate, data = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
+    rate, data = wav.read('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
+    #audio_segment = AudioSegment.from_file('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
+    audio_segment = AudioSegment.from_file('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
 
     duration = len(audio_segment)/1000
 
@@ -152,13 +163,23 @@ def get_freq(bit):
 
     # Find the peak in the coefficients
     #Change w to be half of the index that it usually is to only get the left half of the freq spectrum
-    idx = np.argmax(np.abs(w))
+
+    adjusted_w = w[0:int((len(w)/2))]
+    #idx = np.argmax(np.abs(w))
+    idx = np.argmax(np.abs(adjusted_w))
     print("idx: ", idx)
     freq = freqs[idx]
     print("freq: ", freq)
     freq_in_hertz = abs(freq * rate)
     print("freq in hertz: ", freq_in_hertz)
     return freq_in_hertz
+
+def det_freq():
+    #sr, audio = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
+    sr, audio = wav.read('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
+    time, frequency, confidence, activation = crepe.predict(audio, sr, viterbi=True, model_capacity="small")
+    freq1=np.array([np.mean(frequency)])
+    return freq1
 
 #decoded_freqs = [get_freq(bit) for bit in range(bits)]
 
@@ -172,8 +193,3 @@ def get_freq(bit):
 # if played_note==c_major_scale[x]:
 #     print("yay")
 
-def det_freq():
-    sr, audio = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
-    time, frequency, confidence, activation = crepe.predict(audio, sr, viterbi=True, model_capacity="small")
-    freq1=np.array([np.mean(frequency)])
-    return freq1

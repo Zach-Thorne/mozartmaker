@@ -97,22 +97,23 @@ def project_song(root, canvas, screen_width, screen_height, song, notes):
         # plt.plot(signal)
         # plt.show()
 
-        # decoded_freqs = [tone.get_freq(bit) for bit in range(tone.get_bits())]
-
-        # for i in range(len(decoded_freqs)):
-        #     note = tone.closest_val(c.note_freqs,decoded_freqs[i])
-        #     index = c.note_freqs.index(note)
-        #     played_note = c.keys[index]
-        # #end = time.time()
-        # #print('total time: ', end-start)
-
-        frequency = tone.det_freq()
-        # song_notes=[]
-        for i in range(len(frequency)):
-            note=tone.closest_val(c.note_freqs,frequency[i])
+        decoded_freqs = [tone.get_freq(bit) for bit in range(tone.get_bits())]
+        
+        for i in range(len(decoded_freqs)):
+            note = tone.closest_val(c.note_freqs,decoded_freqs[i])
             index = c.note_freqs.index(note)
             played_note = c.keys[index]
-            #print(song_notes)
+        
+        # #end = time.time()
+        # #print('total time: ', end-start)
+        # frequency = tone.det_freq()
+        # print("Acquired frequency: ", frequency)
+        # # song_notes=[]
+        # for i in range(len(frequency)):
+        #     note=tone.closest_val(c.note_freqs,frequency[i])
+        #     index = c.note_freqs.index(note)
+        #     played_note = c.keys[index]
+        #     #print(song_notes)
 
         print("played note is: ", played_note)
         print("correct note is: ", notes[x_index])
