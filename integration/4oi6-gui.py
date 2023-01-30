@@ -9,6 +9,7 @@
 # combo box set default value
 
 import sys
+from integration_for_gui import *
 from PyQt6 import QtWidgets, uic, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QFrame
@@ -325,6 +326,8 @@ class MainWindow(Ui_Dialog):
     # FUNCTION FOR FINAL PLAY BUTTON
     def final_play_button_clicked(self):
         print('hello world')
+        self.song_selection = self.COMBO_song.currentText()
+        print(self.song_selection)
         run_mozart(self.song_selection, self.mode)
         # call integration function with parameters from user input
         
