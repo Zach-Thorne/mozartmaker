@@ -47,6 +47,7 @@ class MainWindow(Ui_Dialog):
         self.current_task = self.PB_play.clicked.connect(self.play_button_clicked)
         self.PB_song_gallery.clicked.connect(self.song_gallery_button_clicked)
         self.PB_user_guide.clicked.connect(self.user_guide_button_clicked)
+        self.PB_play_2.clicked.connect(self.final_play_button_clicked)
 
         self.setup_window(dialog)
 
@@ -188,8 +189,8 @@ class MainWindow(Ui_Dialog):
 
         # song combobox: add items
         self.COMBO_song.setEditable(True)
-        self.COMBO_song.addItem("song1")
-        self.COMBO_song.addItem("song2")
+        self.COMBO_song.addItem("C")
+        self.COMBO_song.addItem("D")
 
         #
         #
