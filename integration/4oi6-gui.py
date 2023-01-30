@@ -188,8 +188,8 @@ class MainWindow(Ui_Dialog):
 
         # song combobox: add items
         self.COMBO_song.setEditable(True)
-        self.COMBO_song.addItem("song1")
-        self.COMBO_song.addItem("song2")
+        self.COMBO_song.addItem("C")
+        self.COMBO_song.addItem("D")
 
         #
         #
