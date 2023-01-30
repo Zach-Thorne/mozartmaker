@@ -18,6 +18,8 @@ from app.MainWindow import Ui_Dialog
 class MainWindow(Ui_Dialog):
 
     def __init__(self, dialog):
+        self.song_selection = ""
+        self.play_mode = ""
 
         self.current_task = ""
         dialog.title = "Mozart Maker"
@@ -301,6 +303,7 @@ class MainWindow(Ui_Dialog):
     # FUNCTION FOR MODE 1 BUTTON
     def mode_1_button_clicked(self):
         self.mode = "training"
+        self.play_mode = "learn" 
 
         # change appearance of training mode button to appear selected
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
@@ -313,6 +316,7 @@ class MainWindow(Ui_Dialog):
     # FUNCTION FOR MODE 2 BUTTON
     def mode_2_button_clicked(self):
         self.mode = "testing"
+        self.play_mode = "test" 
 
         # change appearance of testing mode button to appear selected
         self.PB_mode_2.setStyleSheet("QPushButton#PB_mode_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
