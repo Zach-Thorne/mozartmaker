@@ -60,8 +60,8 @@ def project_song(root, canvas, screen_width, screen_height, song, notes):
     #print(notes)
     #for i in range(notes):
     x_index = 0
-    for i in range(len(song)):
-        for j in range(len(song[i])):
+    for i in range(len(song)): #length of song (5)
+        for j in range(len(song[i])): #all notes 61
             #If the element array is one, light up the corresponding Key green
             if(song[i,j] == 1):
                 #If j corresponds to a black key
@@ -130,7 +130,53 @@ def project_song(root, canvas, screen_width, screen_height, song, notes):
             #     break
             
 
-            
+def project_key(root, canvas, screen_width, screen_height, song, note_index):
+    rec_width = math.floor((screen_width-20)/c.num_white_keys)
+    for j in range(len(song[0])): #all notes 61
+        if note_index != 0:
+            if(song[note_index - 1,j] == 1):
+                #If j corresponds to a black key
+                if(j == 1 or j == 3 or j == 6 or j == 8 or j == 10 or j == 13 or j == 15 or j == 18 or j == 20 or j == 22 or j == 25 or j == 27 or j == 30 or j == 32 or j == 34 or j == 37 or j == 39 or j == 42 or j == 44 or j == 46 or j == 49 or j == 51 or j == 54 or j == 56 or j == 58): 
+                    #Feel like there is a better way to do this but we going to do this for now 
+                    t = black_lut(j)
+                    canvas.create_rectangle(10+rec_width*t+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*t+math.floor(rec_width/2),c.top_of_key,outline ="black",fill ="white",width = 2)
+                #If j corresponds to a white key
+                else:
+                    t = white_lut(j)
+                    canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="white",width = 2)
+        #If the element array is one, light up the corresponding Key green
+        if(song[note_index,j] == 1):
+            #If j corresponds to a black key
+            if(j == 1 or j == 3 or j == 6 or j == 8 or j == 10 or j == 13 or j == 15 or j == 18 or j == 20 or j == 22 or j == 25 or j == 27 or j == 30 or j == 32 or j == 34 or j == 37 or j == 39 or j == 42 or j == 44 or j == 46 or j == 49 or j == 51 or j == 54 or j == 56 or j == 58): 
+                #Feel like there is a better way to do this but we going to do this for now 
+                t = black_lut(j)
+                canvas.create_rectangle(10+rec_width*t+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*t+math.floor(rec_width/2),c.top_of_key,outline ="black",fill ="green",width = 2)
+            #If j corresponds to a white key
+            else:
+                t = white_lut(j)
+                canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="green",width = 2)
+        canvas.pack()
+        canvas.update()
+
+def project_white(root, canvas, screen_width, screen_height, song, note_index):
+    rec_width = math.floor((screen_width-20)/c.num_white_keys)
+    for j in range(len(song[0])): #all notes 61
+        #If j corresponds to a black key
+        if(j == 1 or j == 3 or j == 6 or j == 8 or j == 10 or j == 13 or j == 15 or j == 18 or j == 20 or j == 22 or j == 25 or j == 27 or j == 30 or j == 32 or j == 34 or j == 37 or j == 39 or j == 42 or j == 44 or j == 46 or j == 49 or j == 51 or j == 54 or j == 56 or j == 58): 
+            #Feel like there is a better way to do this but we going to do this for now 
+            t = black_lut(j)
+            canvas.create_rectangle(10+rec_width*t+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*t+math.floor(rec_width/2),c.top_of_key,outline ="black",fill ="white",width = 2)
+        #If j corresponds to a white key
+        else:
+            t = white_lut(j)
+            canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="white",width = 2)
+        canvas.pack()
+        canvas.update()
+
+
+
+
+
 if __name__ == "__main__":
 
     #Create empty array 
