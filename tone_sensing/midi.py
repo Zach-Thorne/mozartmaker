@@ -43,12 +43,6 @@ def readInput(input_device):
             note_number = data[1]
             velocity = data[2]
             print (number_to_note(note_number), velocity)
-def similar(x,y):
-    si = 0
-    for a,b in zip(x, y):
-        if a == b:
-            si += 1
-    return (si/len(x)) * 100
 
 def testInput(input_device):
     test=[]
@@ -63,8 +57,9 @@ def testInput(input_device):
             test.append(number_to_note(note_number))
     test=test[::2]
     print(test)
-    res = len(set(c_major_scale) & set(test)) / float(len(set(c_major_scale) | set(test))) * 100
-    print(str(res))
+    #turns the items into set and compares the similar individual elemtns using 'and' and 'or' statements
+    percent_correct = len(set(c_major_scale) & set(test)) / float(len(set(c_major_scale) | set(test))) * 100
+    print(str(percent_correct))
 
 
   
