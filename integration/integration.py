@@ -9,31 +9,46 @@ import midi
 
 def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
+    chord_check = 0
+    previous_note = 0
+    note_time = 0
     #call function for displaying the first note to play
     projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
     
     while i < len(scale):
         played_note = midi.note_stream(keyboard)
         if played_note == scale[i]:
+            note_time = time.time()
+            if (note_time - previous_note < 0.05):
+                chord_check = TRUE
+                print("CHORD DETECTED")
             print("Played note is: ", played_note)
             print("Note is correct!\n")
             projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
-            time.sleep(0.03)
             i += 1
             if (i == len(scale)):
                 break
             projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
+        previous_note = note_time
 
 def testing_mode(scale, keyboard):
     i = 0
+    chord_check = 0
+    previous_note = 0
+    note_time = 0
     test_notes = []
     while i < len(scale):        
         played_note = midi.note_stream(keyboard)
         if played_note:
+            note_time = time.time()
+            if (note_time - previous_note < 0.05):
+                chord_check = TRUE
+                print("CHORD DETECTED")
             i += 1
             test_notes.append(played_note)
             if (i == len(scale)):
                 break
+        previous_note = note_time
     
     correct_notes = 0
     for n in range(len(scale)):
@@ -48,38 +63,38 @@ if __name__ == "__main__":
     #Initalize Tkinter
     root = Tk()
 
-    #Initalize midi input
-    midi.initialization()
+    #Initalize midi input. Searches for keyboard and sets as a midi output
+    keyboard = midi.initialization()
 
-    #Determine what device keyboard is
-    #midi.print_devices()
-
-    #set device number once keyboard input is determined
-    keyboard = midi.set_device_input(1)
-    
     #Initialize Canvas
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     canvas = Canvas(width=screen_width, height=screen_height)
+    root.state('zoomed')
 
     #NOTE: SHOULD RUN ON STARTUP 
     #Create inital outline
     inital = projection.create_default(root, canvas, screen_width, screen_height)
 
     scale_input = input("What Major scale would you like to play?\n")
-    play_mode = input("What mode would you like to play in? learn or test?\n")
-    if scale_input == "C":
+    if (scale_input == "C") or (scale_input == "c"):
         scale = constants.c_major
-    elif scale_input == "D":
+    elif (scale_input == "D") or (scale_input == "d"):
         scale = constants.d_major
-    elif scale_input == "E":
+    elif (scale_input == "E") or (scale_input == "e"):
         scale = constants.e_major
-    elif scale_input == "F":
+    elif (scale_input == "F") or (scale_input == "f"):
         scale = constants.f_major
-    elif scale_input == "G":
+    elif (scale_input == "G") or (scale_input == "g"):
         scale = constants.g_major
     elif scale_input == "ml":
         scale = constants.mary
+    else:
+        raise Exception("Scale is not valid. Try again\n")
+    
+    play_mode = input("What mode would you like to play in? learn or test?\n")
+    if not((play_mode == "test") or (play_mode == "learn")):
+        raise Exception("Not a valid mode. Please try again\n")
 
     projection_index = []
     #print("length of scale: ", len(scale))

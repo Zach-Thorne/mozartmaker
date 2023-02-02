@@ -60,6 +60,8 @@ class MainWindow(Ui_Dialog):
         # set dimensions & position for window
         self.width_window = int(750*self.x_scale) # width of window is initially set to 750
         self.height_window = int(500*self.y_scale) # height of window frame is initially set to 500
+        print("width: ", self.width_window)
+        print("height: ", self.height_window)
         dialog.resize(int(750*self.x_scale), int(500*self.y_scale)) # set width & height of dialog object
         self.FRAME_main_window.setGeometry(QtCore.QRect(0, 0, self.width_window, self.height_window)) # set dimensions for frame which contains all content
 
@@ -329,7 +331,7 @@ class MainWindow(Ui_Dialog):
         print('hello world')
         self.song_selection = self.COMBO_song.currentText()
         print(self.song_selection)
-        run_mozart(self.song_selection, self.mode)
+        run_mozart(self.song_selection, self.mode, self.width_window, self.height_window)
         # call integration function with parameters from user input
         
 app = QtWidgets.QApplication(sys.argv)

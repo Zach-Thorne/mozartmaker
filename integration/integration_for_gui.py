@@ -9,31 +9,46 @@ import midi
 
 def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
+    chord_check = 0
+    previous_note = 0
+    note_time = 0
     #call function for displaying the first note to play
     projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
     
     while i < len(scale):
         played_note = midi.note_stream(keyboard)
         if played_note == scale[i]:
+            note_time = time.time()
+            if (note_time - previous_note < 0.05):
+                chord_check = TRUE
+                print("CHORD DETECTED")
             print("Played note is: ", played_note)
             print("Note is correct!\n")
             projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
-            time.sleep(0.03)
             i += 1
             if (i == len(scale)):
                 break
             projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
+        previous_note = note_time
 
 def testing_mode(scale, keyboard):
     i = 0
+    chord_check = 0
+    previous_note = 0
+    note_time = 0
     test_notes = []
     while i < len(scale):        
         played_note = midi.note_stream(keyboard)
         if played_note:
+            note_time = time.time()
+            if (note_time - previous_note < 0.05):
+                chord_check = TRUE
+                print("CHORD DETECTED")
             i += 1
             test_notes.append(played_note)
             if (i == len(scale)):
                 break
+        previous_note = note_time
     
     correct_notes = 0
     for n in range(len(scale)):
@@ -43,24 +58,19 @@ def testing_mode(scale, keyboard):
     result = float(correct_notes / len(scale)) * 100
     print("Your test score is: ", round(result, 1), "%")
 
-def run_mozart(scale_input, play_mode):
+def run_mozart(scale_input, play_mode, screen_width, screen_height):
     #Create empty array 
     #Initalize Tkinter
     root = Tk()
 
-    #Initalize midi input
-    midi.initialization()
-
-    #Determine what device keyboard is
-    #midi.print_devices()
-
-    #set device number once keyboard input is determined
-    keyboard = midi.set_device_input(1)
+    #Initalize midi input. Searches for keyboard and sets as a midi output
+    keyboard = midi.initialization()
     
     #Initialize Canvas
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
+    #screen_width = root.winfo_screenwidth()
+    #screen_height = root.winfo_screenheight()
     canvas = Canvas(width=screen_width, height=screen_height)
+    root.state('zoomed')
 
     #NOTE: SHOULD RUN ON STARTUP 
     #Create inital outline
@@ -93,7 +103,7 @@ def run_mozart(scale_input, play_mode):
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
-        testing_mode(scale, keyboard)
+        score = testing_mode(scale, keyboard)
     
 
 #if __name__ == "__main__":
