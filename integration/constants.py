@@ -15,6 +15,8 @@ CHANNELS = 1                    # single channel for microphone
 RATE = 44100                    # samples per second
 RECORD_SECONDS = 0.5              # recording time. Minimum time needed to record for integration file is 0.5s
 FIRST_NOTE_FOR_KEYBOARD = 21
+BEATSPERBAR = 4
+BPM = 80
 
 
 # Projection constants
@@ -52,3 +54,7 @@ e_major = ['E4', 'F#4', 'G#4', 'A4', 'B4', 'C#5', 'D#5', 'E5', 'D#5', 'C#5', 'B4
 f_major = ['F4', 'G4', 'A4', 'A#4', 'C5', 'D5', 'E5', 'F5', 'E5', 'D5', 'C5', 'A#4', 'A4', 'G4', 'F4']
 g_major = ['G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F#5', 'G5', 'F#5', 'E5', 'D5', 'C5', 'B4', 'A4', 'G4']
 mary = ['E4', 'D4', 'C4', 'D4', 'E4', 'E4', 'E4', 'D4', 'D4', 'D4', 'E4', 'G4', 'G4', 'E4', 'D4', 'C4', 'D4', 'E4', 'E4', 'E4', 'E4', 'D4', 'D4', 'E4', 'D4', 'C4']
+
+#timing 
+
+mhall = [['E4', 0.75], ['D4', 0.75], ['C4', 0.75], ['D4', 0.75], ['E4', 0.75], ['E4', 0.75], ['E4', 1.5], ['D4', 0.75], ['D4', 0.75], ['D4', 1.5], ['E4', 0.75],['G4', 0.75],['G4', 1.5], ['E4', 0.75], ['D4', 0.75], ['C4', .75], ['D4', 0.75], ['E4', 0.75], ['E4', 0.75], ['E4', 0.75], ['E4', 0.75], ['D4', 0.75], ['D4', .75], ['E4', 0.75], ['D4', 0.75], ['C4', 3]]

@@ -6,6 +6,7 @@ import projection
 import tone
 import time
 import midi
+import Timing
 
 def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
@@ -30,6 +31,33 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
                 break
             projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
         previous_note = note_time
+
+def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
+    i = 0
+    chord_check = 0
+    previous_note = 0
+    note_time = 0
+
+    for i in range (0,len(scale)):
+        
+        #call function for displaying the first note to play
+        projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
+        note_start = time.time()
+        print ('dog')
+        while (note_start + constants.mhall[i][1]) > time.time():
+            played_note = midi.note_stream(keyboard)
+            if played_note == scale[i][0]:
+
+                note_time = time.time()
+                if (note_time - previous_note < 0.05):
+                    chord_check = TRUE
+                    print("CHORD DETECTED")
+                print("Played note is: ", played_note)
+                print("Note is correct!\n")
+                projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
+                i += 1
+                
+            previous_note = note_time
 
 def testing_mode(scale, keyboard):
     i = 0
@@ -89,18 +117,25 @@ if __name__ == "__main__":
         scale = constants.g_major
     elif scale_input == "ml":
         scale = constants.mary
+    elif scale_input == "mhall":
+        scale = constants.mhall
     else:
         raise Exception("Scale is not valid. Try again\n")
     
     play_mode = input("What mode would you like to play in? learn or test?\n")
-    if not((play_mode == "test") or (play_mode == "learn")):
-        raise Exception("Not a valid mode. Please try again\n")
+    #if not((play_mode == "test") or (play_mode == "learn")):
+    #    raise Exception("Not a valid mode. Please try again\n")
 
     projection_index = []
     #print("length of scale: ", len(scale))
     note_array = np.zeros((len(scale), constants.total_keys))
     for i in range(len(scale)):
-        projection_index.append(projection_luts.note_lut(scale[i]))
+        if play_mode == 'learntime':
+            projection_index.append(projection_luts.note_lut(scale[i][0]))
+        else:
+            projection_index.append(projection_luts.note_lut(scale[i]))
+        
+        
 
     for n in range(len(scale)):
         note_array[n][projection_index[n]] = 1
@@ -109,4 +144,6 @@ if __name__ == "__main__":
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
         testing_mode(scale, keyboard)
+    elif (play_mode == "learntime"):
+        learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     
