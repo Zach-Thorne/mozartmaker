@@ -52,10 +52,10 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
     for i in range (0,len(scale)):
         
         #call function for displaying the first note to play
-        projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
+        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
         note_start = time.time()
         #print ('dog')
-        while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME) > time.time():
+        while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME - project_time) > time.time():
             played_note = midi.note_stream(keyboard)
             if (played_note):
                 if played_note[0] == scale[i][0]:
@@ -77,8 +77,8 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
                     #print("Played note is: ", played_note)
                     #print("Note is correct!\n")
                     #i += 1
-        projection.project_white(root, canvas, screen_width, screen_height, note_array, i)    
-        time.sleep(constants.WHITE_TIME - constants.PROJECTION_TIME_SHIFT)
+        white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, i)    
+        time.sleep(constants.WHITE_TIME - white_time)
 
 
 def testing_mode(scale, keyboard):
