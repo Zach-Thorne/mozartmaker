@@ -131,6 +131,7 @@ def project_song(root, canvas, screen_width, screen_height, song, notes):
             
 
 def project_key(root, canvas, screen_width, screen_height, song, note_index):
+    start_time = time.time()
     rec_width = math.floor((screen_width-20)/c.num_white_keys)
     for j in range(len(song[0])): #all notes 61
         if note_index != 0:
@@ -157,21 +158,38 @@ def project_key(root, canvas, screen_width, screen_height, song, note_index):
                 canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="green",width = 2)
         canvas.pack()
         canvas.update()
+    end_time = time.time()
+    print ("project key time: ", end_time - start_time)
 
 def project_white(root, canvas, screen_width, screen_height, song, note_index):
+    start_time = time.time()
     rec_width = math.floor((screen_width-20)/c.num_white_keys)
     for j in range(len(song[0])): #all notes 61
-        #If j corresponds to a black key
-        if(j == 1 or j == 3 or j == 6 or j == 8 or j == 10 or j == 13 or j == 15 or j == 18 or j == 20 or j == 22 or j == 25 or j == 27 or j == 30 or j == 32 or j == 34 or j == 37 or j == 39 or j == 42 or j == 44 or j == 46 or j == 49 or j == 51 or j == 54 or j == 56 or j == 58): 
-            #Feel like there is a better way to do this but we going to do this for now 
-            t = black_lut(j)
-            canvas.create_rectangle(10+rec_width*t+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*t+math.floor(rec_width/2),c.top_of_key,outline ="black",fill ="white",width = 2)
-        #If j corresponds to a white key
-        else:
-            t = white_lut(j)
-            canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="white",width = 2)
+        if(song[note_index,j] == 1):
+            #If j corresponds to a black key
+            if(j == 1 or j == 3 or j == 6 or j == 8 or j == 10 or j == 13 or j == 15 or j == 18 or j == 20 or j == 22 or j == 25 or j == 27 or j == 30 or j == 32 or j == 34 or j == 37 or j == 39 or j == 42 or j == 44 or j == 46 or j == 49 or j == 51 or j == 54 or j == 56 or j == 58): 
+                #Feel like there is a better way to do this but we going to do this for now 
+                t = black_lut(j)
+                canvas.create_rectangle(10+rec_width*t+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*t+math.floor(rec_width/2),c.top_of_key,outline ="black",fill ="white",width = 2)
+            #If j corresponds to a white key
+            else:
+                t = white_lut(j)
+                canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="white",width = 2)
         canvas.pack()
         canvas.update()
+        # #If j corresponds to a black key
+        # if(j == 1 or j == 3 or j == 6 or j == 8 or j == 10 or j == 13 or j == 15 or j == 18 or j == 20 or j == 22 or j == 25 or j == 27 or j == 30 or j == 32 or j == 34 or j == 37 or j == 39 or j == 42 or j == 44 or j == 46 or j == 49 or j == 51 or j == 54 or j == 56 or j == 58): 
+        #     #Feel like there is a better way to do this but we going to do this for now 
+        #     t = black_lut(j)
+        #     canvas.create_rectangle(10+rec_width*t+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*t+math.floor(rec_width/2),c.top_of_key,outline ="black",fill ="white",width = 2)
+        # #If j corresponds to a white key
+        # else:
+        #     t = white_lut(j)
+        #     canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill ="white",width = 2)
+        # canvas.pack()
+        # canvas.update()
+    end_time = time.time()
+    print ("white key time: ", end_time - start_time)
 
 
 

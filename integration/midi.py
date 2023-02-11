@@ -47,10 +47,15 @@ def note_stream(input_device):
     if input_device.poll():
         event = input_device.read(1)[0]
         data = event[0]
+        timestamp = event[1]
         note_number = data[1]
         velocity = data[2]
-        if (velocity == 100):
-            return number_to_note(note_number)
+        #print("event: ", event)
+        #print("data: ", data)
+        if event != "None":
+            return [number_to_note(note_number), velocity, timestamp]
+        # if (velocity == 100):
+        #     return number_to_note(note_number)
 
 if __name__ == '__main__':
     keyboard = initialization()

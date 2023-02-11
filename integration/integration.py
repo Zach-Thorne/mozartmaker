@@ -13,51 +13,73 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
     chord_check = 0
     previous_note = 0
     note_time = 0
+    played_note = [0,0]
     #call function for displaying the first note to play
     projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
     
     while i < len(scale):
         played_note = midi.note_stream(keyboard)
-        if played_note == scale[i]:
-            note_time = time.time()
-            if (note_time - previous_note < 0.05):
-                chord_check = TRUE
-                print("CHORD DETECTED")
-            print("Played note is: ", played_note)
-            print("Note is correct!\n")
-            projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
-            i += 1
-            if (i == len(scale)):
-                break
-            projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
-        previous_note = note_time
+        if (played_note):
+            if played_note[0] == scale[i]:
+                note_time = played_note[2]
+                print("played note: ", played_note)
+                # if (note_time - previous_note < 0.05):
+                #     chord_check = TRUE
+                #     print("CHORD DETECTED")
+                print("Played note is: ", played_note)
+                print("Note is correct!\n")
+                projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
+                i += 1
+                if (i == len(scale)):
+                    break
+                projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
+            #previous_note = note_time
+
+def timing_refactor(bpm, scale):
+    timed_song = constants.mhall        #needs to be changed to song that is imported with timing, not mhall
+    for i in range (0, len(scale)):
+        timed_song[i][1] = timed_song[i][1] * constants.sec_adjusted_bpm
+    return timed_song
 
 def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
     chord_check = 0
     previous_note = 0
     note_time = 0
+    song_bpm_adjust = timing_refactor(constants.BPM, scale)
+    note_status = FALSE
 
     for i in range (0,len(scale)):
         
         #call function for displaying the first note to play
         projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
         note_start = time.time()
-        print ('dog')
-        while (note_start + constants.mhall[i][1]) > time.time():
+        #print ('dog')
+        while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME) > time.time():
             played_note = midi.note_stream(keyboard)
-            if played_note == scale[i][0]:
+            if (played_note):
+                if played_note[0] == scale[i][0]:
+                    #print("played note: ", played_note)
+                    if played_note[1] == 100:
+                        make_time = played_note[2]
+                        print("make time: ", make_time)
+                    else:
+                        break_time = played_note[2]
+                        print("break time: ", break_time)
+                        time_on_note = abs(break_time - make_time)
+                        print("time on note (ms): ", time_on_note)
+                        time_on_note /= 1000
+                        if (time_on_note > (constants.ERROR * song_bpm_adjust[i][1])) and (time_on_note < ((2 - constants.ERROR) * song_bpm_adjust[i-1][1])):
+                            note_status = TRUE
+                        else:
+                            note_status = FALSE
+                        print("note status: ", note_status)
+                    #print("Played note is: ", played_note)
+                    #print("Note is correct!\n")
+                    #i += 1
+        projection.project_white(root, canvas, screen_width, screen_height, note_array, i)    
+        time.sleep(constants.WHITE_TIME - constants.PROJECTION_TIME_SHIFT)
 
-                note_time = time.time()
-                if (note_time - previous_note < 0.05):
-                    chord_check = TRUE
-                    print("CHORD DETECTED")
-                print("Played note is: ", played_note)
-                print("Note is correct!\n")
-                projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
-                i += 1
-                
-            previous_note = note_time
 
 def testing_mode(scale, keyboard):
     i = 0
