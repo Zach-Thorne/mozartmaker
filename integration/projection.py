@@ -159,7 +159,7 @@ def project_key(root, canvas, screen_width, screen_height, song, note_index):
         canvas.pack()
         canvas.update()
     end_time = time.time()
-    print ("project key time: ", end_time - start_time)
+    #print ("project key time: ", end_time - start_time)
     return (end_time - start_time)
 
 def project_white(root, canvas, screen_width, screen_height, song, note_index):
@@ -190,7 +190,7 @@ def project_white(root, canvas, screen_width, screen_height, song, note_index):
         # canvas.pack()
         # canvas.update()
     end_time = time.time()
-    print ("white key time: ", end_time - start_time)
+    #print ("white key time: ", end_time - start_time)
     return (end_time - start_time)
 
 

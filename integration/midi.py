@@ -50,10 +50,9 @@ def note_stream(input_device):
         timestamp = event[1]
         note_number = data[1]
         velocity = data[2]
-        #print("event: ", event)
+        print("event: ", event)
         #print("data: ", data)
-        if event != "None":
-            return [number_to_note(note_number), velocity, timestamp]
+        return [number_to_note(note_number), velocity, timestamp]
         # if (velocity == 100):
         #     return number_to_note(note_number)
 
