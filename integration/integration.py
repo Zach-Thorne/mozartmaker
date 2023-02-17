@@ -87,7 +87,9 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
     note_time = 0
     song_bpm_adjust = timing_refactor(constants.BPM, scale)
     note_status = FALSE
-    #previous_note= 0
+    make_times=[]
+
+    
     for i in range (0,len(scale)):
         
         #call function for displaying the first note to play
@@ -99,44 +101,29 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
             if (played_note):
                 if played_note[1] == 100:
                     if played_note[0] == scale[i][0]:
-                        if previous_note!=NONE and previous_note[1] == 100:
-                            make_time = played_note[2]                            
-                            make_time2 = previous_note[2]
-                        else:
-                            make_time = played_note[2]                            
+                        make_times.append(played_note[2])
+                        #print(make_times)
 
-                elif (played_note[0] == scale[i][0] or previous_note[0]== scale[i-1][0]):
-                    if previous_note[1] == 64:
-                        #if len(song_played)>1 & song_played[i-1][1]==64:
-                        break_time = played_note[2]
-                        break_time2 = previous_note[2]
-                        time_on_note = abs(break_time2 - make_time2)
-                        #print("time on note (ms): ", time_on_note)
-                        time_on_note /= 1000
-                        if (time_on_note > (constants.ERROR * song_bpm_adjust[i][1])) and (time_on_note < ((2 - constants.ERROR) * song_bpm_adjust[i-1][1])):
-                            note_status = TRUE
-                        else:
-                            note_status = FALSE
-                        print("note status: ", note_status)
+                elif (played_note[0] == scale[i][0] or played_note[0]== scale[i-1][0]):
+                    break_time=played_note[2]
+                    #print("break_time",break_time)
+                    make_time=make_times[0]
+                    #print("make time",make_time)
+                    time_on_note = abs(break_time - make_time)
+                    #print("time on note (ms): ", time_on_note)
+                    time_on_note /= 1000
+                    print("played time", time_on_note)
+                    if (time_on_note > (constants.ERROR * song_bpm_adjust[i][1])) and (time_on_note < ((2 - constants.ERROR) * song_bpm_adjust[i-1][1])):
+                        note_status = TRUE
                     else:
-                        break_time = played_note[2]
-                            #break_time2 = song_played[i-1][2]
-                            #print("break time", break_time2)
-                        #print("break time: ", break_time)
-                        time_on_note = abs(break_time - make_time)
-                        #print("time on note (ms): ", time_on_note)
-                        time_on_note /= 1000
-                        if (time_on_note > (constants.ERROR * song_bpm_adjust[i][1])) and (time_on_note < ((2 - constants.ERROR) * song_bpm_adjust[i-1][1])):
-                            note_status = TRUE
-                        else:
-                            note_status = FALSE
-                            #project yellow
+                        note_status = FALSE
+                    print("note status: ", note_status)
+                    make_times.pop(0)   
 
-                        print("note status: ", note_status)
                     #print("Played note is: ", played_note)
                     #print("Note is correct!\n")
                     #i += 1
-                    previous_note=played_note
+                    #previous_note=played_note
         white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, i)    
         time.sleep(constants.WHITE_TIME - white_time)
 
