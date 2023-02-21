@@ -405,12 +405,12 @@ if __name__ == "__main__":
                 elif ((sol7[-1]==1) & (f2 != 1)): poss_sol7_scores[f2-1] += 1
                 elif ((sol8[-1]==1) & (f2 != 1)): poss_sol8_scores[f2-1] += 1
                 elif ((sol9[-1]==1) & (f2 != 1)): poss_sol9_scores[f2-1] += 1
-                elif ((sol10[-1]==1) & (f2 != 1)): poss_sol0_scores[f2-1] += 1
-                elif ((sol11[-1]==1) & (f2 != 1)): poss_sol1_scores[f2-1] += 1
-                elif ((sol12[-1]==1) & (f2 != 1)): poss_sol2_scores[f2-1] += 1
-                elif ((sol13[-1]==1) & (f2 != 1)): poss_sol3_scores[f2-1] += 1
-                elif ((sol14[-1]==1) & (f2 != 1)): poss_sol4_scores[f2-1] += 1
-                elif ((sol15[-1]==1) & (f2 != 1)): poss_sol5_scores[f2-1] += 1
+                elif ((sol10[-1]==1) & (f2 != 1)): poss_sol10_scores[f2-1] += 1
+                elif ((sol11[-1]==1) & (f2 != 1)): poss_sol11_scores[f2-1] += 1
+                elif ((sol12[-1]==1) & (f2 != 1)): poss_sol12_scores[f2-1] += 1
+                elif ((sol13[-1]==1) & (f2 != 1)): poss_sol13_scores[f2-1] += 1
+                elif ((sol14[-1]==1) & (f2 != 1)): poss_sol14_scores[f2-1] += 1
+                elif ((sol15[-1]==1) & (f2 != 1)): poss_sol15_scores[f2-1] += 1
             # if thumb pass on the way up
             elif (semitones > 0):
                 if ((sol1[-1]!=1) & (f2==1)): poss_sol1_scores[f2-1] += 1
