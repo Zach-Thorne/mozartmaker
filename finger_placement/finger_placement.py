@@ -1,80 +1,31 @@
 """
-CURRENT STATUS:
-- the actual process of calculating scores, comparing scores, and updating the current best solutions is working.
-- it seems that the rules might need a bit of fine tuning.
-"""
-
-# maybe try testing with the other song
-# maybe also test what happens when the notes go downwards. i don't think this is messing it up, but just check
-
-'''
-HEELLOOOOOOOOOOOOOOOOOOOOOOOOOOO DON'T MISS THIS
-WHEN YOU'RE CONNECTED TO WIFI AGAIN, DOWNLOAD PREVIOUS VERSION FROM GITHUB AND SEE IF
-THIS FIXES EVERYTHING.
-
-These were assigned wrong:
-        # set possible scores to be the current score for each solution
-        poss_sol1_scores = [scores[0],scores[0],scores[0],scores[0],scores[0]]
-        poss_sol1_scores = [scores[1],scores[1],scores[1],scores[1],scores[1]]
-        poss_sol1_scores = [scores[2],scores[2],scores[2],scores[2],scores[2]]
-        poss_sol1_scores = [scores[3],scores[3],scores[3],scores[3],scores[3]]
-        poss_sol1_scores = [scores[4],scores[4],scores[4],scores[4],scores[4]]
-They should NOT all be assigned to sol1, they should be assigned to 1-5.
-
-already fixed it in this file for 10 and i don't think there's any other typos in this file,
-but see what happens when you fix it in the OG.
-
-another change that needs to be made in the OG file not related to expanding:
-- compare solution 1 because they might not be initialized in the correct order
-'''
-
-"""
-somethings kicking out the best solution
-1. why does 3-2 get a point right at the beginning?
-2. pitch #7 is when it gets booted to solution #8. why does it get so many points here?
-3. in the next round, it gets booted to solution #9. wtf is happeningggg
-   [3,2,1,2,3,3,3,X]
-"""
-
-'''
-NOTE
-- the 10 solutions isn't working because it's just copying 2 of the same into the array of 10,
-rather than 1 of each into the array of 5 (essentially nothing's changing).
-- for the first iteration, need to only calculate and compare for solutions 1-5,
-then we can copy the best 10 solutions to the 10 arrays and they will be DIFFERENT
-so we can then go through 10 for the rest of the simulation
-- can still do all the calculations it doesn't really matter but we just shouldn't actually assign them
-as possible solutions
-'''
-
-"""
 TODO from before:
-1. need to expand to have more than 5 top solutions throughout the process because it's
-   seemingly eliminating the best solution early on.
-2. possible placement array:
+1. possible placement array: (don't know if this is actually necessary at all)
    - skip any placements that have 0 when doing calculations.
    - it won't make a difference in results because they end up with high scores anyway,
      but it will make calculations more efficient.
    - 0: NOT a possible finger placement for the current pitch
    - 1: possible finger placement for the current pitch
-3. check if everything works for pitch1 > pitch2 -> could this be the reason for weird results rn?
-4. implement black/white note flag & rules 5-7
-5. rule #4
+2. implement black/white note flag & rules 5-7
 """
 
 if __name__ == "__main__":
     
-    # initialize array assuming 0 = C4
-    # [C, C#, D, D#, E, F, ...]
-    # [0, 1,  2, 3,  4, 5, ...]
+    #
+    #
+    # initialize song arrays assuming 0 = C4
 
+    # mary had a little lamb
     #             [E,D,C,D,E,E,E,D,D,D,E,G,G,E,D,C,D,E,E,E,D,D,E,D,C]
     little_lamb = [4,2,0,2,4,4,4,2,2,2,4,7,7,4,2,0,2,4,4,4,2,2,4,2,0]
     # ideal soln: [3,2,1,2,3,3,3,2,2,2,3,5,5,3,2,1,2,3,3,3,2,2,3,2,1]
+    little_lamb_chars = ['E','D','C','D','E','E','E','D','D','D','E','G','G','E','D','C','D','E','E','E','D','D','E','D','C']
+
+    # twinkle twinkle little star
     #                 [C,C,G,G,A,A,G,F,F,E,E,D,D,C,G,G,F,F,E,E,D,G,G,F,F,E,E,D,C,C,G,G,A,A,G,F,F,E,E,D,D,C]
-    twinkle_chars = ['C','C','G','G','A','A','G','F','F','E','E','D','D','C','G','G','F','F','E','E','D','G','G','F','F','E','E','D','C','C','G','G','A','A','G','F','F','E','E','D','D','C']
     twinkle_twinkle = [0,0,7,7,9,9,7,5,5,4,4,2,2,0,7,7,5,5,4,4,2,7,7,5,5,4,4,2,0,0,7,7,9,9,7,5,5,4,4,2,2,0]
-    # ideal soln:     [1,1,]
+    # ideal soln:     [1,1,4,4,5,5,4,3,3,2,2,1,1,2,5,5,4,4,3,3,2,5,5,4,4,3,3,2,1,1,4,4,5,5,4,3,3,2,2,1,1,2]
+    twinkle_twinkle_little_chars = ['C','C','G','G','A','A','G','F','F','E','E','D','D','C','G','G','F','F','E','E','D','G','G','F','F','E','E','D','C','C','G','G','A','A','G','F','F','E','E','D','D','C']
     
     # format of all reference arrays:
     # [1-1, 1-2, 1-3, 1-4, 1-5, 2-1, 2-2, 2-3, 2-4, 2-5, 3-1, 3-2, 3-3, 3-4, 3-5, ...]
@@ -144,19 +95,19 @@ if __name__ == "__main__":
     
     # for every pitch in the song
     # for p in range(1, len(little_lamb)):
-    for p in range(1, len(twinkle_twinkle)):
+    for p in range(1, len(little_lamb)):
 
         # TODO #3
         # TODO #4
 
         # if pitch1 < pitch2 (e.g. [C,D]), semitones > 0
         # semitones = little_lamb[p] - little_lamb[p-1]
-        semitones = twinkle_twinkle[p] - twinkle_twinkle[p-1]
+        semitones = little_lamb[p] - little_lamb[p-1]
 
 
         if (p > 1):
             # semitones_1_3 = little_lamb[p] - little_lamb[p-2]
-            semitones_1_3 = twinkle_twinkle[p] - twinkle_twinkle[p-2]
+            semitones_1_3 = little_lamb[p] - little_lamb[p-2]
 
         # if the current pitch is the same as the one which was just played
         # just assign the same number as the previous pitch
@@ -207,7 +158,7 @@ if __name__ == "__main__":
             reference_index_1st_3rd_15 = ((sol5[p-2]-1)*5)+(f2-1)
             
             # ADDING A RULE: if going down 1 or 2 semitones, add points if difference in finger is >1
-            if (semitones == -1 | -2):
+            if (semitones == -1 or semitones == -2):
                 if (sol1[-1] - f2 > 1): poss_sol1_scores[f2-1] += 2
                 if (sol2[-1] - f2 > 1): poss_sol2_scores[f2-1] += 2
                 if (sol3[-1] - f2 > 1): poss_sol3_scores[f2-1] += 2
@@ -225,7 +176,7 @@ if __name__ == "__main__":
                 if (sol15[-1] - f2 > 1): poss_sol15_scores[f2-1] += 2
 
             # if going UP 1 or 2 STs, add points if difference in fingers is >1
-            elif (semitones == 1 | 2):
+            elif (semitones == 1 or semitones == 2):
                 if (f2 - sol1[-1] > 1): poss_sol1_scores[f2-1] += 2
                 if (f2 - sol2[-1] > 1): poss_sol2_scores[f2-1] += 2
                 if (f2 - sol3[-1] > 1): poss_sol3_scores[f2-1] += 2
@@ -3256,5 +3207,5 @@ if __name__ == "__main__":
     print("#1 solution:")
     print("score =", scores[0])
     print("sol_num =", temp_sol_num[0])
-    print("twinkle  =", twinkle_chars)
+    print("little lamb  =", little_lamb_chars)
     print("solution =", sol1)
