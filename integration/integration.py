@@ -159,28 +159,20 @@ def testing_mode_timing(scale, keyboard):
 
 def testing_mode(scale, keyboard):
     i = 0
-    chord_check = 0
-    previous_note = 0
-    note_time = 0
-    test_notes = []
     correct_notes = 0
     while i < len(scale):        
         played_note = midi.note_stream(keyboard)
-        if played_note[1] == 100:
-            note_time = time.time()
-            if (note_time - previous_note < 0.05):
-                chord_check = TRUE
-                print("CHORD DETECTED")
-            if (test_notes[n] == scale[n]):
-                correct_notes += 1
-            if (i == len(scale)):
-                break
-        previous_note = note_time
-    
-    
-    for n in range(len(scale)):
-        if (test_notes[n] == scale[n]):
-            correct_notes += 1
+        if played_note:
+            if played_note[1] == 100:
+                if (played_note[0] == scale[i][0]):
+                    correct_notes += 1
+                i += 1
+        if (i == len(scale)):
+            break    
+                
+    # for n in range(len(scale)):
+    #     if (test_notes[n] == scale[n]):
+    #         correct_notes += 1
 
     result = float(correct_notes / len(scale)) * 100
     print("Your test score is: ", round(result, 1), "%")
@@ -238,7 +230,7 @@ if __name__ == "__main__":
     #print("length of scale: ", len(scale))
     note_array = np.zeros((len(scale), constants.total_keys))
     for i in range(len(scale)):
-        if play_mode == 'learntime':
+        if (play_mode == 'learntime') or (play_mode == 'testtime'):
             projection_index.append(projection_luts.note_lut(scale[i][0]))
         else:
             projection_index.append(projection_luts.note_lut(scale[i]))
@@ -248,9 +240,9 @@ if __name__ == "__main__":
     for n in range(len(scale)):
         note_array[n][projection_index[n]] = 1
 
-    values = timing_refactor_finger(scale, note_array)
-    print("values: ", values)
-    # count_in(scale)    
+    # values = timing_refactor_finger(scale, note_array)
+    # print("values: ", values)
+    #count_in(scale)    
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
