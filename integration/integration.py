@@ -35,7 +35,7 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
                 projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
             #previous_note = note_time
 
-def timing_refactor(bpm, scale):
+def timing_refactor(scale):
     timed_song = constants.mhall        #needs to be changed to song that is imported with timing, not mhall
     for i in range (0, len(scale)):
         timed_song[i][1] = timed_song[i][1] * constants.sec_adjusted_bpm
@@ -85,15 +85,15 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
     chord_check = 0
     previous_note = NONE
     note_time = 0
-    song_bpm_adjust = timing_refactor(constants.BPM, scale)
-    note_status = FALSE
+    song_bpm_adjust = timing_refactor(scale)
+    note_status = "green"
     make_times=[]
 
     
     for i in range (0,len(scale)):
         
         #call function for displaying the first note to play
-        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
+        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status)
         note_start = time.time()
         #print ('dog')
         while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME - project_time) > time.time():
@@ -104,20 +104,23 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
                         make_times.append(played_note[2])
                         #print(make_times)
 
-                elif (played_note[0] == scale[i][0] or played_note[0]== scale[i-1][0]):
-                    break_time=played_note[2]
+                elif (played_note[0] == scale[i][0] or played_note[0] == scale[i-1][0]):
+                    break_time = played_note[2]
                     #print("break_time",break_time)
-                    make_time=make_times[0]
+                    try:
+                        make_time = make_times[0]
+                    except IndexError:
+                        note_status = "orange"
                     #print("make time",make_time)
                     time_on_note = abs(break_time - make_time)
                     #print("time on note (ms): ", time_on_note)
                     time_on_note /= 1000
                     print("played time", time_on_note)
                     if (time_on_note > (constants.ERROR * song_bpm_adjust[i][1])) and (time_on_note < ((2 - constants.ERROR) * song_bpm_adjust[i-1][1])):
-                        note_status = TRUE
+                        note_status = "green"
                     else:
-                        note_status = FALSE
-                    print("note status: ", note_status)
+                        note_status = "orange"
+                    #print("note status: ", note_status)
                     make_times.pop(0)   
 
                     #print("Played note is: ", played_note)
@@ -154,6 +157,13 @@ def testing_mode(scale, keyboard):
 
     result = float(correct_notes / len(scale)) * 100
     print("Your test score is: ", round(result, 1), "%")
+
+# def count_in(constants.BPM):
+#     project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, "blue")
+#     time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - project_time)
+
+    
+
 
 if __name__ == "__main__":
     #Create empty array 
