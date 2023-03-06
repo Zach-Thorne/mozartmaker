@@ -103,6 +103,7 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
                     #previous_note=played_note
         white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, i)    
         time.sleep(constants.WHITE_TIME - white_time)
+
 def testing_mode_timing(scale, keyboard):
     i = 0
     chord_check = 0
@@ -110,9 +111,8 @@ def testing_mode_timing(scale, keyboard):
     make_times=[]
     correct_notes=0
     correct_times=0
-    while i < len(scale):
+    for i in range (0,len(scale)):
         played_note = midi.note_stream(keyboard)
-        
         if (played_note):
             print(played_note)
             if played_note[1] == 100:
