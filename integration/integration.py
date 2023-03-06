@@ -111,7 +111,8 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
                         make_time = make_times[0]
                     except IndexError:
                         note_status = "orange"
-                    #print("make time",make_time)
+                        make_time = break_time
+                    #print("make time",make_time)                        
                     time_on_note = abs(break_time - make_time)
                     #print("time on note (ms): ", time_on_note)
                     time_on_note /= 1000
@@ -121,7 +122,10 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
                     else:
                         note_status = "orange"
                     #print("note status: ", note_status)
-                    make_times.pop(0)   
+                    try:    
+                        make_times.pop(0)   
+                    except Exception:
+                        pass
 
                     #print("Played note is: ", played_note)
                     #print("Note is correct!\n")
@@ -158,13 +162,14 @@ def testing_mode(scale, keyboard):
     result = float(correct_notes / len(scale)) * 100
     print("Your test score is: ", round(result, 1), "%")
 
-# def count_in(constants.BPM):
-#     project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, "blue")
-#     time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - project_time)
+def count_in():
+    for i in range(2*constants.BEATSPERBAR):
+        blue_time = projection.project_blue(root, canvas, screen_width, screen_height, note_array)
+        time.sleep(constants.FLASH_TIME - blue_time)
+        white_time = projection.project_all_white(root, canvas, screen_width, screen_height, note_array)
+        time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - white_time)
 
     
-
-
 if __name__ == "__main__":
     #Create empty array 
     #Initalize Tkinter
@@ -219,6 +224,7 @@ if __name__ == "__main__":
     for n in range(len(scale)):
         note_array[n][projection_index[n]] = 1
 
+    count_in()    
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
