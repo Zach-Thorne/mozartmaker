@@ -105,10 +105,7 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
         white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, i)    
         time.sleep(constants.WHITE_TIME - white_time)
 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 def testing_mode_timing(scale, keyboard):
     i = 0
     chord_check = 0
