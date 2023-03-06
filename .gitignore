@@ -1,4 +1,4 @@
 
 # Ignore env subfolder for Jupyter Notebook
 /tone_sensing/env/*
-*/__pycache__/*
+/*/__pycache__/*
