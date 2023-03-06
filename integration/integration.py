@@ -103,7 +103,53 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
                     #previous_note=played_note
         white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, i)    
         time.sleep(constants.WHITE_TIME - white_time)
+def testing_mode_timing(scale, keyboard):
+    i = 0
+    chord_check = 0
+    song_bpm_adjust = timing_refactor(scale)
+    make_times=[]
+    correct_notes=0
+    correct_times=0
+    while i < len(scale):
+        played_note = midi.note_stream(keyboard)
+        
+        if (played_note):
+            print(played_note)
+            if played_note[1] == 100:
+                print("1")
+                if played_note[0] == scale[i][0]:
+                    correct_notes += 1
+                    print("2")
+                    make_times.append(played_note[2])
+                    #print(make_times)
 
+            elif (played_note[0] == scale[i][0] or played_note[0] == scale[i-1][0]):
+                break_time = played_note[2]
+                print("3")
+                #print("break_time",break_time)
+                try:
+                    make_time = make_times[0]
+                    print("4")
+                except IndexError:
+                    make_time=break_time
+                    print("5")
+                #print("make time",make_time)
+                time_on_note = abs(break_time - make_time)
+                #print("time on note (ms): ", time_on_note)
+                time_on_note /= 1000
+                print("played time", time_on_note)
+                if (time_on_note > (constants.ERROR * song_bpm_adjust[i][1])) and (time_on_note < ((2 - constants.ERROR) * song_bpm_adjust[i-1][1])):
+                    correct_times+=1
+
+                #print("note status: ", note_status)
+                try:
+                    make_times.pop(0) 
+                except Exception:
+                    pass  
+    result_note = float(correct_notes / len(scale)) * 100
+    result_time=float(correct_times / len(scale)) * 100
+    print("Your correct note score is: ", round(result_note, 1), "%")
+    print("Your time note score is: ", round(result_time, 1), "%")
 
 def testing_mode(scale, keyboard):
     i = 0
@@ -197,11 +243,13 @@ if __name__ == "__main__":
 
     values = timing_refactor_finger(scale, note_array)
     print("values: ", values)
-    count_in(scale)    
+    # count_in(scale)    
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
         testing_mode(scale, keyboard)
+    elif (play_mode == "testtime"):
+        testing_mode_timing(scale, keyboard)
     elif (play_mode == "learntime"):
         learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     
