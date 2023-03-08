@@ -130,7 +130,7 @@ def project_song(root, canvas, screen_width, screen_height, song, notes):
             #     break
             
 
-def project_key(root, canvas, screen_width, screen_height, song, note_index, colour):
+def project_key(root, canvas, screen_width, screen_height, song, note_index, colour, finger):
     start_time = time.time()
     rec_width = math.floor((screen_width-20)/c.num_white_keys)
     for j in range(len(song[0])): #all notes 61
@@ -152,10 +152,12 @@ def project_key(root, canvas, screen_width, screen_height, song, note_index, col
                 #Feel like there is a better way to do this but we going to do this for now 
                 t = black_lut(j)
                 canvas.create_rectangle(10+rec_width*t+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*t+math.floor(rec_width/2),c.top_of_key,outline ="black",fill =colour,width = 2)
+                canvas.create_text((10+rec_width*t+math.floor(rec_width/2) , 100), text = finger, font=("Helvetica", 54))
             #If j corresponds to a white key
             else:
                 t = white_lut(j)
                 canvas.create_rectangle(10+rec_width*t,c.top_of_key,10+rec_width+rec_width*t,c.bot_of_key,outline ="black",fill =colour,width = 2)
+                canvas.create_text((10+rec_width*t+math.floor(rec_width/2) , 200), text = finger, font=("Helvetica", 54))
         canvas.pack()
         canvas.update()
     end_time = time.time()
