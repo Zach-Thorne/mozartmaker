@@ -55,17 +55,17 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
     chord_check = 0
     previous_note = NONE
     note_time = 0
-    song_bpm_adjust = timing_refactor(scale)
-    note_status = "green"
+    # song_bpm_adjust = timing_refactor(scale)
+    song_bpm_adjust = timing_refactor_finger(scale, note_array)
     make_times=[]
-
+    note_status = "green"
     
     for i in range (0,len(scale)):
         
         #call function for displaying the first note to play
-        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status)
+        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_bpm_adjust[i][2]))
         note_start = time.time()
-        #print ('dog')
+        note_status = "orange"
         while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME - project_time) > time.time():
             played_note = midi.note_stream(keyboard)
             if (played_note):
@@ -177,10 +177,10 @@ def testing_mode(scale, keyboard):
     result = float(correct_notes / len(scale)) * 100
     print("Your test score is: ", round(result, 1), "%")
 
-def count_in(scale):
+def count_in():
     first_note = 0
     for i in range(2*constants.BEATSPERBAR):
-        blue_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, first_note, "blue")
+        blue_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, first_note, "blue", "")
         time.sleep(constants.FLASH_TIME - blue_time)
         white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, first_note)    
         time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - white_time)
@@ -242,7 +242,7 @@ if __name__ == "__main__":
 
     # values = timing_refactor_finger(scale, note_array)
     # print("values: ", values)
-    #count_in(scale)    
+    count_in()    
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
