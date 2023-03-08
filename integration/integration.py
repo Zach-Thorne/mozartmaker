@@ -8,6 +8,8 @@ import time
 import midi
 import Timing
 import finger_placement
+import threading
+from playsound import playsound
 
 def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
@@ -50,6 +52,17 @@ def timing_refactor_finger(scale, note_array):
         timed_song_fingers[i].append(fingers[i])
     return timed_song_fingers
 
+
+def metronome(adjust,length):
+    loop_length = int(length/((1/4) * adjust))
+    
+    for i in range(0,int(loop_length)):
+        start_time = time.time()
+        playsound('C:\\Users\\Garret\\Desktop\\Capstone\\mozartmaker\\integration\\ding.mp3',FALSE)
+        end_time= time.time()
+        time.sleep((0.25 * adjust) - (time.time() - start_time))
+        
+
 def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
     chord_check = 0
@@ -59,7 +72,14 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
     song_bpm_adjust = timing_refactor_finger(scale, note_array)
     make_times=[]
     note_status = "green"
-    
+    song_length = 0
+    for i in range (0,len(scale)):
+        song_length+=scale[i][1]
+    song_length+=8*(.25*constants.sec_adjusted_bpm)
+        
+    x = threading.Thread(target=metronome, args=(constants.sec_adjusted_bpm,song_length))
+    x.start()
+    count_in()   
     for i in range (0,len(scale)):
         
         #call function for displaying the first note to play
@@ -242,7 +262,7 @@ if __name__ == "__main__":
 
     # values = timing_refactor_finger(scale, note_array)
     # print("values: ", values)
-    count_in()    
+    # count_in()    
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
