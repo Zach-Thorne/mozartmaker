@@ -176,6 +176,7 @@ def testing_mode_timing(scale, keyboard):
     result_time=float(correct_times / len(scale)) * 100
     print("Your correct note score is: ", round(result_note, 1), "%")
     print("Your time note score is: ", round(result_time, 1), "%")
+    print("Your overall score is: ", round((result_note+result_time)/2))
 
 def testing_mode(scale, keyboard):
     i = 0
