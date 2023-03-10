@@ -5,10 +5,23 @@ import os.path
 import subprocess
 from music21 import *
 from mido import MidiFile
+import sys
 
+#NOTE Can be removed once in the integration folder
+sys.path.insert(1, r'C:\Users\zacht\OneDrive\Documents\University\Final Year\capstone\mozartmaker\integration')
+import midi
+
+
+#Global Variables for testing
 TEMP = 'bells.musicxml'
 test_mode = 0
-            
+
+#Value of time stamps, think this is correct
+EIGHTH = 512
+QUARTER = 1024
+HALF = 2048
+FULL = 4096
+
 #Gets input and makes sure it exists
 def get_file_input():
   while(1):
@@ -62,23 +75,39 @@ def convert_to_notes(sheet_music):
   #Pretty sure track 2 corresponds to treble staff
   print("*******************TRACK 2***********************")
   for msg in mid.tracks[1]:
-    print(msg)
-    if msg.type == 'note_on':
-      print(msg.note)
-      tuple_1 = [msg.note, msg.velocity, msg.time]
+    #print(msg)
+
+    #When note_off can see timestamp properly
+    if msg.type == 'note_off':
+      #print(msg.note)
+      #TODO this shit booty
+      #Get note type from time stamp
+      if(int(msg.time) == EIGHTH): 
+        note_type = 0.125
+      elif(int(msg.time) == QUARTER): 
+        note_type = 0.25
+      elif(int(msg.time) == HALF): 
+        note_type = 0.5
+      elif(int(msg.time) == FULL): 
+        note_type = 1
+
+      tuple_1 = [midi.number_to_note(msg.note), note_type]
       track2_data.append(tuple_1) 
       track2_notes.append([msg.note]) 
 
+  #TODO we will worry about stuff in bass staff l8r
   #Pretty sure track 3 corresponds to bass staff
   print("*******************TRACK 3***********************")
   for msg in mid.tracks[2]:
-    print(msg)
+    #print(msg)
     if msg.type == 'note_on':
-      print(msg.note)
+      #print(msg.note)
       tuple_2 = [msg.note, msg.velocity, msg.time]
       track3_data.append(tuple_2) 
       track3_notes.append([msg.note]) 
-
+  
+  #Return data 
+  return track2_data
 
 if __name__ == "__main__":
   #TEST_MODE ASK 
@@ -90,7 +119,5 @@ if __name__ == "__main__":
   else:
     sheet_music = TEMP 
   return_string = convert_to_notes(sheet_music)
-  
-  print("Make sure file setup correct") 
-
+  print(return_string)
 
