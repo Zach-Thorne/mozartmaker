@@ -173,18 +173,14 @@ import timing
 import threading
 
 
-def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard, finger_flag):
+def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
     played_note = [0,0]
     note_status = "green"
     #call function for displaying the first note to play
-    if (finger_flag == "y"):
-        song_fingerings = timing.finger_refactor(scale, note_array)
-        finger_param = str(song_fingerings[i][2])
-    else:
-        finger_param = ""
+    song_fingerings = timing.finger_refactor(scale, note_array)
 
-    projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, finger_param)
+    projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
     
     while i < len(scale):
         played_note = midi.note_stream(keyboard)
@@ -194,21 +190,14 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
                 i += 1
                 if (i == len(scale)):
                     break
-                if (finger_flag == "y"):
-                    finger_param = str(song_fingerings[i][2])
-                projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, finger_param)
+                projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
 
-def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard, finger_flag):
+def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
     make_times=[]
     note_status = "green"
     
-    if (finger_flag == "y"):
-        song_bpm_adjust = timing.timing_refactor_finger(scale, note_array)
-        finger_param = str(song_bpm_adjust[i][2])
-    else:
-        song_bpm_adjust = timing.timing_refactor(scale)
-        finger_param = ""
+    song_bpm_adjust = timing.timing_refactor_finger(scale, note_array)
 
     song_length = 0
     for i in range (0,len(song_bpm_adjust)):
@@ -218,12 +207,12 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
 
     x = threading.Thread(target = timing.metronome, args=(constants.sec_adjusted_bpm, song_length))
     x.start()
-    count_in(root, canvas, screen_width, screen_height, note_array) 
+    count_in() 
            
     for i in range (0,len(scale)):
         
         #call function for displaying the first note to play
-        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, finger_param)
+        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_bpm_adjust[i][2]))
         note_start = time.time()
         note_status = "orange"
         while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME - project_time) > time.time():
@@ -332,7 +321,7 @@ def count_in(root, canvas, screen_width, screen_height, note_array):
         time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - white_time)
 
     
-def run_mozart(scale_input, play_mode, finger_flag, screen_width, screen_height):
+def run_mozart(scale_input, play_mode, screen_width, screen_height):
     #Create empty array 
     #Initalize Tkinter
     root = Tk()
@@ -389,10 +378,10 @@ def run_mozart(scale_input, play_mode, finger_flag, screen_width, screen_height)
     
 
     if (play_mode == "learn"):
-        learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard, finger_flag)
+        learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
         testing_mode(scale, keyboard)
     elif (play_mode == "testtime"):
         testing_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "learntime"):
-        learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard, finger_flag)
+        learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)

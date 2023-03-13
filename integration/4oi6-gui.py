@@ -338,7 +338,7 @@ class MainWindow(Ui_Dialog):
         elif(self.COMBO_song.currentText() == "D Scale"):
             self.song_selection = "D"
         print(self.song_selection)
-        run_mozart(self.song_selection, self.mode, "y", self.width_window, self.height_window)
+        run_mozart(self.song_selection, self.mode, self.width_window, self.height_window)
         # call integration function with parameters from user input
         
 app = QtWidgets.QApplication(sys.argv)
