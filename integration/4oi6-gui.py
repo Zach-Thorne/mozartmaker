@@ -191,8 +191,9 @@ class MainWindow(Ui_Dialog):
 
         # song combobox: add items
         self.COMBO_song.setEditable(True)
-        self.COMBO_song.addItem("C")
-        self.COMBO_song.addItem("D")
+        self.COMBO_song.addItem("C Scale")
+        self.COMBO_song.addItem("D Scale")
+        self.COMBO_song.addItem("Mary Had a Little Lamb")
 
         #
         #
@@ -329,7 +330,13 @@ class MainWindow(Ui_Dialog):
     # FUNCTION FOR FINAL PLAY BUTTON
     def final_play_button_clicked(self):
         print('hello world')
-        self.song_selection = self.COMBO_song.currentText()
+        # song selection
+        if(self.COMBO_song.currentText() == "Mary Had a Little Lamb"):
+            self.song_selection = "mhall"
+        elif(self.COMBO_song.currentText() == "C Scale"):
+            self.song_selection = "C"
+        elif(self.COMBO_song.currentText() == "D Scale"):
+            self.song_selection = "D"
         print(self.song_selection)
         run_mozart(self.song_selection, self.mode, "y", self.width_window, self.height_window)
         # call integration function with parameters from user input

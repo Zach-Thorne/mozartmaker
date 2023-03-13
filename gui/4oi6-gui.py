@@ -189,8 +189,9 @@ class MainWindow(Ui_Dialog):
 
         # song combobox: add items
         self.COMBO_song.setEditable(True)
-        self.COMBO_song.addItem("song1")
-        self.COMBO_song.addItem("song2")
+        self.COMBO_song.addItem("C Scale")
+        self.COMBO_song.addItem("D Scale")
+        self.COMBO_song.addItem("Mary Had a Little Lamb")
 
         #
         #
@@ -361,11 +362,20 @@ class MainWindow(Ui_Dialog):
     def final_play_button_clicked(self):
         self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         print('hello world')
+        
+        # tempo selection
         print(self.tempo_flag)
         if(self.tempo_flag == "1"):
             tempo = self.SPIN_tempo.value()
+        
+        # song selection
+        if(self.COMBO_song.currentText() == "Mary Had a Little Lamb"):
+            self.song_selection = "mhall"
+        elif(self.COMBO_song.currentText() == "C Scale"):
+            self.song_selection = "C"
+        elif(self.COMBO_song.currentText() == "D Scale"):
+            self.song_selection = "D"
         print(tempo)
-        self.song_selection = self.COMBO_song.currentText()
         print(self.song_selection)
         #run_mozart(self.song_selection, self.mode)
         # call integration function with parameters from user input
