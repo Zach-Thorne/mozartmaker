@@ -17,9 +17,7 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
     #call function for displaying the first note to play
     if (finger_flag == "y"):
         song_fingerings = timing.finger_refactor(scale, note_array)
-        print("note array :", note_array)
         finger_param = str(song_fingerings[i][2])
-        print(song_fingerings)
     else:
         finger_param = ""
 
@@ -29,26 +27,40 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
         played_note = midi.note_stream(keyboard)
         if (played_note):
             if played_note[0] == scale[i][0]:
-                # print("played note: ", played_note)
-                # print("Played note is: ", played_note)
-                # print("Note is correct!\n")
                 projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
                 i += 1
                 if (i == len(scale)):
                     break
+                if (finger_flag == "y"):
+                    finger_param = str(song_fingerings[i][2])
                 projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, finger_param)
 
-def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
+def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard, finger_flag):
     i = 0
-    # song_bpm_adjust = timing_refactor(scale)
-    song_bpm_adjust = timing.timing_refactor_finger(scale, note_array)
     make_times=[]
     note_status = "green"
+    
+    if (finger_flag == "y"):
+        song_bpm_adjust = timing.timing_refactor_finger(scale, note_array)
+        finger_param = str(song_bpm_adjust[i][2])
+    else:
+        song_bpm_adjust = timing.timing_refactor(scale)
+        finger_param = ""
+
+    song_length = 0
+    for i in range (0,len(song_bpm_adjust)):
+        song_length += song_bpm_adjust[i][1]
+    song_length += 8 * (0.25 * constants.sec_adjusted_bpm)
+    print("song length", song_length)
+
+    x = threading.Thread(target = timing.metronome, args=(constants.sec_adjusted_bpm, song_length))
+    x.start()
+    count_in() 
            
     for i in range (0,len(scale)):
         
         #call function for displaying the first note to play
-        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_bpm_adjust[i][2]))
+        project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, finger_param)
         note_start = time.time()
         note_status = "orange"
         while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME - project_time) > time.time():
@@ -95,12 +107,24 @@ def testing_mode(scale, keyboard):
     result = float(correct_notes / len(scale)) * 100
     print("Your test score is: ", round(result, 1), "%")
 
+
 def testing_mode_timing(scale, keyboard):
     i = 0
     song_bpm_adjust = timing.timing_refactor(scale)
     make_times=[]
     correct_notes=0
     correct_times=0
+
+    song_length = 0
+    for i in range (0,len(song_bpm_adjust)):
+        song_length += song_bpm_adjust[i][1]
+    song_length += 8 * (0.25 * constants.sec_adjusted_bpm)
+    print("song length", song_length)
+    
+
+    x = threading.Thread(target = timing.metronome, args=(constants.sec_adjusted_bpm, song_length))
+    x.start()
+    count_in() 
 
     for i in range (0,len(scale)):
         
@@ -133,7 +157,7 @@ def testing_mode_timing(scale, keyboard):
     result_time=float(correct_times / len(scale)) * 100
     print("Your correct note score is: ", round(result_note, 1), "%")
     print("Your time note score is: ", round(result_time, 1), "%")
-    print("Your overall score is: ", round((result_note+result_time)/2))
+    print("Your overall score is: ", round((result_note+result_time)/2), "%")
 
 
 def count_in():
@@ -199,23 +223,13 @@ if __name__ == "__main__":
     for n in range(len(scale)):
         note_array[n][projection_index[n]] = 1
 
-    song_length = 0
-    for i in range (0,len(scale)):
-        song_length += scale[i][1]
-    song_length += 8 * (0.25 * constants.sec_adjusted_bpm)
-    print("song length", song_length)
+    
 
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard, finger_flag)
     elif (play_mode == "test"):
         testing_mode(scale, keyboard)
     elif (play_mode == "testtime"):
-        x = threading.Thread(target = timing.metronome, args=(constants.sec_adjusted_bpm, song_length))
-        x.start()
-        count_in() 
         testing_mode_timing(scale, keyboard)
     elif (play_mode == "learntime"):
-        x = threading.Thread(target = timing.metronome, args=(constants.sec_adjusted_bpm, song_length))
-        x.start()
-        count_in() 
-        learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
+        learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard, finger_flag)

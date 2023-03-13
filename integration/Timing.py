@@ -14,13 +14,13 @@ def metronome(adjust,length):
 
 
 def timing_refactor(scale):
-    timed_song = constants.mhall        #needs to be changed to song that is imported with timing, not mhall
+    timed_song = scale        #needs to be changed to song that is imported with timing, not mhall
     for i in range (0, len(scale)):
         timed_song[i][1] = timed_song[i][1] * constants.sec_adjusted_bpm
     return timed_song
 
 def timing_refactor_finger(scale, note_array):
-    timed_song_fingers = constants.mhall        #needs to be changed to song that is imported with timing, not mhall
+    timed_song_fingers = scale        #needs to be changed to song that is imported with timing, not mhall
     fingers = finger_placement.fingers(scale, note_array)
     for i in range (0, len(scale)):
         timed_song_fingers[i][1] = timed_song_fingers[i][1] * constants.sec_adjusted_bpm

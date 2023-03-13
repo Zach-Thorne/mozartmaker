@@ -331,7 +331,7 @@ class MainWindow(Ui_Dialog):
         print('hello world')
         self.song_selection = self.COMBO_song.currentText()
         print(self.song_selection)
-        run_mozart(self.song_selection, self.mode, self.width_window, self.height_window)
+        run_mozart(self.song_selection, self.mode, "y", self.width_window, self.height_window)
         # call integration function with parameters from user input
         
 app = QtWidgets.QApplication(sys.argv)
