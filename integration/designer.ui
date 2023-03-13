@@ -214,10 +214,10 @@
     <widget class="QFrame" name="FRAME_tempo">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>20</x>
        <y>220</y>
-       <width>241</width>
-       <height>80</height>
+       <width>561</width>
+       <height>131</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -229,8 +229,8 @@
      <widget class="QLabel" name="LABEL_tempo">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
+        <x>270</x>
+        <y>60</y>
         <width>171</width>
         <height>61</height>
        </rect>
@@ -245,8 +245,8 @@
      <widget class="QSpinBox" name="SPIN_tempo">
       <property name="geometry">
        <rect>
-        <x>170</x>
-        <y>21</y>
+        <x>450</x>
+        <y>70</y>
         <width>61</width>
         <height>41</height>
        </rect>
@@ -255,12 +255,38 @@
        <string>0</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="PB_Tempo_1">
+      <property name="geometry">
+       <rect>
+        <x>29</x>
+        <y>20</y>
+        <width>191</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>PLAY WITHOUT TIMING</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="PB_Tempo_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>70</y>
+        <width>191</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>PLAY WITH TIMING</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QPushButton" name="PB_play_2">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>370</y>
+       <x>200</x>
+       <y>400</y>
        <width>150</width>
        <height>40</height>
       </rect>
@@ -273,7 +299,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="logo.qrc"/>
+  <include location="../gui/logo.qrc"/>
  </resources>
  <connections/>
 </ui>

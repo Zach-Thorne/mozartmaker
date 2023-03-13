@@ -38,6 +38,7 @@ class MainWindow(Ui_Dialog):
         self.x_scale, self.y_scale = x_screen/x_window, y_screen/y_window
 
         self.FRAME_play.setVisible(False)
+        self.tempo_flag = "0" #default
 
         #
         #
@@ -46,6 +47,7 @@ class MainWindow(Ui_Dialog):
         self.current_task = self.PB_play.clicked.connect(self.play_button_clicked)
         self.PB_song_gallery.clicked.connect(self.song_gallery_button_clicked)
         self.PB_user_guide.clicked.connect(self.user_guide_button_clicked)
+        self.PB_play_2.clicked.connect(self.final_play_button_clicked)
 
         self.setup_window(dialog)
 
@@ -195,20 +197,39 @@ class MainWindow(Ui_Dialog):
         # SET UP TEMPO SELECTION FRAME & CONTENTS
 
         # tempo frame: dimensions
-        self.width_tempo_frame = int(0.5*self.width_mode_frame)
-        self.height_tempo_frame = self.height_mode_frame
-        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.3*self.width_play_screen), int(0.5*self.height_play_screen), self.width_tempo_frame, self.height_tempo_frame))
+        self.height_tempo_frame = int(1.5*self.height_mode_frame)
+        self.width_tempo_frame = self.width_mode_frame
+        self.FRAME_song.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.3*self.height_play_screen), self.width_song_frame, self.height_song_frame))
+        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.45*self.height_play_screen), self.width_song_frame, self.height_tempo_frame))
 
         # tempo frame: formatting
         self.FRAME_tempo.setStyleSheet("QFrame#FRAME_tempo { border-radius: 15px; background-color: #696969; } ")
 
         # tempo label: dimensions
         self.width_tempo_label = int(0.5*self.width_tempo_frame)
-        self.height_tempo_label = self.height_mode_label
-        self.LABEL_tempo.setGeometry(QtCore.QRect(int(0.05*self.width_tempo_frame), int(0.25*self.height_tempo_frame), self.width_tempo_label, self.height_tempo_label))
+        self.height_tempo_label = self.height_mode_label*1.25
+        self.LABEL_tempo.setGeometry(QtCore.QRect(int(0.5*self.width_tempo_frame), int(0.25*self.height_tempo_frame), int(self.width_tempo_label), int(self.height_tempo_label)))
 
         # tempo label: formatting
         self.LABEL_tempo.setStyleSheet("QLabel#LABEL_tempo { color: white; font-style: bold; font-size: 14pt; } ")
+
+        # mode buttons: dimensions
+        self.width_tempo_buttons = int(0.25*self.width_mode_frame)
+        self.height_tempo_buttons = self.height_mode_label
+        self.PB_tempo_1.setGeometry(QtCore.QRect(int(0.02*self.width_tempo_frame), int(0.15*self.height_tempo_frame), self.width_tempo_buttons, self.height_tempo_buttons))
+        self.PB_tempo_2.setGeometry(QtCore.QRect(int(0.02*self.width_tempo_frame), int(0.55*self.height_tempo_frame), self.width_tempo_buttons, self.height_tempo_buttons))
+        
+        # mode buttons: formatting
+        self.PB_tempo_1.setFlat(True) # set appearance of button to be flat
+        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        # mode buttons: formatting
+        self.PB_tempo_2.setFlat(True) # set appearance of button to be flat
+        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        # mode buttons: functionality
+        self.PB_tempo_1.clicked.connect(self.tempo_button_1_clicked)
+        self.PB_tempo_2.clicked.connect(self.tempo_button_2_clicked)
 
         # tempo spin box: dimensions
         self.width_tempo_spin = int(0.3*self.width_tempo_frame)
@@ -320,12 +341,33 @@ class MainWindow(Ui_Dialog):
         # reset training mode button
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
+    def tempo_button_1_clicked(self):
+        self.tempo_flag = "0"
+
+        # reset training mode button
+        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+    def tempo_button_2_clicked(self):
+        self.tempo_flag = "1"
+
+        # reset training mode button
+        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
     #
     #
     # FUNCTION FOR FINAL PLAY BUTTON
     def final_play_button_clicked(self):
+        self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         print('hello world')
-        run_mozart(self.song_selection, self.mode)
+        print(self.tempo_flag)
+        if(self.tempo_flag == "1"):
+            tempo = self.SPIN_tempo.value()
+        print(tempo)
+        self.song_selection = self.COMBO_song.currentText()
+        print(self.song_selection)
+        #run_mozart(self.song_selection, self.mode)
         # call integration function with parameters from user input
         
 app = QtWidgets.QApplication(sys.argv)
