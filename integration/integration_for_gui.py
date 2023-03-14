@@ -325,8 +325,8 @@ def run_mozart(scale_input, play_mode, timing_state, tempo, screen_width, screen
     #Create empty array 
     #Initalize Tkinter
     root = Tk()
-    constants.BPM = tempo
-    print("bpm is this", constants.BPM)
+    #constants.BPM = tempo
+    #print("bpm is this", constants.BPM)
 
     #Initalize midi input. Searches for keyboard and sets as a midi output
     keyboard = midi.initialization()

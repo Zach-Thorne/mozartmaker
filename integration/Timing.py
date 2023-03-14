@@ -9,7 +9,9 @@ def metronome(adjust,length):
     for i in range(0,int(loop_length)):
         start_time = time.time()
         #playsound('C:\\Users\\Garret\\Desktop\\Capstone\\mozartmaker\\integration\\ding.mp3',FALSE)        #garrets desktop
-        playsound('D:\\Users\\Documents\\Connor\\Connors Schoolwork\\ELEC ENG 4OI6\\mozartmaker\\integration\\ding.mp3', False)         #connors desktop  
+        #playsound('D:\\Users\\Documents\\Connor\\Connors Schoolwork\\ELEC ENG 4OI6\\mozartmaker\\integration\\ding.mp3', False)         #connors desktop  
+        #print("click")
+        playsound('C:\\Users\\royal\\Documents\\Connor\\Connors Schoolwork\\ELEC ENG 4OI6\\mozartmaker\\integration\\ding.mp3', False)         #connors laptop  
         time.sleep((0.25 * adjust) - (time.time() - start_time)) 
 
 
