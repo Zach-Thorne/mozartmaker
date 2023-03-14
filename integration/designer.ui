@@ -254,8 +254,11 @@
       <property name="suffix">
        <string>0</string>
       </property>
+      <property name="maximum">
+       <number>200</number>
+      </property>
      </widget>
-     <widget class="QPushButton" name="PB_Tempo_1">
+     <widget class="QPushButton" name="PB_tempo_1">
       <property name="geometry">
        <rect>
         <x>29</x>
@@ -268,7 +271,7 @@
        <string>PLAY WITHOUT TIMING</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="PB_Tempo_2">
+     <widget class="QPushButton" name="PB_tempo_2">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -299,7 +302,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="../gui/logo.qrc"/>
+  <include location="logo.qrc"/>
  </resources>
  <connections/>
 </ui>
