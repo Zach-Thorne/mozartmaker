@@ -207,7 +207,7 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
 
     x = threading.Thread(target = timing.metronome, args=(constants.sec_adjusted_bpm, song_length))
     x.start()
-    count_in() 
+    count_in(root, canvas, screen_width, screen_height, note_array) 
            
     for i in range (0,len(scale)):
         
@@ -321,10 +321,12 @@ def count_in(root, canvas, screen_width, screen_height, note_array):
         time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - white_time)
 
     
-def run_mozart(scale_input, play_mode, screen_width, screen_height):
+def run_mozart(scale_input, play_mode, timing_state, tempo, screen_width, screen_height):
     #Create empty array 
     #Initalize Tkinter
     root = Tk()
+    #constants.BPM = tempo
+    #print("bpm is this", constants.BPM)
 
     #Initalize midi input. Searches for keyboard and sets as a midi output
     keyboard = midi.initialization()
@@ -375,13 +377,15 @@ def run_mozart(scale_input, play_mode, screen_width, screen_height):
     for n in range(len(scale)):
         note_array[n][projection_index[n]] = 1
 
-    
-
     if (play_mode == "learn"):
-        learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
+        if(timing_state):
+            learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
+        else:
+            learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
-        testing_mode(scale, keyboard)
-    elif (play_mode == "testtime"):
-        testing_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
-    elif (play_mode == "learntime"):
-        learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
+        if(timing_state):
+            print("made it here")
+            testing_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
+        else:
+            print("made it also here")
+            testing_mode(scale, keyboard)

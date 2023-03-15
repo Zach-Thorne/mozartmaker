@@ -39,6 +39,7 @@ class MainWindow(Ui_Dialog):
         self.x_scale, self.y_scale = x_screen/x_window, y_screen/y_window
 
         self.FRAME_play.setVisible(False)
+        self.tempo_flag = "0" #default
 
         #
         #
@@ -60,8 +61,6 @@ class MainWindow(Ui_Dialog):
         # set dimensions & position for window
         self.width_window = int(750*self.x_scale) # width of window is initially set to 750
         self.height_window = int(500*self.y_scale) # height of window frame is initially set to 500
-        print("width: ", self.width_window)
-        print("height: ", self.height_window)
         dialog.resize(int(750*self.x_scale), int(500*self.y_scale)) # set width & height of dialog object
         self.FRAME_main_window.setGeometry(QtCore.QRect(0, 0, self.width_window, self.height_window)) # set dimensions for frame which contains all content
 
@@ -200,20 +199,39 @@ class MainWindow(Ui_Dialog):
         # SET UP TEMPO SELECTION FRAME & CONTENTS
 
         # tempo frame: dimensions
-        self.width_tempo_frame = int(0.5*self.width_mode_frame)
-        self.height_tempo_frame = self.height_mode_frame
-        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.3*self.width_play_screen), int(0.5*self.height_play_screen), self.width_tempo_frame, self.height_tempo_frame))
+        self.height_tempo_frame = int(1.5*self.height_mode_frame)
+        self.width_tempo_frame = self.width_mode_frame
+        self.FRAME_song.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.3*self.height_play_screen), self.width_song_frame, self.height_song_frame))
+        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.45*self.height_play_screen), self.width_song_frame, self.height_tempo_frame))
 
         # tempo frame: formatting
         self.FRAME_tempo.setStyleSheet("QFrame#FRAME_tempo { border-radius: 15px; background-color: #696969; } ")
 
         # tempo label: dimensions
         self.width_tempo_label = int(0.5*self.width_tempo_frame)
-        self.height_tempo_label = self.height_mode_label
-        self.LABEL_tempo.setGeometry(QtCore.QRect(int(0.05*self.width_tempo_frame), int(0.25*self.height_tempo_frame), self.width_tempo_label, self.height_tempo_label))
+        self.height_tempo_label = self.height_mode_label*1.25
+        self.LABEL_tempo.setGeometry(QtCore.QRect(int(0.5*self.width_tempo_frame), int(0.25*self.height_tempo_frame), int(self.width_tempo_label), int(self.height_tempo_label)))
 
         # tempo label: formatting
         self.LABEL_tempo.setStyleSheet("QLabel#LABEL_tempo { color: white; font-style: bold; font-size: 14pt; } ")
+
+        # mode buttons: dimensions
+        self.width_tempo_buttons = int(0.25*self.width_mode_frame)
+        self.height_tempo_buttons = self.height_mode_label
+        self.PB_tempo_1.setGeometry(QtCore.QRect(int(0.02*self.width_tempo_frame), int(0.15*self.height_tempo_frame), self.width_tempo_buttons, self.height_tempo_buttons))
+        self.PB_tempo_2.setGeometry(QtCore.QRect(int(0.02*self.width_tempo_frame), int(0.55*self.height_tempo_frame), self.width_tempo_buttons, self.height_tempo_buttons))
+        
+        # mode buttons: formatting
+        self.PB_tempo_1.setFlat(True) # set appearance of button to be flat
+        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        # mode buttons: formatting
+        self.PB_tempo_2.setFlat(True) # set appearance of button to be flat
+        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        # mode buttons: functionality
+        self.PB_tempo_1.clicked.connect(self.tempo_button_1_clicked)
+        self.PB_tempo_2.clicked.connect(self.tempo_button_2_clicked)
 
         # tempo spin box: dimensions
         self.width_tempo_spin = int(0.3*self.width_tempo_frame)
@@ -325,11 +343,34 @@ class MainWindow(Ui_Dialog):
         # reset training mode button
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
+    def tempo_button_1_clicked(self):
+        self.tempo_flag = FALSE
+
+        # reset training mode button
+        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+    def tempo_button_2_clicked(self):
+        self.tempo_flag = TRUE
+
+        # reset training mode button
+        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
     #
     #
     # FUNCTION FOR FINAL PLAY BUTTON
     def final_play_button_clicked(self):
+        self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         print('hello world')
+        
+        # tempo selection
+        print("tempo flag = ", self.tempo_flag)
+        if(self.tempo_flag == TRUE):
+            tempo = self.SPIN_tempo.value()
+        else:
+            tempo = 0
+        
         # song selection
         if(self.COMBO_song.currentText() == "Mary Had a Little Lamb"):
             self.song_selection = "mhall"
@@ -338,7 +379,7 @@ class MainWindow(Ui_Dialog):
         elif(self.COMBO_song.currentText() == "D Scale"):
             self.song_selection = "D"
         print(self.song_selection)
-        run_mozart(self.song_selection, self.mode, self.width_window, self.height_window)
+        run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo, self.width_window, self.height_window)
         # call integration function with parameters from user input
         
 app = QtWidgets.QApplication(sys.argv)
