@@ -119,138 +119,114 @@ class MainWindow(Ui_Dialog):
         
         # screen frame: formatting
         self.FRAME_play.setStyleSheet("QFrame#FRAME_play { background-color: #343843; }")
-        
+
         #
         #
-        # SET UP MODE SELECTION FRAME & CONTENTS
+        # FRAMES
 
-        # mode frame: dimensions
-        self.width_mode_frame = int(0.8*self.width_play_screen)
-        self.height_mode_frame = int(0.1*self.height_play_screen)
-        self.FRAME_mode.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.1*self.height_play_screen) , self.width_mode_frame, self.height_mode_frame))
+        # frames: dimensions
+        self.frame_width = int(0.8*self.width_play_screen)
+        self.frame_height = int(0.1*self.height_play_screen)
 
-        # mode frame: formatting
+        # frames: set geometry
+        self.FRAME_mode.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.1*self.height_play_screen),  self.frame_width, self.frame_height))
+        self.FRAME_song.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.25*self.height_play_screen), self.frame_width, self.frame_height))
+        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.4*self.height_play_screen),  self.frame_width, self.frame_height))
+
+        # frames: styling
         self.FRAME_mode.setStyleSheet("QFrame#FRAME_mode { border-radius: 15px; background-color: #696969; } ")
+        self.FRAME_song.setStyleSheet("QFrame#FRAME_song { border-radius: 15px; background-color: #696969; } ")
+        self.FRAME_tempo.setStyleSheet("QFrame#FRAME_tempo { border-radius: 15px; background-color: #696969; } ")
         
-        # mode label: dimensions
-        self.width_mode_label = int(0.2*self.width_mode_frame)
-        self.height_mode_label = int(0.5*self.height_mode_frame)
-        self.LABEL_mode.setGeometry(QtCore.QRect(int(0.05*self.width_mode_frame), int(0.25*self.height_mode_frame), self.width_mode_label, self.height_mode_label))
-    
-        # mode label: formatting
+        #
+        #
+        # LABELS
+
+        # labels: dimensions
+        self.label_width = int(0.2*self.frame_width)
+        self.label_height = int(0.5*self.frame_height)
+        
+        # labels: set geometry
+        self.LABEL_mode.setGeometry(QtCore.QRect(int(0.05*self.frame_width), int(0.25*self.frame_height), self.label_width, self.label_height))
+        self.LABEL_song.setGeometry(QtCore.QRect(int(0.05*self.frame_width), int(0.25*self.frame_height), self.label_width, self.label_height))
+
+        # labels: styling
         self.LABEL_mode.setStyleSheet("QLabel#LABEL_mode { color: white; font-style: bold; font-size: 14pt; }")
+        self.LABEL_song.setStyleSheet("QLabel#LABEL_song { color: white; font-style: bold; font-size: 14pt; }")
 
-        # mode buttons: dimensions
-        self.width_mode_buttons = int(0.3*self.width_mode_frame)
-        self.height_mode_buttons = self.height_mode_label
-        self.PB_mode_1.setGeometry(QtCore.QRect(int(0.3*self.width_mode_frame), int(0.25*self.height_mode_frame), self.width_mode_buttons, self.height_mode_buttons))
-        self.PB_mode_2.setGeometry(QtCore.QRect(int(0.65*self.width_mode_frame), int(0.25*self.height_mode_frame), self.width_mode_buttons, self.height_mode_buttons))
-        
-        # mode buttons: formatting
-        self.PB_mode_1.setFlat(True) # set appearance of button to be flat
+        #
+        #
+        # PUSH BUTTONS
+
+        # buttons: dimensions
+        self.button_width = int(0.3*self.frame_width)
+        self.button_height = int(0.5*self.frame_height)
+
+        # buttons: set geometry
+        self.PB_mode_1.setGeometry (QtCore.QRect(int(0.3*self.frame_width),  int(0.25*self.frame_height), self.button_width, self.button_height))
+        self.PB_mode_2.setGeometry (QtCore.QRect(int(0.65*self.frame_width), int(0.25*self.frame_height), self.button_width, self.button_height))
+        self.PB_tempo_1.setGeometry(QtCore.QRect(int(0.03*self.frame_width), int(0.25*self.frame_height), self.button_width, self.button_height))
+        self.PB_tempo_2.setGeometry(QtCore.QRect(int(0.35*self.frame_width),  int(0.25*self.frame_height), self.button_width, self.button_height))
+        self.PB_play_2.setGeometry (QtCore.QRect(int(0.38*self.width_play_screen), int(0.7*self.height_window), self.button_width, self.frame_height))
+
+        # buttons: styling
+        self.PB_mode_1.setFlat(True)
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
-
-        self.PB_mode_2.setFlat(True) # set appearance of button to be flat
+        self.PB_mode_2.setFlat(True)
         self.PB_mode_2.setStyleSheet("QPushButton#PB_mode_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-        # mode buttons: functionality
+        self.PB_tempo_1.setFlat(True)
+        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_tempo_2.setFlat(True)
+        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; } ")
+
+        # buttons: functionality
         self.PB_mode_1.clicked.connect(self.mode_1_button_clicked)
         self.PB_mode_2.clicked.connect(self.mode_2_button_clicked)
 
-        #self.FRAME_song.setVisible(False)
-        
+        self.PB_tempo_1.clicked.connect(self.tempo_button_1_clicked)
+        self.PB_tempo_2.clicked.connect(self.tempo_button_2_clicked)
+
         #
         #
-        # SET UP SONG SELECTION FRAME & CONTENTS
+        # COMBO BOX
 
-        # song frame: dimensions
-        self.width_song_frame = self.width_mode_frame
-        self.height_song_frame = self.height_mode_frame
-        self.FRAME_song.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.3*self.height_play_screen), self.width_song_frame, self.height_song_frame))
+        # combo box: dimensions
+        self.combo_width = int(0.65*self.frame_width)
+        self.combo_height = self.button_height
 
-        # song frame: formatting
-        self.FRAME_song.setStyleSheet("QFrame#FRAME_song { border-radius: 15px; background-color: #696969; } ")
+        # combo box: set geometry
+        self.COMBO_song.setGeometry(QtCore.QRect(int(0.3*self.frame_width), int(0.25*self.frame_height), self.combo_width, self.combo_height))
 
-        # song label: dimensions
-        self.width_song_label = self.width_mode_label
-        self.height_song_label = self.height_mode_label
-        self.LABEL_song.setGeometry(QtCore.QRect(int(0.05*self.width_song_frame), int(0.25*self.height_song_frame), self.width_song_label, self.height_song_label))
-
-        # song label: formatting
-        self.LABEL_song.setStyleSheet("QLabel#LABEL_song { color: white; font-style: bold; font-size: 14pt; }")
-
-        # song combobox: dimensions
-        self.width_song_combo = int(0.65*self.width_song_frame)
-        self.height_song_combo = self.height_song_label
-        self.COMBO_song.setGeometry(QtCore.QRect(int(0.3*self.width_song_frame), int(0.25*self.height_song_frame), self.width_song_combo, self.height_song_combo))
-
-        # song combobox: formatting
+        # combo box: set styling
         self.COMBO_song.setStyleSheet("QComboBox#COMBO_song { color: #343843; background-color: #A5A5A5; border-radius: 10px; font-style: bold; font-size: 12pt; selection-background-color: #7DCB79; } ")
 
-        # song combobox: add items
+        # combo box: set items
         self.COMBO_song.setEditable(True)
         self.COMBO_song.addItem("C Scale")
         self.COMBO_song.addItem("D Scale")
         self.COMBO_song.addItem("Mary Had a Little Lamb")
-
-        #
-        #
-        # SET UP TEMPO SELECTION FRAME & CONTENTS
-
-        # tempo frame: dimensions
-        self.height_tempo_frame = int(1.5*self.height_mode_frame)
-        self.width_tempo_frame = self.width_mode_frame
-        self.FRAME_song.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.3*self.height_play_screen), self.width_song_frame, self.height_song_frame))
-        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.45*self.height_play_screen), self.width_song_frame, self.height_tempo_frame))
-
-        # tempo frame: formatting
-        self.FRAME_tempo.setStyleSheet("QFrame#FRAME_tempo { border-radius: 15px; background-color: #696969; } ")
-
-        # tempo label: dimensions
-        self.width_tempo_label = int(0.5*self.width_tempo_frame)
-        self.height_tempo_label = self.height_mode_label*1.25
-        self.LABEL_tempo.setGeometry(QtCore.QRect(int(0.5*self.width_tempo_frame), int(0.25*self.height_tempo_frame), int(self.width_tempo_label), int(self.height_tempo_label)))
-
-        # tempo label: formatting
-        self.LABEL_tempo.setStyleSheet("QLabel#LABEL_tempo { color: white; font-style: bold; font-size: 14pt; } ")
-
-        # mode buttons: dimensions
-        self.width_tempo_buttons = int(0.25*self.width_mode_frame)
-        self.height_tempo_buttons = self.height_mode_label
-        self.PB_tempo_1.setGeometry(QtCore.QRect(int(0.02*self.width_tempo_frame), int(0.15*self.height_tempo_frame), self.width_tempo_buttons, self.height_tempo_buttons))
-        self.PB_tempo_2.setGeometry(QtCore.QRect(int(0.02*self.width_tempo_frame), int(0.55*self.height_tempo_frame), self.width_tempo_buttons, self.height_tempo_buttons))
         
-        # mode buttons: formatting
-        self.PB_tempo_1.setFlat(True) # set appearance of button to be flat
-        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        #
+        #
+        # SPIN BOX
 
-        # mode buttons: formatting
-        self.PB_tempo_2.setFlat(True) # set appearance of button to be flat
-        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        # spin box: dimensions
+        self.spin_width = self.button_width
+        self.spin_height = self.button_height
 
-        # mode buttons: functionality
-        self.PB_tempo_1.clicked.connect(self.tempo_button_1_clicked)
-        self.PB_tempo_2.clicked.connect(self.tempo_button_2_clicked)
+        # spin box: set geometry
+        self.SPIN_tempo.setGeometry(QtCore.QRect(int(0.67*self.frame_width), int(0.25*self.frame_height), self.spin_width, self.spin_height))
 
-        # tempo spin box: dimensions
-        self.width_tempo_spin = int(0.3*self.width_tempo_frame)
-        self.height_tempo_spin = self.height_mode_label
-        self.SPIN_tempo.setGeometry(QtCore.QRect(int(0.6*self.width_tempo_frame), int(0.25*self.height_tempo_frame), self.width_tempo_spin, self.height_tempo_spin))
-
-        # tempo spin box: formatting
+        # spin box: set styling
         self.SPIN_tempo.setStyleSheet("QSpinBox#SPIN_tempo { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 14pt; border-radius: 10px; } ")
 
-        #
-        #
-        # PLAY BUTTON FORMATTING
-
-        # play button: dimensions
-        self.width_play_button = self.width_mode_buttons
-        self.height_play_button = self.height_mode_buttons
-        self.PB_play_2.setGeometry(QtCore.QRect(int(0.38*self.width_play_screen), int(0.7*self.height_window), self.width_play_button, self.height_play_button))
-
-        # play button: formatting
-        self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; } ")
+        # spin box: set values
+        self.SPIN_tempo.setMinimum(0)
+        self.SPIN_tempo.setMaximum(200)
+        self.SPIN_tempo.singleStep()
 
         #
         #
@@ -367,6 +343,7 @@ class MainWindow(Ui_Dialog):
         print(self.tempo_flag)
         if(self.tempo_flag == "1"):
             tempo = self.SPIN_tempo.value()
+            print(tempo)
         
         # song selection
         if(self.COMBO_song.currentText() == "Mary Had a Little Lamb"):
@@ -375,8 +352,8 @@ class MainWindow(Ui_Dialog):
             self.song_selection = "C"
         elif(self.COMBO_song.currentText() == "D Scale"):
             self.song_selection = "D"
-        print(tempo)
         print(self.song_selection)
+
         #run_mozart(self.song_selection, self.mode)
         # call integration function with parameters from user input
         
@@ -385,17 +362,3 @@ dialog = QtWidgets.QDialog()
 prog = MainWindow(dialog)
 dialog.show()
 app.exec()
-
-# Back up method of initializing UI in case something gets fucked
-""" 
-class MainWindow(QtWidgets.QMainWindow, Ui_Dialog):
-    def __init__(self, *args, obj=None, **kwargs):
-        super(MainWindow, self).__init__(*args, **kwargs)
-        self.setupUi(self)
-
-app = QtWidgets.QApplication(sys.argv)
-
-window = MainWindow()
-window.show()
-app.exec()                
-"""

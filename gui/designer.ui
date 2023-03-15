@@ -226,22 +226,6 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QLabel" name="LABEL_tempo">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>60</y>
-        <width>171</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>CHOOSE YOUR TEMPO</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
      <widget class="QSpinBox" name="SPIN_tempo">
       <property name="geometry">
        <rect>
