@@ -96,7 +96,7 @@ class Ui_Dialog(object):
         self.LABEL_logo.setText(_translate("Dialog", "TextLabel"))
         self.PB_user_guide.setText(_translate("Dialog", "USER GUIDE"))
         self.LABEL_mode.setText(_translate("Dialog", "CHOOSE YOUR MODE"))
-        self.PB_mode_1.setText(_translate("Dialog", "TRAINING"))
+        self.PB_mode_1.setText(_translate("Dialog", "LEARNING"))
         self.PB_mode_2.setText(_translate("Dialog", "TESTING"))
         self.LABEL_song.setText(_translate("Dialog", "CHOOSE YOUR SONG"))
         self.SPIN_tempo.setSuffix(_translate("Dialog", "0"))

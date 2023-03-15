@@ -104,7 +104,6 @@ class MainWindow(Ui_Dialog):
         self.PB_user_guide.setText("USER GUIDE")
         self.PB_user_guide.setFlat(True)
         self.PB_user_guide.setStyleSheet("QPushButton { font-style: bold; font-size: 18pt; color: white; background-color: #696969; border: none; vertical-align: middle; }")
-    
 
     def setup_play_screen(self):
 
@@ -232,8 +231,6 @@ class MainWindow(Ui_Dialog):
         #
         # DISPLAY PLAY SCREEN
         self.FRAME_play.setVisible(True)
-
-
 
     #
     #
