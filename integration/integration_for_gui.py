@@ -1,166 +1,3 @@
-# import numpy as np
-# from tkinter import *
-# import constants
-# import projection_luts
-# import projection
-# import tone
-# import time
-# import midi
-
-# def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
-#     i = 0
-#     chord_check = 0
-#     previous_note = 0
-#     note_time = 0
-#     #call function for displaying the first note to play
-#     projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
-    
-#     while i < len(scale):
-#         played_note = midi.note_stream(keyboard)
-#         if played_note == scale[i]:
-#             note_time = time.time()
-#             if (note_time - previous_note < 0.05):
-#                 chord_check = TRUE
-#                 print("CHORD DETECTED")
-#             print("Played note is: ", played_note)
-#             print("Note is correct!\n")
-#             projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
-#             i += 1
-#             if (i == len(scale)):
-#                 break
-#             projection.project_key(root, canvas, screen_width, screen_height, note_array, i)
-#         previous_note = note_time
-
-# def testing_mode(scale, keyboard):
-#     i = 0
-#     chord_check = 0
-#     previous_note = 0
-#     note_time = 0
-#     test_notes = []
-#     while i < len(scale):        
-#         played_note = midi.note_stream(keyboard)
-#         if played_note:
-#             note_time = time.time()
-#             if (note_time - previous_note < 0.05):
-#                 chord_check = TRUE
-#                 print("CHORD DETECTED")
-#             i += 1
-#             test_notes.append(played_note)
-#             if (i == len(scale)):
-#                 break
-#         previous_note = note_time
-    
-#     correct_notes = 0
-#     for n in range(len(scale)):
-#         if (test_notes[n] == scale[n]):
-#             correct_notes += 1
-
-#     result = float(correct_notes / len(scale)) * 100
-#     print("Your test score is: ", round(result, 1), "%")
-
-# def run_mozart(scale_input, play_mode, screen_width, screen_height):
-#     #Create empty array 
-#     #Initalize Tkinter
-#     root = Tk()
-
-#     #Initalize midi input. Searches for keyboard and sets as a midi output
-#     keyboard = midi.initialization()
-    
-#     #Initialize Canvas
-#     #screen_width = root.winfo_screenwidth()
-#     #screen_height = root.winfo_screenheight()
-#     canvas = Canvas(width=screen_width, height=screen_height)
-#     root.state('zoomed')
-
-#     #NOTE: SHOULD RUN ON STARTUP 
-#     #Create inital outline
-#     inital = projection.create_default(root, canvas, screen_width, screen_height)
-
-#     #scale_input = input("What Major scale would you like to play?\n")
-#     #play_mode = input("What mode would you like to play in? learn or test?\n")
-#     if scale_input == "C":
-#         scale = constants.c_major
-#     elif scale_input == "D":
-#         scale = constants.d_major
-#     elif scale_input == "E":
-#         scale = constants.e_major
-#     elif scale_input == "F":
-#         scale = constants.f_major
-#     elif scale_input == "G":
-#         scale = constants.g_major
-#     elif scale_input == "ml":
-#         scale = constants.mary
-
-#     projection_index = []
-#     #print("length of scale: ", len(scale))
-#     note_array = np.zeros((len(scale), constants.total_keys))
-#     for i in range(len(scale)):
-#         projection_index.append(projection_luts.note_lut(scale[i]))
-
-#     for n in range(len(scale)):
-#         note_array[n][projection_index[n]] = 1
-
-#     if (play_mode == "learn"):
-#         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
-#     elif (play_mode == "test"):
-#         score = testing_mode(scale, keyboard)
-    
-
-# #if __name__ == "__main__":
-# #    #Create empty array 
-# #    #Initalize Tkinter
-# #    root = Tk()
-# #
-# #    #Initalize midi input
-# #    midi.initialization()
-# #
-# #    #Determine what device keyboard is
-# #    #midi.print_devices()
-# #
-# #    #set device number once keyboard input is determined
-# #    keyboard = midi.set_device_input(1)
-# #    
-# #    #Initialize Canvas
-# #    screen_width = root.winfo_screenwidth()
-# #    screen_height = root.winfo_screenheight()
-# #    canvas = Canvas(width=screen_width, height=screen_height)
-# #
-# #    #NOTE: SHOULD RUN ON STARTUP 
-# #    #Create inital outline
-# #    inital = projection.create_default(root, canvas, screen_width, screen_height)
-# #
-# #    scale_input = input("What Major scale would you like to play?\n")
-# #    play_mode = input("What mode would you like to play in? learn or test?\n")
-# #    if scale_input == "C":
-# #        scale = constants.c_major
-# #    elif scale_input == "D":
-# #        scale = constants.d_major
-# #    elif scale_input == "E":
-# #        scale = constants.e_major
-# #    elif scale_input == "F":
-# #        scale = constants.f_major
-# #    elif scale_input == "G":
-# #        scale = constants.g_major
-# #    elif scale_input == "ml":
-# #        scale = constants.mary
-# #
-# #    projection_index = []
-# #    #print("length of scale: ", len(scale))
-# #    note_array = np.zeros((len(scale), constants.total_keys))
-# #    for i in range(len(scale)):
-# #        projection_index.append(projection_luts.note_lut(scale[i]))
-# #
-# #    for n in range(len(scale)):
-# #        note_array[n][projection_index[n]] = 1
-# #
-# #    if (play_mode == "learn"):
-# #        learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
-# #    elif (play_mode == "test"):
-# #        testing_mode(scale, keyboard)
-# #    
-
-
-
 import numpy as np
 from tkinter import *
 import constants
@@ -185,12 +22,13 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
     while i < len(scale):
         played_note = midi.note_stream(keyboard)
         if (played_note):
-            if played_note[0] == scale[i][0]:
-                projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
-                i += 1
-                if (i == len(scale)):
-                    break
-                projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
+            if played_note[1] == 100:
+                if played_note[0] == scale[i][0]:
+                    projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
+                    i += 1
+                    if (i == len(scale)):
+                        break
+                    projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
 
 def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
@@ -257,7 +95,8 @@ def testing_mode(scale, keyboard):
             break    
 
     result = float(correct_notes / len(scale)) * 100
-    print("Your test score is: ", round(result, 1), "%")
+    return result
+    #print("Your test score is: ", round(result, 1), "%")
 
 
 def testing_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
@@ -307,9 +146,10 @@ def testing_mode_timing(root, canvas, screen_width, screen_height, note_array, s
                         pass  
     result_note = float(correct_notes / len(scale)) * 100
     result_time=float(correct_times / len(scale)) * 100
-    print("Your correct note score is: ", round(result_note, 1), "%")
-    print("Your time note score is: ", round(result_time, 1), "%")
-    print("Your overall score is: ", round((result_note+result_time)/2), "%")
+    return [round(result_note, 1), round(result_time, 1), round((result_note+result_time)/2, 1)]
+    # print("Your correct note score is: ", round(result_note, 1), "%")
+    # print("Your time note score is: ", round(result_time, 1), "%")
+    # print("Your overall score is: ", round((result_note+result_time)/2), "%")
 
 
 def count_in(root, canvas, screen_width, screen_height, note_array):
@@ -321,12 +161,13 @@ def count_in(root, canvas, screen_width, screen_height, note_array):
         time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - white_time)
 
     
-def run_mozart(scale_input, play_mode, timing_state, tempo, screen_width, screen_height):
+def run_mozart(scale_input, play_mode, timing_state, tempo):
     #Create empty array 
     #Initalize Tkinter
     root = Tk()
-    #constants.BPM = tempo
-    #print("bpm is this", constants.BPM)
+    constants.BPM = tempo
+    if tempo != 0:
+        constants.sec_adjusted_bpm = constants.calculate_bpm_adj()
 
     #Initalize midi input. Searches for keyboard and sets as a midi output
     keyboard = midi.initialization()
@@ -384,8 +225,6 @@ def run_mozart(scale_input, play_mode, timing_state, tempo, screen_width, screen
             learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
     elif (play_mode == "test"):
         if(timing_state):
-            print("made it here")
-            testing_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
+            return testing_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
         else:
-            print("made it also here")
-            testing_mode(scale, keyboard)
+            return testing_mode(scale, keyboard)

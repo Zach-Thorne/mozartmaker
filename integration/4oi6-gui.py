@@ -207,6 +207,9 @@ class MainWindow(Ui_Dialog):
         self.COMBO_song.setEditable(True)
         self.COMBO_song.addItem("C Scale")
         self.COMBO_song.addItem("D Scale")
+        self.COMBO_song.addItem("E Scale")
+        self.COMBO_song.addItem("F Scale")
+        self.COMBO_song.addItem("G Scale")
         self.COMBO_song.addItem("Mary Had a Little Lamb")
         
         #
@@ -344,7 +347,6 @@ class MainWindow(Ui_Dialog):
         self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         
         # tempo selection
-        print("tempo flag = ", self.tempo_flag)
         if(self.tempo_flag == TRUE):
             tempo = self.SPIN_tempo.value()
         else:
@@ -357,11 +359,16 @@ class MainWindow(Ui_Dialog):
             self.song_selection = "C"
         elif(self.COMBO_song.currentText() == "D Scale"):
             self.song_selection = "D"
-        print(self.song_selection)
+        elif(self.COMBO_song.currentText() == "E Scale"):
+            self.song_selection = "E"
+        elif(self.COMBO_song.currentText() == "F Scale"):
+            self.song_selection = "F"
+        elif(self.COMBO_song.currentText() == "G Scale"):
+            self.song_selection = "G"
 
         # call integration function with parameters from user input
-        run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo, self.width_window, self.height_window)
-        
+        result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo)
+
 app = QtWidgets.QApplication(sys.argv)
 dialog = QtWidgets.QDialog()
 prog = MainWindow(dialog)

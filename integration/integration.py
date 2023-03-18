@@ -22,12 +22,13 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
     while i < len(scale):
         played_note = midi.note_stream(keyboard)
         if (played_note):
-            if played_note[0] == scale[i][0]:
-                projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
-                i += 1
-                if (i == len(scale)):
-                    break
-                projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
+            if played_note[1] == 100:
+                if played_note[0] == scale[i][0]:
+                    projection.project_white(root, canvas, screen_width, screen_height, note_array, i)
+                    i += 1
+                    if (i == len(scale)):
+                        break
+                    projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
 
 def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
@@ -68,7 +69,7 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
                         make_time = break_time           
                     time_on_note = abs(break_time - make_time)
                     time_on_note /= 1000
-                    print("played time", time_on_note)
+                    # print("played time", time_on_note)
                     if (time_on_note > (constants.ERROR * song_bpm_adjust[i][1])) and (time_on_note < ((2 - constants.ERROR) * song_bpm_adjust[i-1][1])):
                         note_status = "green"
                     else:
@@ -172,6 +173,8 @@ if __name__ == "__main__":
     canvas = Canvas(width=screen_width, height=screen_height)
     root.state('zoomed')
 
+    constants.sec_adjusted_bpm = constants.calculate_bpm_adj()
+
     #NOTE: SHOULD RUN ON STARTUP 
     #Create inital outline
     inital = projection.create_default(root, canvas, screen_width, screen_height)
@@ -191,14 +194,14 @@ if __name__ == "__main__":
         scale = constants.mary
     elif scale_input == "mhall":
         scale = constants.mhall
+    elif scale_input == "jingle":
+        scale = constants.jingle
     else:
         raise Exception("Scale is not valid. Try again\n")
     
     play_mode = input("What mode would you like to play in? learn or test?\n")
     #if not((play_mode == "test") or (play_mode == "learn")):
     #    raise Exception("Not a valid mode. Please try again\n")
-
-    #finger_flag = input("Would you like to play with finger markings? (y/n)\n")
 
     projection_index = []
     #print("length of scale: ", len(scale))
@@ -211,8 +214,6 @@ if __name__ == "__main__":
     
     for n in range(len(scale)):
         note_array[n][projection_index[n]] = 1
-
-    
 
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
