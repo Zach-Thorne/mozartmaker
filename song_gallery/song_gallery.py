@@ -7,42 +7,59 @@ import os.path
 #
 # FUNCTIONS FOR CREATING / EDITING CSV FILE
 
-# create csv file for the first time - ALL GOOD
-def create_csv():
-    print('create')
+# create csv file for the first time with pre-loaded songs
+def create_csv(): # ALL GOOD
     
     # create .csv headers
     headerList = ['name','data']
     
     # create the dataFrame for pre-loaded songs
     songData_C = pandas.DataFrame({ 'name': ['C'], 
-                                    'data': [['C4','0.25','1',  'D4','0.25','2',  'E4','0.25','3',  'F4','0.25','1',  'G4','0.25','2',  'A4','0.25','3',  'B4','0.25','4',  'C5','0.25','5',
-                                            'B4','0.25','4',  'A4','0.25','3',  'G4','0.25','2',  'F4','0.25','1',  'E4','0.25','3',  'D4','0.25','2',  'C4','0.25','1']]} )
+                                    'data': [['C4',0.25,1,  'D4',0.25,2,  'E4',0.25,3,  'F4',0.25,1,  'G4',0.25,2,  'A4',0.25,3,  'B4',0.25,4,  'C5',0.25,5,
+                                              'B4',0.25,4,  'A4',0.25,3,  'G4',0.25,2,  'F4',0.25,1,  'E4',0.25,3,  'D4',0.25,2,  'C4',0.25,1]]} )
     songData_D = pandas.DataFrame({ 'name': ['D'], 
-                                    'data': [['C4','0.25','1',  'D4','0.25','2',  'E4','0.25','3',  'F4','0.25','1',  'G4','0.25','2',  'A4','0.25','3',  'B4','0.25','4',  'C5','0.25','5',
-                                            'B4','0.25','4',  'A4','0.25','3',  'G4','0.25','2',  'F4','0.25','1',  'E4','0.25','3',  'D4','0.25','2',  'C4','0.25','1']]} )
+                                    'data': [['C4',0.25,1,  'D4',0.25,2,  'E4',0.25,3,  'F4',0.25,1,  'G4',0.25,2,  'A4',0.25,3,  'B4',0.25,4,  'C5',0.25,5,
+                                              'B4',0.25,4,  'A4',0.25,3,  'G4',0.25,2,  'F4',0.25,1,  'E4',0.25,3,  'D4',0.25,2,  'C4',0.25,1]]} )
     
-    allData = pandas.concat([songData_C, songData_D])
-    allData.to_csv('song_gallery.csv',mode='w',index=False,header=headerList)
+    # ADD ANY MORE PRE-LOADED SONGS HERE
+
+    allData = pandas.concat([songData_C, songData_D],ignore_index=True)
+    allData.to_csv('song_gallery.csv',mode='w',index=True,header=headerList)
 
 # add new song to the csv file
-def append_csv(name, data):
-    print('append')
+def append_csv(name, data): # good (i think)
+
+    newData = pandas.DataFrame({'name': [name], 'data': [data]}) # create new dataframe    
+    newData.to_csv('song_gallery.csv',mode='a',index=True, header=False) # append new data to csv
+
+    # these are all lines that aren't being used but i'm scared to delete them lol
+
+    # note:
+    # the indices will appear fucked in the .csv but that's not the actual index file
+    # these two lines will print the contents into the terminal and show the real indices
+    #songData = pandas.read_csv('song_gallery.csv')
+    #print(songData)
+
+    #allData = pandas.concat([copyData,newData])
+    #print("allData created")
+
+    #allData.to_csv('song_gallery.csv',mode='a',index=True,columns=headerList) #append
     
-    copyData = pandas.read_csv('song_gallery.csv', usecols=['name','data'])
+    # headerList = ['name','data']
 
-    # create new data for desired song
-    newData = pandas.DataFrame({'name': [name], 'data': [data]})
+    #copyData = pandas.read_csv('song_gallery.csv', usecols=['name','data'], header=1)
+    #copyData = pandas.read_csv('song_gallery.csv')
+    #print("copyData created")
 
-    allData = pandas.concat([copyData,newData])
+    # try resetting indices?
+    #copyData = pandas.read_csv('song_gallery.csv')
+    #copyData = copyData.reset_index(drop=True) # mess around with inplace and drop
+    #clear_csv()
+    #copyData.to_csv('song_gallery.csv', mode='w')
 
-    clear_csv()
-    # append new data to csv
-    allData.to_csv('song_gallery.csv',mode='a',index=False,header=['name','data'])
 
 # reset the csv
-def clear_csv():
-    print('clear')
+def clear_csv(): # ALL GOOD
     dataframe_clear = pandas.DataFrame(list())
     dataframe_clear.to_csv('song_gallery.csv', mode='w')
 
@@ -51,113 +68,108 @@ def clear_csv():
 # FUNCTIONS FOR READING DATA FROM CSV FILE
 
 # read data from csv for desired song
-def read_csv(song):
-    songData = pandas.read_csv('song_gallery.csv')
-    songIndex = songData[songData['name']=='C'].index.values
-    print(songIndex)
+def get_index(name): # ALL GOOD
 
-# read data from csv for desired song
-def get_index(song):
-    print("get index")
+    # create dataframe of current contents
     songData = pandas.read_csv('song_gallery.csv')
-    print(songData)
-    songIndex = songData[songData['name']=='D'].index
-    print(songIndex)
+
+    # get index from song name
+    name = str(name)
+    songIndex = songData[songData['name']==name].index.to_list()
     
     return songIndex[0]
+
+# create list of rows to skip when reading data from the csv (since we only want to read the desired song)
+def create_skip_rows(length, songIndex): # ALL GOOD
+    
+    skip_rows_list = []
+    
+    for i in range(length):
+        if (i != songIndex):
+            skip_rows_list.append(i+1)
+    
+    return skip_rows_list
+
+C_major = [['C4',0.25,1,  'D4',0.25,2,  'E4',0.25,3,  'F4',0.25,1,  'G4',0.25,2,  'A4',0.25,3,  'B4',0.25,4,  'C5',0.25,5, 'B4',0.25,4,  'A4',0.25,3,  'G4',0.25,2,  'F4',0.25,1,  'E4',0.25,3,  'D4',0.25,2,  'C4',0.25,1]]
 
 #
 #
 # MAIN SONG GALLERY FUNCTION
 
-def song_gallery(name, data, action):
+# if action is "read" -> return song data
+# if action is "add" -> returns 0
+
+def song_gallery(name, data, action): # ALL GOOD
     
-    # TODO: convert data array to the way it needs to be stored in the csv
-    # if action is read, just send a 0 for data
-
-    # remove this when we actually start calling this function and sending in this data
-    
-    # action = 'add'
-    # name = "E"
-    # data = ['C4','0.25','1']
-
-    #
-
     # check if the csv file already exists (if not - create it)
     path = './song_gallery.csv'
     file_exists_flag = os.path.isfile(path)
 
-    # if the song_gallery file exists, just append new song
+    # if the song gallery .csv doesn't exist yet, create one with the pre-loaded songs
     if file_exists_flag == False:
         create_csv()
-    else:
-        if action == 'read':
-            name = "D" # remove this later
 
-            # read data for song
-            print('read')
+    #
+    #
+    # READ SONG DATA
+    if (action == "read"):
+        print("reading data for", name)
 
-            songData = pandas.read_csv('song_gallery.csv')
-            print(songData)
-            songData_dict = songData.to_dict()
-            print(songData_dict)
+        #
+        # READ FROM .CSV -> ALL GOOD
 
-            csv_dict = {}
-            csv_header_map = {
-            "name" : 0,
-            "data" : 1 }
-            inverse_csv_map = dict((x, y) for y, x in csv_header_map.items())
+        # create dataframe of all data in .csv
+        allData = pandas.read_csv('song_gallery.csv',usecols=['data']) # copy dataframe from csv
+        length = allData.shape[0] # get length of dataframe (how many songs there are)
 
-            get_index(name)
-            csv = open('song_gallery.csv', 'r')
-            print("csv data")
-            firstline = 1
-            csv_list =[]
-            i=0
-            for line in csv.readlines():
-                if firstline:
-                    for header in line.split(','):
-                        csv_dict[header.strip()] = []
-                else:
-                    print(line)
-                    print(type(line))
-                    
-                    for entry in enumerate(line.split(',')):
-                        csv_list.append(entry)
-                firstline = 0
+        # create list of data for only desired song
+        songIndex = get_index(name) # get index of song in csv    
+        skip_rows_list = create_skip_rows(length, songIndex) # create list of indices to skip (any indices that are not the desired song)
+        songData = pandas.read_csv('song_gallery.csv',usecols=['data'],skiprows=skip_rows_list) # create dataframe for desired song
+        songData_List = songData.values.tolist() # convert dataframe to list
 
-            print(csv_list)
-            
+        # 
+        # CONVERT DATA TO NEEDED FORMAT -> TODO: hmm. it's not including the last data element?
 
-            # create dict with only data for desired song
-            
-            # read data for desired song
-            #songData = pandas.read_csv('song_gallery.csv', skiprows=skiprows_list, usecols=['data'])
-            #songData_dict = songData.to_dict()
-            #print(songData_dict.items())
-            # TODO: convert songData to the array type that's actually used for projection
-            
-            
+        # create temp variables and an array to store final data
+        songData_split = []
+        tempString = ""
+        tempArray = []
 
-        elif action == 'add':
-            # append song
-            append_csv(name, data)
+        # iterate through song list, create tempArray for each triplet of data: ['note', duration, finger] -> [string, float, int]
+        for i in range(len(songData_List[0][0])):
+            if (songData_List[0][0][i] == ",") | (i == len(songData_List[0][0])-1): # if it's a comma or if it's the last element?
+                tempArray.append(tempString)
+                tempString = "" 
+                
+                if(len(tempArray)==3): # if the tempArray has all needed data for the note
+                    tempArray[1] = float(tempArray[1]) # type cast duration (1) to float
+                    tempArray[2] = int(tempArray[2]) # type cast finger (2) to int
+                    songData_split.append(tempArray) # append the triplet of data to the array of all data
+                    tempArray = []
 
-# data for pre-loaded songs
-c_major = [['C4', 0.25, 1], ['D4', 0.25, 2], ['E4',0.25, 3], ['F4', 0.25], ['G4', 0.25], ['A4', 0.25], ['B4', 0.25], ['C5', 0.25], ['B4', 0.25], ['A4', 0.25], ['G4', 0.25],
-           ['F4', 0.25],  ['E4', 0.25], ['D4', 0.25],  ['C4', 0.25]]
-d_major = [['D4', 0.25],  ['E4', 0.25],  ['F#4', 0.25], ['G4', 0.25], ['A4', 0.25], ['B4', 0.25], ['C#5', 0.25], ['D5', 0.25], ['C#5', 0.25], ['B4', 0.25], ['A4', 0.25],
-           ['G4', 0.25], ['F#4', 0.25], ['E4', 0.25], ['D4', 0.25]]
-e_major = [['E4', 0.25], ['F#4', 0.25],  ['G#4', 0.25], ['A4', 0.25], ['B4', 0.25], ['C#5', 0.25], ['D#5', 0.25], ['E5', 0.25], ['D#5', 0.25], ['C#5', 0.25], ['B4', 0.25],
-           ['A4', 0.25], ['G#4', 0.25], ['F#4', 0.25], ['E4', 0.25]]
-f_major = [['F4', 0.25], ['G4', 0.25], ['A4', 0.25], ['A#4', 0.25], ['C5', 0.25], ['D5', 0.25], ['E5', 0.25], ['F5', 0.25], ['E5', 0.25], ['D5', 0.25], ['C5', 0.25], 
-           ['A#4', 0.25], ['A4', 0.25], ['G4', 0.25], ['F4', 0.25]]
-g_major = [['G4',  0.25], ['A4', 0.25], ['B4', 0.25], ['C5', 0.25], ['D5', 0.25], ['E5', 0.25], ['F#5', 0.25], ['G5', 0.25], ['F#5', 0.25], ['E5', 0.25], ['D5', 0.25],
-           ['C5', 0.25], ['B4', 0.25], ['A4', 0.25], ['G4', 0.25]]
-mhall = ['E4', 0.25, 'D4', 0.25]
-name = "mhall"
+            # this conditional is here because we don't want to add any of the weird ,'[] characters to our array
+            elif ((songData_List[0][0][i] != ",") & (songData_List[0][0][i] != "'") & (songData_List[0][0][i] != "[") & (songData_List[0][0][i] != "]")):
+                    tempString = tempString + songData_List[0][0][i] # fill the tempString
 
+        return songData_split
 
+    #
+    #
+    # ADD SONG TO .CSV
+    elif (action=="add"):
+        print("adding", name, "to the database")
+        append_csv(name, data)
+        return 0
+    
+# song gallery parameters:
+# 1. name: name of song to read/write
+# 2. data: data of song to write. if reading, just pass NULL
+# 3. action: "read" or "add"
 
+name = "E"
+data = C_major
+action = 'read'
 
-song_gallery(name,mhall,'read')
+songData = song_gallery(name,data,action)
+print(name, "=", songData)
