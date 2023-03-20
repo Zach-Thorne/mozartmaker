@@ -31,6 +31,7 @@ def timing_refactor_finger(scale, note_array):
 def finger_refactor(scale, note_array):
     song_fingers = scale        #needs to be changed to song that is imported with timing, not mhall
     fingers = finger_placement.fingers(scale, note_array)
+    # print(fingers)
     for i in range (0, len(scale)):
         song_fingers[i].append(fingers[i])
     return song_fingers

@@ -19,8 +19,11 @@ def fingers(song, note_array):
         for j in range(len(note_array[0])):
             if (note_array[i][j] == 1):
                 finger_array.append(j)
-                continue
+                break
+            elif (j == (len(note_array[0]) - 1)):
+                finger_array.append(finger_array[i-1])
     
+    print(finger_array)
 
     # mary had a little lamb
     #             [E,D,C,D,E,E,E,D,D,D,E,G,G,E,D,C,D,E,E,E,D,D,E,D,C]
@@ -104,17 +107,36 @@ def fingers(song, note_array):
     # for p in range(1, len(finger_array)):
     for p in range(1, len(finger_array)):
 
+        # if (finger_array[p] == None):
+        #     continue
+
+        # if (finger_array[p-1] == None):
+        #     i = p-1
+        #     while(finger_array[i] == None):
+        #         i -= 1    
+        #     note_prior = finger_array[i]
+        # else:
+        #     note_prior = finger_array[p-1]
+            
+        # if (finger_array[p-2] == None):
+        #     j = p-2
+        #     while(finger_array[j] == None):
+        #         j -= 1    
+        #     note_double_prior = finger_array[j]
+        # else:
+        #     note_double_prior = finger_array[p-2]
+
         # TODO #3
         # TODO #4
 
         # if pitch1 < pitch2 (e.g. [C,D]), semitones > 0
         # semitones = finger_array[p] - finger_array[p-1]
-        semitones = finger_array[p] - finger_array[p-1]
+        semitones = finger_array[p] - finger_array[p-1] #note_prior
 
 
         if (p > 1):
             # semitones_1_3 = finger_array[p] - finger_array[p-2]
-            semitones_1_3 = finger_array[p] - finger_array[p-2]
+            semitones_1_3 = finger_array[p] - finger_array[p-2] #note_double_prior
 
         # if the current pitch is the same as the one which was just played
         # just assign the same number as the previous pitch

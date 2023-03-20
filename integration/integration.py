@@ -199,6 +199,10 @@ if __name__ == "__main__":
     else:
         raise Exception("Scale is not valid. Try again\n")
     
+    if (type(scale) == tuple):
+        CHORDS = TRUE
+
+    
     play_mode = input("What mode would you like to play in? learn or test?\n")
     #if not((play_mode == "test") or (play_mode == "learn")):
     #    raise Exception("Not a valid mode. Please try again\n")
@@ -207,13 +211,19 @@ if __name__ == "__main__":
     #print("length of scale: ", len(scale))
     note_array = np.zeros((len(scale), constants.total_keys))
     for i in range(len(scale)):
-        # if (play_mode == 'learntime') or (play_mode == 'testtime'):
-        projection_index.append(projection_luts.note_lut(scale[i][0]))
-        # else:
-        #     projection_index.append(projection_luts.note_lut(scale[i]))
-    
-    for n in range(len(scale)):
-        note_array[n][projection_index[n]] = 1
+        # print(i)
+        if (scale[i][0] == None):
+            print("none executed at ", i)
+            continue
+        else:
+            note_array[i][projection_luts.note_lut(scale[i][0])] = 1
+        
+
+        # projection_index.append(projection_luts.note_lut(scale[i][0]))
+    # print(note_array)
+
+    # for n in range(len(scale)):
+    #     note_array[n][projection_index[n]] = 1
 
     if (play_mode == "learn"):
         learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard)

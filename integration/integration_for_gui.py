@@ -95,7 +95,7 @@ def testing_mode(scale, keyboard):
             break    
 
     result = float(correct_notes / len(scale)) * 100
-    return result
+    return [None, None, result]
     #print("Your test score is: ", round(result, 1), "%")
 
 

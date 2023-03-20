@@ -233,6 +233,9 @@ class MainWindow(Ui_Dialog):
         self.COMBO_song.setEditable(True)
         self.COMBO_song.addItem("C Scale")
         self.COMBO_song.addItem("D Scale")
+        self.COMBO_song.addItem("E Scale")
+        self.COMBO_song.addItem("F Scale")
+        self.COMBO_song.addItem("G Scale")
         self.COMBO_song.addItem("Mary Had a Little Lamb")
         
         #
@@ -348,14 +351,14 @@ class MainWindow(Ui_Dialog):
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
     def tempo_button_1_clicked(self):
-        self.tempo_flag = "0"
+        self.tempo_flag = FALSE
 
         # reset training mode button
         self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
     def tempo_button_2_clicked(self):
-        self.tempo_flag = "1"
+        self.tempo_flag = TRUE
 
         # reset training mode button
         self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
@@ -388,11 +391,10 @@ class MainWindow(Ui_Dialog):
         self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         print('hello world')
         
+        tempo = 0
         # tempo selection
-        print(self.tempo_flag)
-        if(self.tempo_flag == "1"):
+        if(self.tempo_flag):
             tempo = self.SPIN_tempo.value()
-            print(tempo)
         
         # song selection
         if(self.COMBO_song.currentText() == "Mary Had a Little Lamb"):
@@ -401,7 +403,12 @@ class MainWindow(Ui_Dialog):
             self.song_selection = "C"
         elif(self.COMBO_song.currentText() == "D Scale"):
             self.song_selection = "D"
-        print(self.song_selection)
+        elif(self.COMBO_song.currentText() == "E Scale"):
+            self.song_selection = "E"
+        elif(self.COMBO_song.currentText() == "F Scale"):
+            self.song_selection = "F"
+        elif(self.COMBO_song.currentText() == "G Scale"):
+            self.song_selection = "G"
 
         # update GUI
         self.FRAME_play.setVisible(False)
