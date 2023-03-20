@@ -86,6 +86,38 @@ class Ui_Dialog(object):
         self.PB_tempo_2.setGeometry(QtCore.QRect(210, 370, 150, 40))
         self.PB_tempo_2.setObjectName("PB_tempo_2")
 
+        self.FRAME_inProgress = QtWidgets.QFrame(self.FRAME_main_window)
+        self.FRAME_inProgress.setGeometry(QtCore.QRect(150, 0, 601, 501))
+        self.FRAME_inProgress.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.FRAME_inProgress.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.FRAME_inProgress.setObjectName("FRAME_inProgress")
+        self.LABEL_inProgress = QtWidgets.QLabel(self.FRAME_inProgress)
+        self.LABEL_inProgress.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_inProgress.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_inProgress.setObjectName("LABEL_inProgress")
+        
+        self.FRAME_feedback = QtWidgets.QFrame(self.FRAME_main_window)
+        self.FRAME_feedback.setGeometry(QtCore.QRect(150, 0, 601, 501))
+        self.FRAME_feedback.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.FRAME_feedback.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.FRAME_feedback.setObjectName("FRAME_feedback")
+        self.LABEL_feedback1 = QtWidgets.QLabel(self.FRAME_feedback)
+        self.LABEL_feedback1.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_feedback1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_feedback1.setObjectName("LABEL_feedback1")
+        self.LABEL_feedback2 = QtWidgets.QLabel(self.FRAME_feedback)
+        self.LABEL_feedback2.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_feedback2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_feedback2.setObjectName("LABEL_feedback2")
+        self.LABEL_feedback3 = QtWidgets.QLabel(self.FRAME_feedback)
+        self.LABEL_feedback3.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_feedback3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_feedback3.setObjectName("LABEL_feedback3")
+        self.PB_feedback = QtWidgets.QPushButton(self.FRAME_feedback)
+        self.PB_feedback.setGeometry(QtCore.QRect(210, 370, 150, 40))
+        self.PB_feedback.setObjectName("PB_feedback")
+
+
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
@@ -95,11 +127,22 @@ class Ui_Dialog(object):
         self.PB_play.setText(_translate("Dialog", "PLAY"))
         self.LABEL_logo.setText(_translate("Dialog", "TextLabel"))
         self.PB_user_guide.setText(_translate("Dialog", "USER GUIDE"))
+
         self.LABEL_mode.setText(_translate("Dialog", "CHOOSE YOUR MODE"))
         self.PB_mode_1.setText(_translate("Dialog", "LEARNING"))
         self.PB_mode_2.setText(_translate("Dialog", "TESTING"))
+
         self.LABEL_song.setText(_translate("Dialog", "CHOOSE YOUR SONG"))
         self.SPIN_tempo.setSuffix(_translate("Dialog", "0"))
-        self.PB_play_2.setText(_translate("Dialog", "PLAY"))
+        
         self.PB_tempo_1.setText(_translate("Dialog", "PLAY WITHOUT TIMING"))
         self.PB_tempo_2.setText(_translate("Dialog", "PLAY WITH TIMING"))
+
+        self.PB_play_2.setText(_translate("Dialog", "PLAY"))
+        
+        self.LABEL_inProgress.setText(_translate("Dialog", "SONG IN PROGRESS..."))
+
+        self.LABEL_feedback1.setText(_translate("Dialog", "FEEDBACK"))
+        self.LABEL_feedback2.setText(_translate("Dialog", "FEEDBACK"))
+        self.LABEL_feedback3.setText(_translate("Dialog", "FEEDBACK"))
+        self.PB_feedback.setText(_translate("Dialog", "RETURN TO PLAY SCREEN"))

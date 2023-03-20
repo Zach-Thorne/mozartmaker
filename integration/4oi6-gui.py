@@ -1,12 +1,8 @@
-# updated: 6:46 pm dec. 7
-# TO DO
-# upload different versions with timestamps to show progress lol
-# create global variable to track which tab is open
-# change font size according to size of window
-# combobox: change selection highlight color, change appearance of dropdown arrow
-# once user has selected their preferences, change "play" button to green
-# clear combo box items
-# combo box set default value
+#
+# EE 4OI6 CAPSTONE 2023
+# Sophie Ciardullo
+# March 19, 2023
+#
 
 import sys
 from integration_for_gui import *
@@ -38,7 +34,10 @@ class MainWindow(Ui_Dialog):
         # calculate scale factor of initial dimensions : user screen size
         self.x_scale, self.y_scale = x_screen/x_window, y_screen/y_window
 
+        self.FRAME_inProgress.setVisible(False)
         self.FRAME_play.setVisible(False)
+        self.FRAME_feedback.setVisible(False)
+
         self.tempo_flag = "0" #default
 
         #
@@ -49,6 +48,7 @@ class MainWindow(Ui_Dialog):
         self.PB_song_gallery.clicked.connect(self.song_gallery_button_clicked)
         self.PB_user_guide.clicked.connect(self.user_guide_button_clicked)
         self.PB_play_2.clicked.connect(self.final_play_button_clicked)
+        self.PB_feedback.clicked.connect(self.reset_play_screen)
 
         self.setup_window(dialog)
 
@@ -105,7 +105,7 @@ class MainWindow(Ui_Dialog):
         self.PB_user_guide.setText("USER GUIDE")
         self.PB_user_guide.setFlat(True)
         self.PB_user_guide.setStyleSheet("QPushButton { font-style: bold; font-size: 18pt; color: white; background-color: #696969; border: none; vertical-align: middle; }")
-    
+
     def setup_play_screen(self):
 
         #
@@ -115,10 +115,18 @@ class MainWindow(Ui_Dialog):
         # screen frame: dimensions
         self.width_play_screen = self.width_window - self.width_menu
         self.height_play_screen = self.height_window
-        self.FRAME_play.setGeometry(QtCore.QRect(self.width_menu, 0, self.width_play_screen, self.height_play_screen))
         
-        # screen frame: formatting
+        # "play setup" frame
+        self.FRAME_play.setGeometry(QtCore.QRect(self.width_menu, 0, self.width_play_screen, self.height_play_screen))
         self.FRAME_play.setStyleSheet("QFrame#FRAME_play { background-color: #343843; }")
+
+        # "in progress" frame
+        self.FRAME_inProgress.setGeometry(QtCore.QRect(self.width_menu, 0, self.width_play_screen, self.height_play_screen))
+        self.FRAME_inProgress.setStyleSheet("QFrame#FRAME_inProgress { background-color: #343843; }")
+
+        # "feedback" frame
+        self.FRAME_feedback.setGeometry(QtCore.QRect(self.width_menu, 0, self.width_play_screen, self.height_play_screen))
+        self.FRAME_feedback.setStyleSheet("QFrame#FRAME_feedback { background-color: #343843; }")
 
         #
         #
@@ -153,6 +161,18 @@ class MainWindow(Ui_Dialog):
         # labels: styling
         self.LABEL_mode.setStyleSheet("QLabel#LABEL_mode { color: white; font-style: bold; font-size: 14pt; }")
         self.LABEL_song.setStyleSheet("QLabel#LABEL_song { color: white; font-style: bold; font-size: 14pt; }")
+
+        # "in progress" label
+        self.LABEL_inProgress.setGeometry(QtCore.QRect(0, 0, self.width_play_screen, self.height_play_screen))
+        self.LABEL_inProgress.setStyleSheet("QLabel#LABEL_inProgress { color: white; font-style: bold; font-size: 50pt; }")
+
+        # "feedback" labels
+        self.LABEL_feedback1.setGeometry(QtCore.QRect(0, 200, self.width_play_screen, self.label_height))
+        self.LABEL_feedback1.setStyleSheet("QLabel#LABEL_feedback1 { color: white; font-style: bold; font-size: 20pt; }")
+        self.LABEL_feedback2.setGeometry(QtCore.QRect(0, 300, self.width_play_screen, self.label_height))
+        self.LABEL_feedback2.setStyleSheet("QLabel#LABEL_feedback2 { color: white; font-style: bold; font-size: 20pt; }")
+        self.LABEL_feedback3.setGeometry(QtCore.QRect(0, 400, self.width_play_screen, self.label_height))
+        self.LABEL_feedback3.setStyleSheet("QLabel#LABEL_feedback3 { color: white; font-style: bold; font-size: 20pt; }")
 
         #
         #
@@ -189,6 +209,12 @@ class MainWindow(Ui_Dialog):
         self.PB_tempo_1.clicked.connect(self.tempo_button_1_clicked)
         self.PB_tempo_2.clicked.connect(self.tempo_button_2_clicked)
 
+        # feedback button
+        self.PB_feedback.setFlat(True)
+        self.PB_feedback.setStyleSheet("QPushButton#PB_feedback { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_feedback.setGeometry (QtCore.QRect(int(0.38*self.width_play_screen), int(0.7*self.height_window), self.button_width, self.frame_height))
+        #self.PB_feedback.clicked.connect(self.mode_1_button_clicked)
+
         #
         #
         # COMBO BOX
@@ -207,9 +233,6 @@ class MainWindow(Ui_Dialog):
         self.COMBO_song.setEditable(True)
         self.COMBO_song.addItem("C Scale")
         self.COMBO_song.addItem("D Scale")
-        self.COMBO_song.addItem("E Scale")
-        self.COMBO_song.addItem("F Scale")
-        self.COMBO_song.addItem("G Scale")
         self.COMBO_song.addItem("Mary Had a Little Lamb")
         
         #
@@ -242,7 +265,8 @@ class MainWindow(Ui_Dialog):
     def play_button_clicked(self):
 
         # if the user is currently operating in another tab of the application
-        if(self.current_task != "play"):
+        #if(self.current_task != "play"):
+        if(self.FRAME_play.isVisible() == False):
 
             # change appearance of menu buttons to indicate the play button is selected
             self.PB_play.setStyleSheet("QPushButton#PB_play { font-style: bold; font-size: 18pt; color: #343843; background-color: #7DCB79; border: none; vertical-align: middle; }")
@@ -251,6 +275,8 @@ class MainWindow(Ui_Dialog):
 
             # show play screen and hide other screens
             self.setup_play_screen()
+            self.FRAME_inProgress.setVisible(False)
+            self.FRAME_feedback.setVisible(False)
             self.FRAME_play.setVisible(True)
             
             # change current task indicator
@@ -258,6 +284,8 @@ class MainWindow(Ui_Dialog):
             
             # reset mode selection indicator variable for play screen
             self.mode = ""
+
+        
 
         # if the user is already operating in the "play" tab, do nothing
 
@@ -297,7 +325,7 @@ class MainWindow(Ui_Dialog):
 
     #
     #
-    # FUNCTION FOR MODE 1 (LEARNING MODE) BUTTON
+    # FUNCTION FOR MODE 1 BUTTON
     def mode_1_button_clicked(self):
         self.mode = "learn"
 
@@ -309,7 +337,7 @@ class MainWindow(Ui_Dialog):
 
     #
     #
-    # FUNCTION FOR MODE 2 (TESTING MODE) BUTTON
+    # FUNCTION FOR MODE 2 BUTTON
     def mode_2_button_clicked(self):
         self.mode = "test"
 
@@ -319,38 +347,52 @@ class MainWindow(Ui_Dialog):
         # reset training mode button
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    #
-    #
-    # FUNCTION FOR TEMPO 1 (NO TIMING) BUTTON
     def tempo_button_1_clicked(self):
-        self.tempo_flag = FALSE
+        self.tempo_flag = "0"
 
         # reset training mode button
         self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    #
-    #
-    # FUNCTION FOR TEMPO 2 (TIMING) BUTTON
     def tempo_button_2_clicked(self):
-        self.tempo_flag = TRUE
+        self.tempo_flag = "1"
 
         # reset training mode button
         self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
+    def feedback_screen(self, note_score, timing_score, total_score):
+        self.LABEL_feedback1.setText("NOTE ACCURACY: " + str(note_score) + "%")
+        self.LABEL_feedback2.setText("TIMING ACCURACY: " + str(timing_score) + "%")
+        self.LABEL_feedback3.setText("OVERALL SCORE: " + str(total_score) + "%")
+        
+        self.FRAME_play.setVisible(False)
+        self.FRAME_inProgress.setVisible(False)
+        self.FRAME_feedback.setVisible(True)
+
+    def reset_play_screen(self):
+        # reset buttons
+        self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_mode_2.setStyleSheet("QPushButton#PB_mode_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        self.FRAME_feedback.setVisible(False)
+        self.FRAME_play.setVisible(True)
+
     #
     #
-    # FUNCTION FOR FINAL PLAY (START PLAYING) BUTTON
+    # FUNCTION FOR FINAL PLAY BUTTON
     def final_play_button_clicked(self):
-        # change styling for play button
         self.PB_play_2.setStyleSheet("QPushButton#PB_play_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        print('hello world')
         
         # tempo selection
-        if(self.tempo_flag == TRUE):
+        print(self.tempo_flag)
+        if(self.tempo_flag == "1"):
             tempo = self.SPIN_tempo.value()
-        else:
-            tempo = 0
+            print(tempo)
         
         # song selection
         if(self.COMBO_song.currentText() == "Mary Had a Little Lamb"):
@@ -359,16 +401,15 @@ class MainWindow(Ui_Dialog):
             self.song_selection = "C"
         elif(self.COMBO_song.currentText() == "D Scale"):
             self.song_selection = "D"
-        elif(self.COMBO_song.currentText() == "E Scale"):
-            self.song_selection = "E"
-        elif(self.COMBO_song.currentText() == "F Scale"):
-            self.song_selection = "F"
-        elif(self.COMBO_song.currentText() == "G Scale"):
-            self.song_selection = "G"
+        print(self.song_selection)
 
-        # call integration function with parameters from user input
+        # update GUI
+        self.FRAME_play.setVisible(False)
+        self.FRAME_inProgress.setVisible(True)
         result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo)
-
+        
+        # self.feedback_screen(70,80,75) -> syntax for feedback screen function
+        
 app = QtWidgets.QApplication(sys.argv)
 dialog = QtWidgets.QDialog()
 prog = MainWindow(dialog)

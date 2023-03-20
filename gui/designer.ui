@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1617</width>
+    <width>1522</width>
     <height>1024</height>
    </rect>
   </property>
@@ -280,6 +280,115 @@
      </property>
      <property name="text">
       <string>PLAY</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="FRAME_inProgress">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>510</y>
+      <width>601</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="LABEL_inProgress">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>601</width>
+       <height>491</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>SONG IN PROGRESS...</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="FRAME_feedback">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>0</y>
+      <width>601</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="LABEL_feedback1">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>100</y>
+       <width>601</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>FEEDBACK</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="LABEL_feedback2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>160</y>
+       <width>601</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>FEEDBACK</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="LABEL_feedback3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>230</y>
+       <width>601</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>FEEDBACK</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="PB_feedback">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>370</y>
+       <width>150</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>RETURN TO PLAY SCREEN</string>
      </property>
     </widget>
    </widget>
