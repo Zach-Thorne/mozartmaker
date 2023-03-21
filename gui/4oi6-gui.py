@@ -366,10 +366,24 @@ class MainWindow(Ui_Dialog):
         self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
     def feedback_screen(self, note_score, timing_score, total_score):
-        self.LABEL_feedback1.setText("NOTE ACCURACY: " + str(note_score) + "%")
-        self.LABEL_feedback2.setText("TIMING ACCURACY: " + str(timing_score) + "%")
-        self.LABEL_feedback3.setText("OVERALL SCORE: " + str(total_score) + "%")
         
+        # if the user was playing WITHOUT timing, only output "Score: %"
+        if((note_score == None) & (timing_score== None)):
+            self.LABEL_feedback2.setText("SCORE: " + str(total_score) + "%")
+            self.LABEL_feedback1.setVisible(False)
+            self.LABEL_feedback2.setVisible(True)
+            self.LABEL_feedback3.setVisible(False)
+
+        # if the user was playing WITH timing, output all three scores
+        else:
+            self.LABEL_feedback1.setText("NOTE ACCURACY: " + str(note_score) + "%")
+            self.LABEL_feedback2.setText("TIMING ACCURACY: " + str(timing_score) + "%")
+            self.LABEL_feedback3.setText("OVERALL SCORE: " + str(total_score) + "%")
+            self.LABEL_feedback1.setVisible(True)
+            self.LABEL_feedback2.setVisible(True)
+            self.LABEL_feedback3.setVisible(True)
+        
+        # update which main screen frame is showing
         self.FRAME_play.setVisible(False)
         self.FRAME_inProgress.setVisible(False)
         self.FRAME_feedback.setVisible(True)
@@ -410,13 +424,20 @@ class MainWindow(Ui_Dialog):
         # update GUI
         self.FRAME_play.setVisible(False)
         self.FRAME_inProgress.setVisible(True)
+
+        #
+        # ****************** DISPLAY FEEDBACK SCREEN ********************
+
+        # un-comment in integration file -> calls feedback screen
         # result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo)
-        #self.feedback_screen(70,80,75)
-
-
-        #run_mozart(self.song_selection, self.mode)
-        # call integration function with parameters from user input
+        # self.feedback_screen(result[0], result[1], result[2])
         
+        # example screen for WITHOUT timing
+        # self.feedback_screen(None, None, 77.5)
+
+        # example screen for WITH timing
+        # self.feedback_screen(80, 75, 77.5)
+
 app = QtWidgets.QApplication(sys.argv)
 dialog = QtWidgets.QDialog()
 prog = MainWindow(dialog)
