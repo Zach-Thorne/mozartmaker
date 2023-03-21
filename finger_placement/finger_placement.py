@@ -14,9 +14,13 @@ if __name__ == "__main__":
     always_flag = 1 # flag used for if-statements so i can just make these blocks fucking collapsable
     dont_touch_index = 0
     dont_touch_flag = 0
+
     #
     #
-    # initialize song arrays assuming 0 = C4
+    #
+    #
+    #
+    # ************************** INITIALIZE CONSTANT SONG ARRAYS (0 = C4) ****************************
 
     # mary had a little lamb
     #             [E,D,C,D,E,E,E,D,D,D,E,G,G,E,D,C,D,E,E,E,D,D,E,D,C]
@@ -42,6 +46,7 @@ if __name__ == "__main__":
     # soln:   [1,2,3,1,2,3, 4, 5, 4, 3, 2,1,3,2,1]
     d_major_chars = ['D','E','F#','G','A','B','C#','D','C#','B','A','G','F#','E','D']
 
+    #
     # assign which song to use -> remove when arguments are passed into function
     song = d_major
     song_chars = d_major_chars
@@ -53,9 +58,6 @@ if __name__ == "__main__":
     maxComf = [0,8,10,12,13,   2,0,3,5,8,    3,1,0,2,5,      1,1,1,0,3,       -3,-2,-1,-1,0]
     minRel =  [0,1,3,5,7,      -5,0,1,3,5,   -7,-2,0,1,3,    -5,-4,-3,0,1,    -10,-6,-4,-2,0]
     maxRel =  [0,5,7,9,10,     -1,0,2,4,6,   -3,-2,0,2,4,    -9,-3,-1,0,2,    -7,-5,-3,-1,0]
-
-    # TODO #2
-    possible_placement = []
 
     # limit to only the top 5 best solutions (based on total points after each pitch)
     sol1 = [1]
@@ -776,9 +778,6 @@ if __name__ == "__main__":
         if (dont_touch_flag == 1): dont_touch_index = p
         dont_touch_flag = 0
 
-        print("p = ",p)
-        print("dont touch index =", dont_touch_index)
-        print("sol1 =", sol1)        
         #
         #
         #
@@ -810,6 +809,7 @@ if __name__ == "__main__":
         #
         #
         # ************* CALCULATE POINTS FOR ALL POSSIBLE SOLUTIONS, WITH F2=(1 THROUGH 5) *****************
+
         if (p > dont_touch_index):
             for f2 in range(1,6): # iterates through values 1 to 5
 
@@ -3723,7 +3723,7 @@ if __name__ == "__main__":
         #
         #
         #
-        # COPY BEST 10 SOLUTIONS INTO TEMPORARY SOL ARRAYS (EXPAND)
+        # ************** COPY BEST 10 SOLUTIONS INTO TEMPORARY SOL ARRAYS (EXPAND) ******************
         
         # set temporary sol1 to the best solution
         if (always_flag == 1):
@@ -4048,7 +4048,11 @@ if __name__ == "__main__":
             poss_sol14_scores = [0,0,0,0,0]
             poss_sol15_scores = [0,0,0,0,0]
     
-    # **************** NEW MARCH 20 consecutive increase situation ***************
+    #
+    #
+    #
+    #
+    # ************************* NEW MARCH 20 consecutive increase situation *************************
     # check the final solution to see if the last few indices can be improved
     # only need to check/edit solution 1 cuz the others don't matter anymore
 
@@ -4116,7 +4120,10 @@ if __name__ == "__main__":
 
     #
     #
-    # print results for debugging
+    #
+    #
+    #
+    # ******** print results for debugging ***********
     print("#1 solution:")
     print("notes =", song_chars)
     print("solution =", sol1)
