@@ -152,7 +152,7 @@ def project_key(root, canvas, screen_width, screen_height, song, note_index, col
                 #Feel like there is a better way to do this but we going to do this for now 
                 t = black_lut(j)
                 canvas.create_rectangle(10+rec_width*t+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*t+math.floor(rec_width/2),c.top_of_key,outline ="black",fill =colour,width = 2)
-                canvas.create_text((10+rec_width*t+math.floor(rec_width/2) , 100), text = finger, font=("Helvetica", 54))
+                canvas.create_text((10+rec_width+rec_width*t, 100), text = finger, font=("Helvetica", 54))
             #If j corresponds to a white key
             else:
                 t = white_lut(j)

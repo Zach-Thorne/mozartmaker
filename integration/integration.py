@@ -20,6 +20,11 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
     projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
     
     while i < len(scale):
+        if scale[i][0] == None:
+            while scale[i][0] == None:
+                i += 1
+            projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
+
         played_note = midi.note_stream(keyboard)
         if (played_note):
             if played_note[1] == 100:
@@ -54,6 +59,8 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
         note_start = time.time()
         note_status = "orange"
         while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME - project_time) > time.time():
+            if scale[i][0] == None:
+                continue
             played_note = midi.note_stream(keyboard)
             if (played_note):
                 if played_note[1] == 100:
@@ -84,15 +91,23 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
 def testing_mode(scale, keyboard):
     i = 0
     correct_notes = 0
-    while i < len(scale):        
+    print("song length = ", len(scale))
+    while i < len(scale):    
+        if scale[i][0] == None:
+            i += 1
+            print(i)   
+            correct_notes += 1
+            continue
         played_note = midi.note_stream(keyboard)
         if played_note:
             if played_note[1] == 100:
                 if (played_note[0] == scale[i][0]):
                     correct_notes += 1
                 i += 1
+                print(i)   
         if (i == len(scale)):
-            break    
+            break 
+        
 
     result = float(correct_notes / len(scale)) * 100
     print("Your test score is: ", round(result, 1), "%")
@@ -118,9 +133,14 @@ def testing_mode_timing(scale, keyboard):
 
     for i in range (0,len(scale)):
         
-        #call function for displaying the first note to play
+        
         note_start = time.time()
+        if scale[i][0] == None:
+            correct_notes += 1
+            correct_times += 1
         while (note_start + song_bpm_adjust[i][1]) > time.time():
+            if scale[i][0] == None:
+                continue
             played_note = midi.note_stream(keyboard)
             if (played_note):
                 if played_note[1] == 100:
@@ -129,6 +149,7 @@ def testing_mode_timing(scale, keyboard):
                         make_times.append(played_note[2])
 
                 elif (played_note[0] == scale[i][0] or played_note[0] == scale[i-1][0]):
+                    print("grandma")
                     break_time = played_note[2]
                     try:
                         make_time = make_times[0]
