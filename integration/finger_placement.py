@@ -21,7 +21,7 @@ def fingers(song, note_array):
             elif (j == (len(note_array[0]) - 1)):
                 finger_array.append(finger_array[i-1])
     
-    print(finger_array)
+    # print(finger_array)
 
     always_flag = 1 # flag used for if-statements so i can just make these blocks fucking collapsable
     dont_touch_index = 0
@@ -518,9 +518,9 @@ def fingers(song, note_array):
         # handle sequences of consecutively DEcreasing notes, where the sequence is at least 5 notes long
         # sequence is 7 notes long
         if (p-1 > dont_touch_index):
-            print("test 1a")
+            # print("test 1a")
             if ((finger_array[p]<finger_array[p-1]) & (finger_array[p-1]<finger_array[p-2]) & (finger_array[p-2]<finger_array[p-3]) & (finger_array[p-3]<finger_array[p-4]) & (finger_array[p-4]<finger_array[p-5]) & (finger_array[p-5]<finger_array[p-6])):
-                print("test 1")
+                # print("test 1")
                 # fix solution 1
                 sol1[p-7] = 4
                 sol1[p-6] = 3
@@ -645,9 +645,9 @@ def fingers(song, note_array):
 
         # sequence is 8 notes long
         if (p-1 > dont_touch_index):
-            print("test 2a")
+            # print("test 2a")
             if ((finger_array[p]<finger_array[p-1]) & (finger_array[p-1]<finger_array[p-2]) & (finger_array[p-2]<finger_array[p-3]) & (finger_array[p-3]<finger_array[p-4]) & (finger_array[p-4]<finger_array[p-5]) & (finger_array[p-5]<finger_array[p-6]) & (finger_array[p-6]<finger_array[p-7])):
-                print("test2")
+                # print("test2")
                 # fix solution 1
                 sol1[p-8] = 5
                 sol1[p-7] = 4
@@ -788,9 +788,9 @@ def fingers(song, note_array):
         if (dont_touch_flag == 1): dont_touch_index = p
         dont_touch_flag = 0
 
-        print("p = ",p)
-        print("dont touch index =", dont_touch_index)
-        print("sol1 =", sol1)        
+        # print("p = ",p)
+        # print("dont touch index =", dont_touch_index)
+        # print("sol1 =", sol1)        
         #
         #
         #
@@ -4102,7 +4102,7 @@ def fingers(song, note_array):
     # sequence is 7 notes long
     if (p > dont_touch_index):
         if ((finger_array[p-1]<finger_array[p-2]) & (finger_array[p-2]<finger_array[p-3]) & (finger_array[p-3]<finger_array[p-4]) & (finger_array[p-4]<finger_array[p-5]) & (finger_array[p-5]<finger_array[p-6]) & (finger_array[p-6]<finger_array[p-7])):
-            print("test 1")
+            # print("test 1")
             # fix solution 1
             sol1[p-7] = 4
             sol1[p-6] = 3
@@ -4115,7 +4115,7 @@ def fingers(song, note_array):
     # sequence is 8 notes long
     if (p > dont_touch_index):
         if ((finger_array[p-1]<finger_array[p-2]) & (finger_array[p-2]<finger_array[p-3]) & (finger_array[p-3]<finger_array[p-4]) & (finger_array[p-4]<finger_array[p-5]) & (finger_array[p-5]<finger_array[p-6]) & (finger_array[p-6]<finger_array[p-7]) & (finger_array[p-7]<finger_array[p-8])):
-            print("test2")
+            # print("test2")
             # fix solution 1
             sol1[p-8] = 5
             sol1[p-7] = 4

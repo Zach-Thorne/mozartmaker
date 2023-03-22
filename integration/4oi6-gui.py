@@ -367,20 +367,25 @@ class MainWindow(Ui_Dialog):
     def feedback_screen(self, note_score, timing_score, total_score):
         
         # if the user was playing WITHOUT timing, only output "Score: %"
-        if((note_score == None) & (timing_score== None)):
+        if((note_score == None) & (timing_score== None) & (total_score != None)):
             self.LABEL_feedback2.setText("SCORE: " + str(total_score) + "%")
             self.LABEL_feedback1.setVisible(False)
             self.LABEL_feedback2.setVisible(True)
             self.LABEL_feedback3.setVisible(False)
 
         # if the user was playing WITH timing, output all three scores
-        else:
+        elif ((note_score != None) & (timing_score!= None) & (total_score != None)):
             self.LABEL_feedback1.setText("NOTE ACCURACY: " + str(note_score) + "%")
             self.LABEL_feedback2.setText("TIMING ACCURACY: " + str(timing_score) + "%")
             self.LABEL_feedback3.setText("OVERALL SCORE: " + str(total_score) + "%")
             self.LABEL_feedback1.setVisible(True)
             self.LABEL_feedback2.setVisible(True)
             self.LABEL_feedback3.setVisible(True)
+        
+        else:
+            self.LABEL_feedback1.setVisible(False)
+            self.LABEL_feedback2.setVisible(False)
+            self.LABEL_feedback3.setVisible(False)
         
         # update which main screen frame is showing
         self.FRAME_play.setVisible(False)
@@ -428,7 +433,10 @@ class MainWindow(Ui_Dialog):
         self.FRAME_play.setVisible(False)
         self.FRAME_inProgress.setVisible(True)
         result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo)
-        self.feedback_screen(result[0], result[1], result[2])
+        if result == None:
+            self.feedback_screen(None, None, None)    
+        else:
+            self.feedback_screen(result[0], result[1], result[2])
         
 app = QtWidgets.QApplication(sys.argv)
 dialog = QtWidgets.QDialog()

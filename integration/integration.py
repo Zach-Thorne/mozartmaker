@@ -58,6 +58,13 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
         project_time = projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_bpm_adjust[i][2]))
         note_start = time.time()
         note_status = "orange"
+        if scale[i][0] == None:
+            if i >= 1:
+                try:
+                    make_times.pop(0)
+                except:
+                    pass
+
         while (note_start + song_bpm_adjust[i][1] - constants.WHITE_TIME - project_time) > time.time():
             if scale[i][0] == None:
                 continue
@@ -94,8 +101,7 @@ def testing_mode(scale, keyboard):
     print("song length = ", len(scale))
     while i < len(scale):    
         if scale[i][0] == None:
-            i += 1
-            print(i)   
+            i += 1            
             correct_notes += 1
             continue
         played_note = midi.note_stream(keyboard)
@@ -104,7 +110,6 @@ def testing_mode(scale, keyboard):
                 if (played_note[0] == scale[i][0]):
                     correct_notes += 1
                 i += 1
-                print(i)   
         if (i == len(scale)):
             break 
         
@@ -119,6 +124,8 @@ def testing_mode_timing(scale, keyboard):
     make_times=[]
     correct_notes=0
     correct_times=0
+    check_prior_note = 0
+    check_prior_time = 0
 
     song_length = 0
     for i in range (0,len(song_bpm_adjust)):
@@ -133,11 +140,16 @@ def testing_mode_timing(scale, keyboard):
 
     for i in range (0,len(scale)):
         
-        
-        note_start = time.time()
         if scale[i][0] == None:
-            correct_notes += 1
-            correct_times += 1
+            if i >= 1:
+                correct_notes += 1
+                correct_times += 1
+                try:
+                    make_times.pop(0)
+                except:
+                    pass
+
+        note_start = time.time()
         while (note_start + song_bpm_adjust[i][1]) > time.time():
             if scale[i][0] == None:
                 continue
@@ -147,18 +159,21 @@ def testing_mode_timing(scale, keyboard):
                     if played_note[0] == scale[i][0]:
                         correct_notes += 1
                         make_times.append(played_note[2])
-
+                
                 elif (played_note[0] == scale[i][0] or played_note[0] == scale[i-1][0]):
-                    print("grandma")
+                    # print("grandma")
                     break_time = played_note[2]
                     try:
                         make_time = make_times[0]
                     except IndexError:
-                        make_time=break_time
+                        make_time = break_time
+                    # print("make time = ", make_time)
+                    # print("break time = ", break_time)
                     time_on_note = abs(break_time - make_time)
                     time_on_note /= 1000
+                    # print("time on note = ", time_on_note)
                     if (time_on_note > (constants.ERROR * song_bpm_adjust[i][1])) and (time_on_note < ((2 - constants.ERROR) * song_bpm_adjust[i-1][1])):
-                        correct_times+=1
+                        correct_times += 1
 
                     try:
                         make_times.pop(0) 
