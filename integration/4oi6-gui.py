@@ -10,6 +10,7 @@ from PyQt6 import QtWidgets, uic, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QFrame
 
+
 from app.MainWindow import Ui_Dialog
 
 class MainWindow(Ui_Dialog):
@@ -431,8 +432,10 @@ class MainWindow(Ui_Dialog):
 
         # update GUI
         self.FRAME_play.setVisible(False)
-        self.FRAME_inProgress.setVisible(True)
+        self.FRAME_inProgress.setVisible(True)  
+        print("tempo = ", tempo)
         result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo)
+
         if result == None:
             self.feedback_screen(None, None, None)    
         else:

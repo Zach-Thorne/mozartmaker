@@ -9,6 +9,8 @@ import midi
 import timing
 import threading
 
+first_flag = 0
+keyboard = None
 
 def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
@@ -29,6 +31,8 @@ def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, 
                     if (i == len(scale)):
                         break
                     projection.project_key(root, canvas, screen_width, screen_height, note_array, i, note_status, str(song_fingerings[i][2]))
+    root.destroy()
+    midi.destroy()
 
 def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
     i = 0
@@ -80,6 +84,8 @@ def learning_mode_timing(root, canvas, screen_width, screen_height, note_array, 
                         pass
         white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, i)    
         time.sleep(constants.WHITE_TIME - white_time)
+    midi.destroy()
+    root.destroy()
 
 def testing_mode(scale, keyboard):
     i = 0
@@ -88,6 +94,7 @@ def testing_mode(scale, keyboard):
         played_note = midi.note_stream(keyboard)
         if played_note:
             if played_note[1] == 100:
+                print("played note is ", played_note[0])
                 if (played_note[0] == scale[i][0]):
                     correct_notes += 1
                 i += 1
@@ -95,6 +102,7 @@ def testing_mode(scale, keyboard):
             break    
 
     result = float(correct_notes / len(scale)) * 100
+    midi.destroy()
     return [None, None, result]
     #print("Your test score is: ", round(result, 1), "%")
 
@@ -146,6 +154,8 @@ def testing_mode_timing(root, canvas, screen_width, screen_height, note_array, s
                         pass  
     result_note = float(correct_notes / len(scale)) * 100
     result_time=float(correct_times / len(scale)) * 100
+    root.destroy()
+    midi.destroy()
     return [round(result_note, 1), round(result_time, 1), round((result_note+result_time)/2, 1)]
     # print("Your correct note score is: ", round(result_note, 1), "%")
     # print("Your time note score is: ", round(result_time, 1), "%")
@@ -159,18 +169,28 @@ def count_in(root, canvas, screen_width, screen_height, note_array):
         time.sleep(constants.FLASH_TIME - blue_time)
         white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, first_note)    
         time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - white_time)
-
     
 def run_mozart(scale_input, play_mode, timing_state, tempo):
-    #Create empty array 
+    # global first_flag
+    # global keyboard
+    
     #Initalize Tkinter
     root = Tk()
+    
     constants.BPM = tempo
+    print("tempo = ", tempo)
     if tempo != 0:
         constants.sec_adjusted_bpm = constants.calculate_bpm_adj()
-
+    print("adjust bpm: ", constants.sec_adjusted_bpm)
+    
     #Initalize midi input. Searches for keyboard and sets as a midi output
     keyboard = midi.initialization()
+    
+    # print("first flag", first_flag)
+    # if not(first_flag):
+    #     print("made it here")
+    #     keyboard = midi.initialization()
+    #     first_flag = 1        
 
     #Initialize Canvas
     screen_width = root.winfo_screenwidth()
@@ -200,6 +220,8 @@ def run_mozart(scale_input, play_mode, timing_state, tempo):
     else:
         raise Exception("Scale is not valid. Try again\n")
     
+    print("scale is ", scale)
+
     # play_mode = input("What mode would you like to play in? learn or test?\n")
     #if not((play_mode == "test") or (play_mode == "learn")):
     #    raise Exception("Not a valid mode. Please try again\n")
@@ -227,4 +249,6 @@ def run_mozart(scale_input, play_mode, timing_state, tempo):
         if(timing_state):
             return testing_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
         else:
+            projection.project_all_white(root, canvas, screen_width, screen_height, scale)
+            root.destroy()
             return testing_mode(scale, keyboard)
