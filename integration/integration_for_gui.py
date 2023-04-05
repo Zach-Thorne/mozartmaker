@@ -8,6 +8,7 @@ import time
 import midi
 import timing
 import threading
+from screeninfo import get_monitors
 
 first_flag = 0
 keyboard = None
@@ -192,11 +193,37 @@ def run_mozart(scale_input, play_mode, timing_state, tempo):
     #     keyboard = midi.initialization()
     #     first_flag = 1        
 
-    #Initialize Canvas
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    canvas = Canvas(width=screen_width, height=screen_height)
-    root.state('zoomed')
+    #NOTE Attempting brazy shit
+    #Check if multiple monitors exist
+    monitors = 0 
+    for m in get_monitors(): 
+        monitors = monitors + 1  
+        
+    #Initialize Canvas if there is only one monitor
+    #TODO redudant clean up 
+    if(monitors <= 1): 
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        canvas = Canvas(width=screen_width, height=screen_height)
+        root.state('zoomed')
+    #Indicates there is a second monitor to write canvas to.
+    else: 
+        #Primary screen 
+        m1 = (str(get_monitors()[0])).split() 
+        #Secondary Screen 
+        m2 = (str(get_monitors()[1])).split()
+
+        #Gets width and height of the displays 
+        w0, h0 = int(m1[2][6:-1]), int(m1[3][7:-1])
+        w1, h1 = int(m2[2][6:-1]), int(m2[3][7:-1])
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        canvas = Canvas(width=screen_width, height=screen_height)
+        
+        #Shift to other monitor
+        #May needa update this lil bastard
+        root.geometry(f"{w1}x{h1}-{w0}+0")
+        root.state('zoomed')
 
     #NOTE: SHOULD RUN ON STARTUP 
     #Create inital outline
@@ -252,3 +279,4 @@ def run_mozart(scale_input, play_mode, timing_state, tempo):
             projection.project_all_white(root, canvas, screen_width, screen_height, scale)
             root.destroy()
             return testing_mode(scale, keyboard)
+
