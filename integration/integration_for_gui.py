@@ -13,13 +13,17 @@ from screeninfo import get_monitors
 first_flag = 0
 keyboard = None
 
+#***************************************************************************************#
+#*************** NEED TO BE GLOBAL IN ORDER TO BE UPDATED MULTIPLE TIMES ***************#
+#***************************************************************************************#
+
 root = Tk()
 monitors = 0 
 for m in get_monitors(): 
     monitors = monitors + 1  
     
 #Initialize Canvas if there is only one monitor
-#TODO redudant clean up 
+#If only one monitor create shit the same way 
 if(monitors <= 1): 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -40,9 +44,12 @@ else:
     canvas = Canvas(width=screen_width, height=screen_height)
     
     #Shift to other monitor
-    #May needa update this lil bastard
     root.geometry(f"{w1}x{h1}-{w0}+0")
     root.state('zoomed')
+
+#***************************************************************************************#
+#***************************************************************************************#
+#***************************************************************************************#
 
 
 def learning_mode(root, canvas, screen_width, screen_height, note_array, scale, keyboard):
@@ -204,52 +211,13 @@ def count_in(root, canvas, screen_width, screen_height, note_array):
         time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - white_time)
     
 def run_mozart(scale_input, play_mode, timing_state, tempo, no_play_just_disp):
-    # global first_flag
-    # global keyboard
     
-    #Initalize Tkinter
-    #root = Tk()
-    
-    #NOTE Attempting brazy shit
-    #Check if multiple monitors exist
-#    monitors = 0 
-#    for m in get_monitors(): 
-#        monitors = monitors + 1  
-#        
-#    #Initialize Canvas if there is only one monitor
-#    #TODO redudant clean up 
-#    if(monitors <= 1): 
-#        screen_width = root.winfo_screenwidth()
-#        screen_height = root.winfo_screenheight()
-#        canvas = Canvas(width=screen_width, height=screen_height)
-#        root.state('zoomed')
-#    #Indicates there is a second monitor to write canvas to.
-#    else: 
-#        #Primary screen 
-#        m1 = (str(get_monitors()[0])).split() 
-#        #Secondary Screen 
-#        m2 = (str(get_monitors()[1])).split()
-#
-#        #Gets width and height of the displays 
-#        w0, h0 = int(m1[2][6:-1]), int(m1[3][7:-1])
-#        w1, h1 = int(m2[2][6:-1]), int(m2[3][7:-1])
-#        screen_width = w1
-#        screen_height = h1
-#        canvas = Canvas(width=screen_width, height=screen_height)
-#        
-#        #Shift to other monitor
-#        #May needa update this lil bastard
-#        root.geometry(f"{w1}x{h1}-{w0}+0")
-#        root.state('zoomed')
-
-    #NOTE: SHOULD RUN ON STARTUP 
     #Create inital outline
     inital = projection.create_default(root, canvas, screen_width, screen_height)
-    canvas.pack()
-    canvas.update()
+    #canvas.pack()
+    #canvas.update()
 
     if(no_play_just_disp != 0):
-        print("Mama")
         constants.BPM = tempo
         print("tempo = ", tempo)
         if tempo != 0:

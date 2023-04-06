@@ -29,6 +29,7 @@ def create_default(master, canvas, screen_width, screen_height):
             canvas.create_rectangle(10+rec_width*i+math.floor(rec_width/2),c.top_of_key-100,10+rec_width+rec_width*i+math.floor(rec_width/2),c.top_of_key,outline ="black",fill ="white",width = 2)
 
     canvas.pack()
+    canvas.update()
     return canvas
 
 #Place Holder to create basic 3 note song
