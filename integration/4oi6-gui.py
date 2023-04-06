@@ -52,6 +52,7 @@ class MainWindow(Ui_Dialog):
         self.PB_feedback.clicked.connect(self.reset_play_screen)
 
         self.setup_window(dialog)
+        run_mozart("F","learn",0,1,0)
 
     def setup_window(self, dialog):
 
@@ -434,7 +435,7 @@ class MainWindow(Ui_Dialog):
         self.FRAME_play.setVisible(False)
         self.FRAME_inProgress.setVisible(True)  
         print("tempo = ", tempo)
-        result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo)
+        result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo, 1)
 
         if result == None:
             self.feedback_screen(None, None, None)    
