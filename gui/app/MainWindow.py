@@ -13,34 +13,46 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1617, 1024)
+
+        # entire screen
         self.FRAME_main_window = QtWidgets.QFrame(Dialog)
         self.FRAME_main_window.setGeometry(QtCore.QRect(0, 0, 1491, 1001))
         self.FRAME_main_window.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.FRAME_main_window.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.FRAME_main_window.setObjectName("FRAME_main_window")
+
+        # menu frame
         self.FRAME_menu = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_menu.setGeometry(QtCore.QRect(0, 0, 150, 500))
         self.FRAME_menu.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.FRAME_menu.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.FRAME_menu.setObjectName("FRAME_menu")
+        # logo
+        self.LABEL_logo = QtWidgets.QLabel(self.FRAME_menu)
+        self.LABEL_logo.setGeometry(QtCore.QRect(0, 0, 150, 90))
+        self.LABEL_logo.setObjectName("LABEL_logo")
+        # "play" menu button
         self.PB_play = QtWidgets.QPushButton(self.FRAME_menu)
         self.PB_play.setGeometry(QtCore.QRect(0, 90, 150, 40))
         self.PB_play.setObjectName("PB_play")
+        # "song gallery" menu button
         self.PB_song_gallery = QtWidgets.QPushButton(self.FRAME_menu)
         self.PB_song_gallery.setGeometry(QtCore.QRect(0, 130, 150, 40))
         self.PB_song_gallery.setText("")
         self.PB_song_gallery.setObjectName("PB_song_gallery")
-        self.LABEL_logo = QtWidgets.QLabel(self.FRAME_menu)
-        self.LABEL_logo.setGeometry(QtCore.QRect(0, 0, 150, 90))
-        self.LABEL_logo.setObjectName("LABEL_logo")
+        # "user guide" menu button
         self.PB_user_guide = QtWidgets.QPushButton(self.FRAME_menu)
         self.PB_user_guide.setGeometry(QtCore.QRect(0, 460, 150, 40))
         self.PB_user_guide.setObjectName("PB_user_guide")
+
+        # play screen frame
         self.FRAME_play = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_play.setGeometry(QtCore.QRect(150, 0, 601, 501))
         self.FRAME_play.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.FRAME_play.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.FRAME_play.setObjectName("FRAME_play")
+        
+        # mode selection frame (learning/testing)
         self.FRAME_mode = QtWidgets.QFrame(self.FRAME_play)
         self.FRAME_mode.setGeometry(QtCore.QRect(20, 20, 561, 80))
         self.FRAME_mode.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -56,6 +68,8 @@ class Ui_Dialog(object):
         self.PB_mode_2 = QtWidgets.QPushButton(self.FRAME_mode)
         self.PB_mode_2.setGeometry(QtCore.QRect(380, 10, 150, 40))
         self.PB_mode_2.setObjectName("PB_mode_2")
+        
+        # song selection frame
         self.FRAME_song = QtWidgets.QFrame(self.FRAME_play)
         self.FRAME_song.setGeometry(QtCore.QRect(20, 120, 561, 80))
         self.FRAME_song.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -68,6 +82,8 @@ class Ui_Dialog(object):
         self.COMBO_song = QtWidgets.QComboBox(self.FRAME_song)
         self.COMBO_song.setGeometry(QtCore.QRect(170, 20, 341, 41))
         self.COMBO_song.setObjectName("COMBO_song")
+        
+        # tempo selection frame
         self.FRAME_tempo = QtWidgets.QFrame(self.FRAME_play)
         self.FRAME_tempo.setGeometry(QtCore.QRect(270, 60, 171, 61))
         self.FRAME_tempo.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -76,9 +92,6 @@ class Ui_Dialog(object):
         self.SPIN_tempo = QtWidgets.QSpinBox(self.FRAME_tempo)
         self.SPIN_tempo.setGeometry(QtCore.QRect(170, 21, 61, 41))
         self.SPIN_tempo.setObjectName("SPIN_tempo")
-        self.PB_play_2 = QtWidgets.QPushButton(self.FRAME_play)
-        self.PB_play_2.setGeometry(QtCore.QRect(210, 370, 150, 40))
-        self.PB_play_2.setObjectName("PB_play_2")
         self.PB_tempo_1 = QtWidgets.QPushButton(self.FRAME_tempo)
         self.PB_tempo_1.setGeometry(QtCore.QRect(210, 370, 150, 40))
         self.PB_tempo_1.setObjectName("PB_tempo_1")
@@ -86,6 +99,12 @@ class Ui_Dialog(object):
         self.PB_tempo_2.setGeometry(QtCore.QRect(210, 370, 150, 40))
         self.PB_tempo_2.setObjectName("PB_tempo_2")
 
+        # final play button on play screen
+        self.PB_play_2 = QtWidgets.QPushButton(self.FRAME_play)
+        self.PB_play_2.setGeometry(QtCore.QRect(210, 370, 150, 40))
+        self.PB_play_2.setObjectName("PB_play_2")
+
+        # song in-progress screen
         self.FRAME_inProgress = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_inProgress.setGeometry(QtCore.QRect(150, 0, 601, 501))
         self.FRAME_inProgress.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -96,6 +115,24 @@ class Ui_Dialog(object):
         self.LABEL_inProgress.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.LABEL_inProgress.setObjectName("LABEL_inProgress")
         
+        # input type frame (midi/microphone)
+        self.FRAME_inputType = QtWidgets.QFrame(self.FRAME_play)
+        self.FRAME_inputType.setGeometry(QtCore.QRect(20, 400, 561, 80))
+        self.FRAME_inputType.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.FRAME_inputType.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.FRAME_inputType.setObjectName("FRAME_inputType")
+        self.LABEL_inputType = QtWidgets.QLabel(self.FRAME_inputType)
+        self.LABEL_inputType.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_inputType.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_inputType.setObjectName("LABEL_inputType")
+        self.PB_inputType1 = QtWidgets.QPushButton(self.FRAME_inputType)
+        self.PB_inputType1.setGeometry(QtCore.QRect(170, 20, 150, 40))
+        self.PB_inputType1.setObjectName("PB_inputType1")
+        self.PB_inputType2 = QtWidgets.QPushButton(self.FRAME_inputType)
+        self.PB_inputType2.setGeometry(QtCore.QRect(380, 20, 150, 40))
+        self.PB_inputType2.setObjectName("PB_inputType2")
+
+        # feedback screen
         self.FRAME_feedback = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_feedback.setGeometry(QtCore.QRect(150, 0, 601, 501))
         self.FRAME_feedback.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -116,8 +153,7 @@ class Ui_Dialog(object):
         self.PB_feedback = QtWidgets.QPushButton(self.FRAME_feedback)
         self.PB_feedback.setGeometry(QtCore.QRect(210, 370, 150, 40))
         self.PB_feedback.setObjectName("PB_feedback")
-
-
+        
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
@@ -146,3 +182,7 @@ class Ui_Dialog(object):
         self.LABEL_feedback2.setText(_translate("Dialog", "FEEDBACK"))
         self.LABEL_feedback3.setText(_translate("Dialog", "FEEDBACK"))
         self.PB_feedback.setText(_translate("Dialog", "RETURN TO PLAY SCREEN"))
+
+        self.LABEL_inputType.setText(_translate("Dialog", "CHOOSE INPUT TYPE"))
+        self.PB_inputType1.setText(_translate("Dialog", "MIDI"))
+        self.PB_inputType2.setText(_translate("Dialog", "MICROPHONE"))

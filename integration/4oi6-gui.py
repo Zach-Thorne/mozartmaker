@@ -38,7 +38,8 @@ class MainWindow(Ui_Dialog):
         self.FRAME_play.setVisible(False)
         self.FRAME_feedback.setVisible(False)
 
-        self.tempo_flag = "0" #default
+        self.tempo_flag = "0" # default is no tempo
+        self.inputType_flag = "0" # default is MIDI
 
         #
         #
@@ -137,11 +138,13 @@ class MainWindow(Ui_Dialog):
         self.frame_height = int(0.1*self.height_play_screen)
 
         # frames: set geometry
+        self.FRAME_inputType.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.1*self.height_play_screen), self.frame_width, self.frame_height))
         self.FRAME_mode.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.1*self.height_play_screen),  self.frame_width, self.frame_height))
         self.FRAME_song.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.25*self.height_play_screen), self.frame_width, self.frame_height))
         self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.4*self.height_play_screen),  self.frame_width, self.frame_height))
 
         # frames: styling
+        self.FRAME_inputType.setStyleSheet("QFrame#FRAME_inputType { border-radius: 15px; background-color: #696969; } ")
         self.FRAME_mode.setStyleSheet("QFrame#FRAME_mode { border-radius: 15px; background-color: #696969; } ")
         self.FRAME_song.setStyleSheet("QFrame#FRAME_song { border-radius: 15px; background-color: #696969; } ")
         self.FRAME_tempo.setStyleSheet("QFrame#FRAME_tempo { border-radius: 15px; background-color: #696969; } ")
@@ -173,6 +176,10 @@ class MainWindow(Ui_Dialog):
         self.LABEL_feedback2.setStyleSheet("QLabel#LABEL_feedback2 { color: white; font-style: bold; font-size: 20pt; }")
         self.LABEL_feedback3.setGeometry(QtCore.QRect(0, 400, self.width_play_screen, self.label_height))
         self.LABEL_feedback3.setStyleSheet("QLabel#LABEL_feedback3 { color: white; font-style: bold; font-size: 20pt; }")
+
+        # input type label
+        self.LABEL_inputType.setGeometry(QtCore.QRect(int(0.05*self.frame_width), int(0.25*self.frame_height), self.label_width, self.label_height))
+        self.LABEL_inputType.setStyleSheet("QLabel#LABEL_inputType { color: white; font-style: bold; font-size: 14pt; }")
 
         #
         #
@@ -213,7 +220,19 @@ class MainWindow(Ui_Dialog):
         self.PB_feedback.setFlat(True)
         self.PB_feedback.setStyleSheet("QPushButton#PB_feedback { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_feedback.setGeometry (QtCore.QRect(int(0.38*self.width_play_screen), int(0.7*self.height_window), self.button_width, self.frame_height))
-        #self.PB_feedback.clicked.connect(self.mode_1_button_clicked)
+        
+        # input type buttons
+        self.PB_inputType1.setGeometry (QtCore.QRect(int(0.3*self.frame_width),  int(0.25*self.frame_height), self.button_width, self.button_height))
+        self.PB_inputType2.setGeometry (QtCore.QRect(int(0.65*self.frame_width), int(0.25*self.frame_height), self.button_width, self.button_height))
+
+        self.PB_inputType1.setFlat(True)
+        self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        self.PB_inputType2.setFlat(True)
+        self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        
+        self.PB_inputType1.clicked.connect(self.inputType1_button_clicked)
+        self.PB_inputType2.clicked.connect(self.inputType2_button_clicked)
 
         #
         #
@@ -364,6 +383,26 @@ class MainWindow(Ui_Dialog):
         self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
+    #
+    #
+    # FUNCTION FOR INPUT TYPE BUTTONS (MIDI OR MICROPHONE)
+    def inputType1_button_clicked(self):
+        self.inputType_flag = "0"
+
+        # set stylesheets for buttons
+        self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+    def inputType2_button_clicked(self):
+        self.inputType_flag = "1"
+
+        #set stylesheets for buttons
+        self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+    #
+    #
+    # FUNCTION FOR FEEDBACK SCREEN (AFTER TESTING MODE)
     def feedback_screen(self, note_score, timing_score, total_score):
         
         # if the user was playing WITHOUT timing, only output "Score: %"
@@ -387,6 +426,9 @@ class MainWindow(Ui_Dialog):
         self.FRAME_inProgress.setVisible(False)
         self.FRAME_feedback.setVisible(True)
 
+    #
+    #
+    # FUNCTION TO RESET PLAY SCREEN AFTER SONG ENDS
     def reset_play_screen(self):
         # reset buttons
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
@@ -427,7 +469,7 @@ class MainWindow(Ui_Dialog):
         # update GUI
         self.FRAME_play.setVisible(False)
         self.FRAME_inProgress.setVisible(True)
-        result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo)
+        result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo, self.inputType_flag)
         self.feedback_screen(result[0], result[1], result[2])
         
 app = QtWidgets.QApplication(sys.argv)
