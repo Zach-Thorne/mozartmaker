@@ -198,7 +198,7 @@ class MainWindow(Ui_Dialog):
         self.PB_mode_2.setGeometry (QtCore.QRect(int(0.65*self.frame_width), int(0.25*self.frame_height), self.button_width, self.button_height))
         self.PB_tempo_1.setGeometry(QtCore.QRect(int(0.03*self.frame_width), int(0.25*self.frame_height), self.button_width, self.button_height))
         self.PB_tempo_2.setGeometry(QtCore.QRect(int(0.35*self.frame_width),  int(0.25*self.frame_height), self.button_width, self.button_height))
-        self.PB_play_2.setGeometry (QtCore.QRect(int(0.38*self.width_play_screen), int(0.7*self.height_window), self.button_width, self.frame_height))
+        self.PB_play_2.setGeometry (QtCore.QRect(int(0.38*self.width_play_screen), int(0.75*self.height_window), self.button_width, self.frame_height))
 
         # buttons: styling
         self.PB_mode_1.setFlat(True)
