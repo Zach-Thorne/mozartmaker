@@ -10,6 +10,7 @@ from PyQt6 import QtWidgets, uic, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QFrame
 
+
 from app.MainWindow import Ui_Dialog
 
 class MainWindow(Ui_Dialog):
@@ -38,8 +39,8 @@ class MainWindow(Ui_Dialog):
         self.FRAME_play.setVisible(False)
         self.FRAME_feedback.setVisible(False)
 
-        self.tempo_flag = "0" # default is no tempo
-        self.inputType_flag = "0" # default is MIDI
+        self.tempo_flag = "0" # default = no tempo
+        self.inputType_flag = "0" # default = MIDI
 
         #
         #
@@ -52,6 +53,7 @@ class MainWindow(Ui_Dialog):
         self.PB_feedback.clicked.connect(self.reset_play_screen)
 
         self.setup_window(dialog)
+        run_mozart("F","learn",0,1,0)
 
     def setup_window(self, dialog):
 
@@ -137,16 +139,20 @@ class MainWindow(Ui_Dialog):
         self.frame_width = int(0.8*self.width_play_screen)
         self.frame_height = int(0.1*self.height_play_screen)
 
-        # frames: set geometry
+        # input type frame
         self.FRAME_inputType.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.1*self.height_play_screen), self.frame_width, self.frame_height))
-        self.FRAME_mode.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.1*self.height_play_screen),  self.frame_width, self.frame_height))
-        self.FRAME_song.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.25*self.height_play_screen), self.frame_width, self.frame_height))
-        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.4*self.height_play_screen),  self.frame_width, self.frame_height))
-
-        # frames: styling
         self.FRAME_inputType.setStyleSheet("QFrame#FRAME_inputType { border-radius: 15px; background-color: #696969; } ")
+
+        # mode selection frame
+        self.FRAME_mode.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.1*self.height_play_screen),  self.frame_width, self.frame_height))
         self.FRAME_mode.setStyleSheet("QFrame#FRAME_mode { border-radius: 15px; background-color: #696969; } ")
+        
+        # song selection frame
+        self.FRAME_song.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.25*self.height_play_screen), self.frame_width, self.frame_height))
         self.FRAME_song.setStyleSheet("QFrame#FRAME_song { border-radius: 15px; background-color: #696969; } ")
+        
+        # tempo selection frame
+        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.4*self.height_play_screen),  self.frame_width, self.frame_height))
         self.FRAME_tempo.setStyleSheet("QFrame#FRAME_tempo { border-radius: 15px; background-color: #696969; } ")
         
         #
@@ -233,7 +239,7 @@ class MainWindow(Ui_Dialog):
         
         self.PB_inputType1.clicked.connect(self.inputType1_button_clicked)
         self.PB_inputType2.clicked.connect(self.inputType2_button_clicked)
-
+        
         #
         #
         # COMBO BOX
@@ -307,8 +313,6 @@ class MainWindow(Ui_Dialog):
             # reset mode selection indicator variable for play screen
             self.mode = ""
 
-        
-
         # if the user is already operating in the "play" tab, do nothing
 
     #
@@ -347,7 +351,7 @@ class MainWindow(Ui_Dialog):
 
     #
     #
-    # FUNCTION FOR MODE 1 BUTTON
+    # FUNCTIONS FOR MODE SELECTION BUTTONS
     def mode_1_button_clicked(self):
         self.mode = "learn"
 
@@ -357,9 +361,6 @@ class MainWindow(Ui_Dialog):
         # reset testing mode button
         self.PB_mode_2.setStyleSheet("QPushButton#PB_mode_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    #
-    #
-    # FUNCTION FOR MODE 2 BUTTON
     def mode_2_button_clicked(self):
         self.mode = "test"
 
@@ -369,6 +370,9 @@ class MainWindow(Ui_Dialog):
         # reset training mode button
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
+    #
+    #
+    # FUNCTIONS FOR TEMPO SELECTION BUTTONS
     def tempo_button_1_clicked(self):
         self.tempo_flag = FALSE
 
@@ -385,7 +389,7 @@ class MainWindow(Ui_Dialog):
 
     #
     #
-    # FUNCTION FOR INPUT TYPE BUTTONS (MIDI OR MICROPHONE)
+    # FUNCTIONS FOR INPUT TYPE BUTTONS
     def inputType1_button_clicked(self):
         self.inputType_flag = "0"
 
@@ -402,18 +406,18 @@ class MainWindow(Ui_Dialog):
 
     #
     #
-    # FUNCTION FOR FEEDBACK SCREEN (AFTER TESTING MODE)
+    # FUNCTION FOR FEEDBACK SCREEN (AFTER SONG ENDS)
     def feedback_screen(self, note_score, timing_score, total_score):
         
         # if the user was playing WITHOUT timing, only output "Score: %"
-        if((note_score == None) & (timing_score== None)):
+        if((note_score == None) & (timing_score== None) & (total_score != None)):
             self.LABEL_feedback2.setText("SCORE: " + str(total_score) + "%")
             self.LABEL_feedback1.setVisible(False)
             self.LABEL_feedback2.setVisible(True)
             self.LABEL_feedback3.setVisible(False)
 
         # if the user was playing WITH timing, output all three scores
-        else:
+        elif ((note_score != None) & (timing_score!= None) & (total_score != None)):
             self.LABEL_feedback1.setText("NOTE ACCURACY: " + str(note_score) + "%")
             self.LABEL_feedback2.setText("TIMING ACCURACY: " + str(timing_score) + "%")
             self.LABEL_feedback3.setText("OVERALL SCORE: " + str(total_score) + "%")
@@ -421,14 +425,17 @@ class MainWindow(Ui_Dialog):
             self.LABEL_feedback2.setVisible(True)
             self.LABEL_feedback3.setVisible(True)
         
+        else:
+            self.LABEL_feedback1.setVisible(False)
+            self.LABEL_feedback2.setVisible(False)
+            self.LABEL_feedback3.setVisible(False)
+        
         # update which main screen frame is showing
         self.FRAME_play.setVisible(False)
         self.FRAME_inProgress.setVisible(False)
         self.FRAME_feedback.setVisible(True)
 
-    #
-    #
-    # FUNCTION TO RESET PLAY SCREEN AFTER SONG ENDS
+    # RESET PLAY SCREEN TO PLAY ANOTHER SONG
     def reset_play_screen(self):
         # reset buttons
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
@@ -468,9 +475,14 @@ class MainWindow(Ui_Dialog):
 
         # update GUI
         self.FRAME_play.setVisible(False)
-        self.FRAME_inProgress.setVisible(True)
-        result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo, self.inputType_flag)
-        self.feedback_screen(result[0], result[1], result[2])
+        self.FRAME_inProgress.setVisible(True)  
+        print("tempo = ", tempo)
+        result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo, 1, self.inputType_flag)
+
+        if result == None:
+            self.feedback_screen(None, None, None)    
+        else:
+            self.feedback_screen(result[0], result[1], result[2])
         
 app = QtWidgets.QApplication(sys.argv)
 dialog = QtWidgets.QDialog()
