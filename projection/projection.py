@@ -11,15 +11,16 @@ from projection_luts import black_lut, white_lut
 num_white_keys = 36 #Since its a mini piano
 num_black_keys = 25
 total_keys = num_white_keys + num_black_keys
-top_of_key = 150
+top_of_key = 550
 bot_of_key = top_of_key+100
+const_to_change_width = 7
 
 #NOTE Look into if this would make more sense being a class 
 #Sets up default shape for keyboard
 def create_default(master, canvas, screen_width, screen_height): 
 
     #TODO will need update to more match the keys but for now this is fine
-    rec_width = math.floor((screen_width-20)/num_white_keys)
+    rec_width = math.floor((screen_width-20)/num_white_keys) - const_to_change_width
     
     #Creates blank rectangles for all of the white keys 
     for i in range(num_white_keys):
@@ -44,7 +45,7 @@ def create_basic_song():
 
 #Will light correct keys up gren ideally
 def project_song(root, canvas, screen_width, screen_height, song):
-    rec_width = math.floor((screen_width-20)/num_white_keys)
+    rec_width = math.floor((screen_width-20)/num_white_keys) - const_to_change_width
     total_elem = song.size
     notes = math.floor(total_elem/num_white_keys)
     for i in range(notes):
@@ -81,10 +82,15 @@ if __name__ == "__main__":
     #Initalize Tkinter
     root = Tk()
 
+    #Function to open tkinter window on another display
+    d    
+
     #Initialize Canvas
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
+
     canvas = Canvas(width =screen_width, height=screen_height)
+
 
     #TODO uncomment once we able to make shit fully work
     #root.attributes('-fullscreen', True)

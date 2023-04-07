@@ -16,6 +16,9 @@ def initialization():
             return pygame.midi.Input(keyboard_detect)
             break
 
+def destroy():
+    pygame.midi.quit()
+
 def number_to_note(number):
     index = constants.midi_num.index(number)
     note_played = (constants.keys[index])
