@@ -144,15 +144,15 @@ class MainWindow(Ui_Dialog):
         self.FRAME_inputType.setStyleSheet("QFrame#FRAME_inputType { border-radius: 15px; background-color: #696969; } ")
 
         # mode selection frame
-        self.FRAME_mode.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.1*self.height_play_screen),  self.frame_width, self.frame_height))
+        self.FRAME_mode.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.25*self.height_play_screen),  self.frame_width, self.frame_height))
         self.FRAME_mode.setStyleSheet("QFrame#FRAME_mode { border-radius: 15px; background-color: #696969; } ")
         
         # song selection frame
-        self.FRAME_song.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.25*self.height_play_screen), self.frame_width, self.frame_height))
+        self.FRAME_song.setGeometry (QtCore.QRect(int(0.1*self.width_play_screen), int(0.4*self.height_play_screen), self.frame_width, self.frame_height))
         self.FRAME_song.setStyleSheet("QFrame#FRAME_song { border-radius: 15px; background-color: #696969; } ")
         
         # tempo selection frame
-        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.4*self.height_play_screen),  self.frame_width, self.frame_height))
+        self.FRAME_tempo.setGeometry(QtCore.QRect(int(0.1*self.width_play_screen), int(0.55*self.height_play_screen),  self.frame_width, self.frame_height))
         self.FRAME_tempo.setStyleSheet("QFrame#FRAME_tempo { border-radius: 15px; background-color: #696969; } ")
         
         #
