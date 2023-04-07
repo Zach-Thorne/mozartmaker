@@ -5,7 +5,9 @@
 #
 
 import sys
+import imghdr
 from integration_for_gui import *
+from scanning_sheet_music import *
 from PyQt6 import QtWidgets, uic, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QFrame
@@ -330,14 +332,25 @@ class MainWindow(Ui_Dialog):
     def addSong_button_clicked(self):
         
         # TODO: change styling
-
-        # get filepath 
-        addSong_filepath = fd.askopenfilename()
-        print(addSong_filepath)
-        
-        # zach add functionality here
-    
-    #
+        #Run loop till valid image is chosen
+        while 1:
+            #Opens up file explorer 
+            addSong_filepath = fd.askopenfilename()
+            print(addSong_filepath)
+            #Checks if user exits file explorer, if they do length will be 0 
+            if len(addSong_filepath) > 0:
+              #Gets file type
+              file_type = imghdr.what(addSong_filepath)
+              #If file type is an image 
+              if(file_type == 'png' or file_type == 'jpg' or file_type == 'jpeg'):
+                  #TODO Soph pls insert load screen here
+                  #Takes image and converts into usable data
+                  song_array = convert_to_notes(addSong_filepath);
+                  print(song_array) 
+                  break
+            else: 
+                  break
+            
     #
     # FUNCTION FOR PLAY BUTTON
     def play_button_clicked(self):
