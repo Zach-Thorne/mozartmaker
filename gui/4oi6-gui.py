@@ -13,6 +13,7 @@ import sys
 from PyQt6 import QtWidgets, uic, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QFrame
+from tkinter import filedialog as fd
 
 from app.MainWindow import Ui_Dialog
 
@@ -41,6 +42,7 @@ class MainWindow(Ui_Dialog):
         self.FRAME_inProgress.setVisible(False)
         self.FRAME_play.setVisible(False)
         self.FRAME_feedback.setVisible(False)
+        self.FRAME_songGallery.setVisible(False)
 
         self.tempo_flag = "0" #default
         self.inputType_flag = "0" #default
@@ -54,6 +56,7 @@ class MainWindow(Ui_Dialog):
         self.PB_user_guide.clicked.connect(self.user_guide_button_clicked)
         self.PB_play_2.clicked.connect(self.final_play_button_clicked)
         self.PB_feedback.clicked.connect(self.reset_play_screen)
+        self.PB_addSong.clicked.connect(self.addSong_button_clicked)
 
         self.setup_window(dialog)
 
@@ -283,6 +286,51 @@ class MainWindow(Ui_Dialog):
         # DISPLAY PLAY SCREEN
         self.FRAME_play.setVisible(True)
 
+    def setup_songGallery_screen(self):
+        #
+        #
+        # SET UP SONG GALLERY SCREEN
+
+        # frame: dimensions + styling
+        self.width_play_screen = self.width_window - self.width_menu
+        self.height_play_screen = self.height_window
+        self.FRAME_songGallery.setGeometry(QtCore.QRect(self.width_menu, 0, self.width_play_screen, self.height_play_screen))
+        self.FRAME_songGallery.setStyleSheet("QFrame#FRAME_songGallery { background-color: #343843; }")
+
+        # label
+        self.label_width = int(self.width_play_screen)
+        self.label_height = int(0.1*self.height_play_screen)
+        self.LABEL_songGallery.setGeometry(QtCore.QRect(0, int(0.05*self.height_play_screen), self.label_width, self.label_height))
+        self.LABEL_songGallery.setStyleSheet("QLabel#LABEL_songGallery { color: white; font-style: bold; font-size: 14pt; }")
+
+        # push buttons - dimensions
+        self.button_width = int(0.3*self.width_play_screen)
+        self.button_height = int(0.075*self.height_play_screen)
+        self.PB_addSong.setGeometry (QtCore.QRect(int(0.6*self.width_play_screen),  int(0.25*self.height_play_screen), self.button_width, self.button_height))
+        self.PB_removeSong.setGeometry (QtCore.QRect(int(0.6*self.width_play_screen), int(0.35*self.height_play_screen), self.button_width, self.button_height))
+
+        # push buttons - styling
+        self.PB_addSong.setFlat(True)
+        self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_removeSong.setFlat(True)
+        self.PB_removeSong.setStyleSheet("QPushButton#PB_removeSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        # styling for list
+
+
+        # *** FUNCTIONALITY ***
+        # populate list from CSV
+        # buttons to add and remove songs
+        # import files
+
+    #
+    #
+    # FUNCTION FOR "ADD SONG" BUTTON   
+    def addSong_button_clicked(self):
+        addSong_filepath = fd.askopenfilename()
+        print(addSong_filepath)
+        # call this when the user clicks "add song" button
+
     #
     #
     # FUNCTION FOR PLAY BUTTON
@@ -299,6 +347,8 @@ class MainWindow(Ui_Dialog):
 
             # show play screen and hide other screens
             self.setup_play_screen()
+
+            self.FRAME_songGallery.setVisible(False)
             self.FRAME_inProgress.setVisible(False)
             self.FRAME_feedback.setVisible(False)
             self.FRAME_play.setVisible(True)
@@ -308,8 +358,6 @@ class MainWindow(Ui_Dialog):
             
             # reset mode selection indicator variable for play screen
             self.mode = ""
-
-        
 
         # if the user is already operating in the "play" tab, do nothing
 
@@ -324,8 +372,12 @@ class MainWindow(Ui_Dialog):
             self.PB_play.setStyleSheet("QPushButton#PB_play { font-style: bold; font-size: 18pt; color: white; background-color: #696969; border: none; vertical-align: middle; }")
             self.PB_user_guide.setStyleSheet("QPushButton#PB_user_guide { font-style: bold; font-size: 18pt; color: white; background-color: #696969; border: none; vertical-align: middle; }")
 
+            # setup song gallery screen
+            self.setup_songGallery_screen()
+
             # show song gallery screen and hide other screens
             self.FRAME_play.setVisible(False)
+            self.FRAME_songGallery.setVisible(True)
 
             # change current task indicator
             self.current_task = "song_gallery"

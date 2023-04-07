@@ -14,14 +14,16 @@ class Ui_Dialog(object):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1617, 1024)
 
-        # entire screen
+        #
+        # ENTIRE SCREEN
         self.FRAME_main_window = QtWidgets.QFrame(Dialog)
         self.FRAME_main_window.setGeometry(QtCore.QRect(0, 0, 1491, 1001))
         self.FRAME_main_window.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.FRAME_main_window.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.FRAME_main_window.setObjectName("FRAME_main_window")
 
-        # menu frame
+        #
+        # MENU FRAME
         self.FRAME_menu = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_menu.setGeometry(QtCore.QRect(0, 0, 150, 500))
         self.FRAME_menu.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -45,7 +47,8 @@ class Ui_Dialog(object):
         self.PB_user_guide.setGeometry(QtCore.QRect(0, 460, 150, 40))
         self.PB_user_guide.setObjectName("PB_user_guide")
 
-        # play screen frame
+        #
+        # PLAY SCREEN
         self.FRAME_play = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_play.setGeometry(QtCore.QRect(150, 0, 601, 501))
         self.FRAME_play.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -132,7 +135,8 @@ class Ui_Dialog(object):
         self.PB_inputType2.setGeometry(QtCore.QRect(380, 20, 150, 40))
         self.PB_inputType2.setObjectName("PB_inputType2")
 
-        # feedback screen
+        #
+        # FEEDBACK SCREEN
         self.FRAME_feedback = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_feedback.setGeometry(QtCore.QRect(150, 0, 601, 501))
         self.FRAME_feedback.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -154,6 +158,27 @@ class Ui_Dialog(object):
         self.PB_feedback.setGeometry(QtCore.QRect(210, 370, 150, 40))
         self.PB_feedback.setObjectName("PB_feedback")
         
+        #
+        # SONG GALLERY SCREEN
+        self.FRAME_songGallery = QtWidgets.QFrame(self.FRAME_main_window)
+        self.FRAME_songGallery.setGeometry(QtCore.QRect(150, 0, 601, 501))
+        self.FRAME_songGallery.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.FRAME_songGallery.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.FRAME_songGallery.setObjectName("FRAME_songGallery")
+        self.LABEL_songGallery = QtWidgets.QLabel(self.FRAME_songGallery)
+        self.LABEL_songGallery.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_songGallery.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_songGallery.setObjectName("LABEL_songGallery")
+        self.LIST_songGallery = QtWidgets.QListView(self.FRAME_songGallery)
+        self.LIST_songGallery.setGeometry(QtCore.QRect(20, 40, 256, 192))
+        self.LIST_songGallery.setObjectName("LIST_songGallery")
+        self.PB_addSong = QtWidgets.QPushButton(self.FRAME_songGallery)
+        self.PB_addSong.setGeometry(QtCore.QRect(210, 40, 150, 40))
+        self.PB_addSong.setObjectName("PB_addSong")
+        self.PB_removeSong = QtWidgets.QPushButton(self.FRAME_songGallery)
+        self.PB_removeSong.setGeometry(QtCore.QRect(210, 150, 150, 40))
+        self.PB_removeSong.setObjectName("PB_removeSong")
+
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
@@ -186,3 +211,7 @@ class Ui_Dialog(object):
         self.LABEL_inputType.setText(_translate("Dialog", "CHOOSE INPUT TYPE"))
         self.PB_inputType1.setText(_translate("Dialog", "MIDI"))
         self.PB_inputType2.setText(_translate("Dialog", "MICROPHONE"))
+
+        self.LABEL_songGallery.setText(_translate("Dialog", "VIEW + EDIT YOUR SONG GALLERY"))
+        self.PB_addSong.setText(_translate("Dialog", "ADD SONG"))
+        self.PB_removeSong.setText(_translate("Dialog", "REMOVE SELECTED SONG"))

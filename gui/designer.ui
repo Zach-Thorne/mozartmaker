@@ -450,6 +450,74 @@
      </property>
     </widget>
    </widget>
+   <widget class="QFrame" name="FRAME_songGallery">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>510</y>
+      <width>601</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="PB_addSong">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>100</y>
+       <width>150</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ADD NEW SONG</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="PB_removeSong">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>160</y>
+       <width>150</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>REMOVE SELECTED SONG</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="LIST_songGallery">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>100</y>
+       <width>256</width>
+       <height>291</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="LABEL_songGallery">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>601</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>VIEW + EDIT YOUR SONG GALLERY</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <resources>
