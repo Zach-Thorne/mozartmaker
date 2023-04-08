@@ -363,7 +363,7 @@ class MainWindow(Ui_Dialog):
         self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         
         # 2) get filepath for user's sheet music
-        addSong_filepath = fd.askopenfilename()
+        self.addSong_filepath = fd.askopenfilename()
         print(addSong_filepath)
         
         # Run loop until valid image is chosen
@@ -411,9 +411,8 @@ class MainWindow(Ui_Dialog):
         self.LABEL_songGallery_loading.setVisible(True)
 
         # 8) convert sheet music image to useable data
-        # addSong_array = convert_to_notes(addSong_filepath)
-        # print(addSong_array)
-        addSong_array = "new song data"
+        addSong_array = convert_to_notes(self.addSong_filepath)
+        print(addSong_array)
 
         # 9) update list widget
         self.LIST_songGallery.addItem(addSong_title)
