@@ -14,22 +14,21 @@ class Ui_Dialog(object):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1617, 1024)
 
-        #
-        # ENTIRE SCREEN
+        # entire application screen
         self.FRAME_main_window = QtWidgets.QFrame(Dialog)
         self.FRAME_main_window.setGeometry(QtCore.QRect(0, 0, 1491, 1001))
         self.FRAME_main_window.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.FRAME_main_window.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-        self.FRAME_main_window.setObjectName("FRAME_main_window")
 
         #
         # MENU FRAME
+        self.FRAME_main_window.setObjectName("FRAME_main_window")
         self.FRAME_menu = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_menu.setGeometry(QtCore.QRect(0, 0, 150, 500))
         self.FRAME_menu.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.FRAME_menu.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.FRAME_menu.setObjectName("FRAME_menu")
-        # logo
+        # menu pane logo
         self.LABEL_logo = QtWidgets.QLabel(self.FRAME_menu)
         self.LABEL_logo.setGeometry(QtCore.QRect(0, 0, 150, 90))
         self.LABEL_logo.setObjectName("LABEL_logo")
@@ -48,7 +47,7 @@ class Ui_Dialog(object):
         self.PB_user_guide.setObjectName("PB_user_guide")
 
         #
-        # PLAY SCREEN
+        # MAIN PLAY SCREEN
         self.FRAME_play = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_play.setGeometry(QtCore.QRect(150, 0, 601, 501))
         self.FRAME_play.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -71,7 +70,7 @@ class Ui_Dialog(object):
         self.PB_mode_2 = QtWidgets.QPushButton(self.FRAME_mode)
         self.PB_mode_2.setGeometry(QtCore.QRect(380, 10, 150, 40))
         self.PB_mode_2.setObjectName("PB_mode_2")
-        
+
         # song selection frame
         self.FRAME_song = QtWidgets.QFrame(self.FRAME_play)
         self.FRAME_song.setGeometry(QtCore.QRect(20, 120, 561, 80))
@@ -85,7 +84,7 @@ class Ui_Dialog(object):
         self.COMBO_song = QtWidgets.QComboBox(self.FRAME_song)
         self.COMBO_song.setGeometry(QtCore.QRect(170, 20, 341, 41))
         self.COMBO_song.setObjectName("COMBO_song")
-        
+
         # tempo selection frame
         self.FRAME_tempo = QtWidgets.QFrame(self.FRAME_play)
         self.FRAME_tempo.setGeometry(QtCore.QRect(270, 60, 171, 61))
@@ -102,12 +101,12 @@ class Ui_Dialog(object):
         self.PB_tempo_2.setGeometry(QtCore.QRect(210, 370, 150, 40))
         self.PB_tempo_2.setObjectName("PB_tempo_2")
 
-        # final play button on play screen
+        # final play button
         self.PB_play_2 = QtWidgets.QPushButton(self.FRAME_play)
         self.PB_play_2.setGeometry(QtCore.QRect(210, 370, 150, 40))
         self.PB_play_2.setObjectName("PB_play_2")
 
-        # song in-progress screen
+        # in-progress screen (to show while user is playing a song)
         self.FRAME_inProgress = QtWidgets.QFrame(self.FRAME_main_window)
         self.FRAME_inProgress.setGeometry(QtCore.QRect(150, 0, 601, 501))
         self.FRAME_inProgress.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -117,7 +116,7 @@ class Ui_Dialog(object):
         self.LABEL_inProgress.setGeometry(QtCore.QRect(10, 10, 171, 61))
         self.LABEL_inProgress.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.LABEL_inProgress.setObjectName("LABEL_inProgress")
-        
+
         # input type frame (midi/microphone)
         self.FRAME_inputType = QtWidgets.QFrame(self.FRAME_play)
         self.FRAME_inputType.setGeometry(QtCore.QRect(20, 400, 561, 80))
@@ -157,7 +156,7 @@ class Ui_Dialog(object):
         self.PB_feedback = QtWidgets.QPushButton(self.FRAME_feedback)
         self.PB_feedback.setGeometry(QtCore.QRect(210, 370, 150, 40))
         self.PB_feedback.setObjectName("PB_feedback")
-        
+
         #
         # SONG GALLERY SCREEN
         self.FRAME_songGallery = QtWidgets.QFrame(self.FRAME_main_window)
@@ -172,12 +171,26 @@ class Ui_Dialog(object):
         self.LIST_songGallery = QtWidgets.QListWidget(self.FRAME_songGallery)
         self.LIST_songGallery.setGeometry(QtCore.QRect(20, 40, 256, 192))
         self.LIST_songGallery.setObjectName("LIST_songGallery")
+        self.LABEL_songGallery_loading = QtWidgets.QLabel(self.FRAME_songGallery)
+        self.LABEL_songGallery_loading.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_songGallery_loading.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_songGallery_loading.setObjectName("LABEL_songGallery_loading")
+        self.LABEL_addSong_title = QtWidgets.QLabel(self.FRAME_songGallery)
+        self.LABEL_addSong_title.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_addSong_title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_addSong_title.setObjectName("LABEL_addSong_title")
         self.PB_addSong = QtWidgets.QPushButton(self.FRAME_songGallery)
         self.PB_addSong.setGeometry(QtCore.QRect(210, 40, 150, 40))
         self.PB_addSong.setObjectName("PB_addSong")
         self.PB_removeSong = QtWidgets.QPushButton(self.FRAME_songGallery)
         self.PB_removeSong.setGeometry(QtCore.QRect(210, 150, 150, 40))
         self.PB_removeSong.setObjectName("PB_removeSong")
+        self.TB_addSong_title = QtWidgets.QPlainTextEdit(self.FRAME_songGallery)
+        self.TB_addSong_title.setGeometry(QtCore.QRect(140, 380, 341, 31))
+        self.TB_addSong_title.setObjectName("TB_addSong_title")
+        self.PB_addSong_confirm = QtWidgets.QPushButton(self.FRAME_songGallery)
+        self.PB_addSong_confirm.setGeometry(QtCore.QRect(210, 40, 150, 40))
+        self.PB_addSong_confirm.setObjectName("PB_addSong_confirm")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -185,33 +198,47 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+
+        # menu elements
         self.PB_play.setText(_translate("Dialog", "PLAY"))
         self.LABEL_logo.setText(_translate("Dialog", "TextLabel"))
         self.PB_user_guide.setText(_translate("Dialog", "USER GUIDE"))
 
+        # mode selection elements
         self.LABEL_mode.setText(_translate("Dialog", "CHOOSE YOUR MODE"))
         self.PB_mode_1.setText(_translate("Dialog", "LEARNING"))
         self.PB_mode_2.setText(_translate("Dialog", "TESTING"))
 
+        # song selection elements
         self.LABEL_song.setText(_translate("Dialog", "CHOOSE YOUR SONG"))
-        self.SPIN_tempo.setSuffix(_translate("Dialog", "0"))
         
+        # tempo selection elements
+        self.SPIN_tempo.setSuffix(_translate("Dialog", "0"))
         self.PB_tempo_1.setText(_translate("Dialog", "PLAY WITHOUT TIMING"))
         self.PB_tempo_2.setText(_translate("Dialog", "PLAY WITH TIMING"))
 
+        # final play button
         self.PB_play_2.setText(_translate("Dialog", "PLAY"))
         
+        # in-progress label
         self.LABEL_inProgress.setText(_translate("Dialog", "SONG IN PROGRESS..."))
 
+        # feedback elements
         self.LABEL_feedback1.setText(_translate("Dialog", "FEEDBACK"))
         self.LABEL_feedback2.setText(_translate("Dialog", "FEEDBACK"))
         self.LABEL_feedback3.setText(_translate("Dialog", "FEEDBACK"))
         self.PB_feedback.setText(_translate("Dialog", "RETURN TO PLAY SCREEN"))
 
+        # input type elements
         self.LABEL_inputType.setText(_translate("Dialog", "CHOOSE INPUT TYPE"))
         self.PB_inputType1.setText(_translate("Dialog", "MIDI"))
         self.PB_inputType2.setText(_translate("Dialog", "MICROPHONE"))
 
+        # song gallery elements
         self.LABEL_songGallery.setText(_translate("Dialog", "VIEW + EDIT YOUR SONG GALLERY"))
         self.PB_addSong.setText(_translate("Dialog", "ADD SONG"))
         self.PB_removeSong.setText(_translate("Dialog", "REMOVE SELECTED SONG"))
+        self.LABEL_songGallery_loading.setText(_translate("Dialog", "YOUR SONG IS BEING ADDED ..."))
+        self.LABEL_addSong_title.setText(_translate("Dialog", "WHAT IS THE NAME OF YOUR NEW SONG?"))
+        self.PB_addSong_confirm.setText(_translate("Dialog", "CONFIRM"))
+        

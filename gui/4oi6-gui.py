@@ -9,7 +9,7 @@
 # combo box set default value
 
 import sys
-# from integration_for_gui import *
+import imghdr
 from PyQt6 import QtWidgets, uic, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QFrame
@@ -59,6 +59,7 @@ class MainWindow(Ui_Dialog):
         self.PB_play_2.clicked.connect(self.final_play_button_clicked)
         self.PB_feedback.clicked.connect(self.reset_play_screen)
         self.PB_addSong.clicked.connect(self.addSong_button_clicked)
+        self.PB_addSong_confirm.clicked.connect(self.addSong_confirm_button_clicked)
 
         self.setup_window(dialog)
 
@@ -298,29 +299,48 @@ class MainWindow(Ui_Dialog):
         self.FRAME_songGallery.setGeometry(QtCore.QRect(self.width_menu, 0, self.width_play_screen, self.height_play_screen))
         self.FRAME_songGallery.setStyleSheet("QFrame#FRAME_songGallery { background-color: #343843; }")
 
-        # label
+        # labels
         self.label_width = int(self.width_play_screen)
         self.label_height = int(0.1*self.height_play_screen)
         self.LABEL_songGallery.setGeometry(QtCore.QRect(0, int(0.05*self.height_play_screen), self.label_width, self.label_height))
         self.LABEL_songGallery.setStyleSheet("QLabel#LABEL_songGallery { color: white; font-style: bold; font-size: 18pt; }")
+        self.LABEL_songGallery_loading.setGeometry(QtCore.QRect(0, int(0.4*self.height_play_screen), self.label_width, self.label_height))
+        self.LABEL_songGallery_loading.setStyleSheet("QLabel#LABEL_songGallery_loading { color: white; font-style: bold; font-size: 18pt; }")
+        self.LABEL_addSong_title.setGeometry(QtCore.QRect(0, int(0.3*self.height_play_screen), self.label_width, self.label_height))
+        self.LABEL_addSong_title.setStyleSheet("QLabel#LABEL_addSong_title { color: white; font-style: bold; font-size: 18pt; }")
 
         # push buttons - dimensions
         self.button_width = int(0.225*self.width_play_screen)
         self.button_height = int(0.07*self.height_play_screen)
         self.PB_addSong.setGeometry (QtCore.QRect(int(0.25*self.width_play_screen),  int(0.8*self.height_play_screen), self.button_width, self.button_height))
         self.PB_removeSong.setGeometry (QtCore.QRect(int(0.525*self.width_play_screen), int(0.8*self.height_play_screen), self.button_width, self.button_height))
+        self.PB_addSong_confirm.setGeometry (QtCore.QRect(int(0.4*self.width_play_screen),  int(0.5*self.height_play_screen), self.button_width, self.button_height))
 
         # push buttons - styling
         self.PB_addSong.setFlat(True)
         self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_removeSong.setFlat(True)
         self.PB_removeSong.setStyleSheet("QPushButton#PB_removeSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_addSong_confirm.setFlat(True)
+        self.PB_addSong_confirm.setStyleSheet("QPushButton#PB_addSong_confirm { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-        # TODO: styling for list
+        # styling for text box
+        self.TB_addSong_title.setGeometry(QtCore.QRect(int(0.25*self.width_play_screen), int(0.4*self.height_play_screen), int(0.5*self.label_width), int(0.5*self.label_height)))
+        self.TB_addSong_title.setStyleSheet("QLabel#LABEL_songGallery { color: white; font-style: bold; font-size: 14pt; }")
+
+        # styling for list
         self.LIST_songGallery.setGeometry(QtCore.QRect(int(0.25*self.width_play_screen),  int(0.2*self.height_play_screen), int(0.5*self.width_play_screen), int(0.5*self.height_play_screen)))
+
+        # hide some widgets
+        self.LABEL_songGallery_loading.setVisible(False)
+        self.PB_addSong_confirm.setVisible(False)
+        self.LABEL_addSong_title.setVisible(False)
+        self.TB_addSong_title.setVisible(False)
 
         # *** INITIALIZE LIST WIDGET ***
         
+        # TODO if time: alphabetically sort songs lol
+
         # 1) read song titles from the CSV
         songTitles_df = pandas.read_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')),usecols=['name']) # create dataframe of song titles
         songTitles_list = songTitles_df.values.tolist() # convert dataframe to list
@@ -334,14 +354,72 @@ class MainWindow(Ui_Dialog):
     # FUNCTION FOR "ADD SONG" BUTTON   
     def addSong_button_clicked(self):
         
-        # 1) get filepath for user's sheet music
+        # 1) change styling to green
+        self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        
+        # 2) get filepath for user's sheet music
         addSong_filepath = fd.askopenfilename()
         print(addSong_filepath)
         
-        # 2) show screen to show while sheet music is being processed
-        # 3) process sheet music
-        # 4) hide screen
-        # 5) update list widget
+        # Run loop until valid image is chosen
+        while 1:
+            
+            # 3) open up explorer interface for user to select file
+            addSong_filepath = fd.askopenfilename()
+            print(addSong_filepath)
+
+            if len(addSong_filepath) > 0:
+                
+                # 4) get + check file type
+                file_type = imghdr.what(addSong_filepath) # get file type
+                if(file_type == 'png' or file_type == 'jpg' or file_type == 'jpeg'):
+
+                    # 5) hide list and ask user for song title
+                    self.LIST_songGallery.setVisible(False)
+                    self.LABEL_addSong_title.setVisible(True)
+                    self.TB_addSong_title.setVisible(True)
+                    self.PB_addSong_confirm.setVisible(True)
+
+                    break
+                    # waits for user input, once they press the "confirm" button, next fn is called
+            
+            # If user exits the file explorer (filepath length is 0)
+            else: 
+                  break
+
+    def addSong_confirm_button_clicked(self):
+        
+        # 6) read song name from text box
+        addSong_title = self.TB_addSong_title.toPlainText()
+        print(addSong_title)
+
+        # 7) show loading message
+        self.TB_addSong_title.setVisible(False)
+        self.LABEL_addSong_title.setVisible(False)
+        self.PB_addSong.setVisible(False)
+        self.PB_removeSong.setVisible(False)
+        self.PB_addSong_confirm.setVisible(False)
+        # TODO: add song title to label
+        self.LABEL_songGallery_loading.setVisible(True)
+
+        # 8) convert sheet music image to useable data
+        # addSong_array = convert_to_notes(addSong_filepath)
+        # print(addSong_array)
+        addSong_array = "new song data"
+
+        # 9) update list widget
+        self.LIST_songGallery.addItem(addSong_title)
+        
+        # 10) update CSV
+        addSong_df = pandas.DataFrame({'name': [addSong_title], 'data': [addSong_array]}) # create dataframe for new song
+        addSong_df.to_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')),mode='a',index=True, header=False) # append new data to csv
+
+        # 11) show normal screen now that everything's done
+        self.LIST_songGallery.setVisible(True)
+        self.PB_addSong.setVisible(True)
+        self.PB_removeSong.setVisible(True)
+        self.LABEL_songGallery_loading.setVisible(False)
+        self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
     #
     #
@@ -413,7 +491,7 @@ class MainWindow(Ui_Dialog):
 
     #
     #
-    # FUNCTION FOR MODE 1 BUTTON
+    # FUNCTIONS FOR MODE SELECTION BUTTONS
     def mode_1_button_clicked(self):
         self.mode = "learn"
 
@@ -423,9 +501,6 @@ class MainWindow(Ui_Dialog):
         # reset testing mode button
         self.PB_mode_2.setStyleSheet("QPushButton#PB_mode_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    #
-    #
-    # FUNCTION FOR MODE 2 BUTTON
     def mode_2_button_clicked(self):
         self.mode = "test"
 
@@ -435,6 +510,9 @@ class MainWindow(Ui_Dialog):
         # reset training mode button
         self.PB_mode_1.setStyleSheet("QPushButton#PB_mode_1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
+    #
+    #
+    # FUNCTIONS FOR TEMPO SELECTION BUTTONS
     def tempo_button_1_clicked(self):
         self.tempo_flag = "0"
 
