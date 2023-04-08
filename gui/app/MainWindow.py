@@ -169,7 +169,7 @@ class Ui_Dialog(object):
         self.LABEL_songGallery.setGeometry(QtCore.QRect(10, 10, 171, 61))
         self.LABEL_songGallery.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.LABEL_songGallery.setObjectName("LABEL_songGallery")
-        self.LIST_songGallery = QtWidgets.QListView(self.FRAME_songGallery)
+        self.LIST_songGallery = QtWidgets.QListWidget(self.FRAME_songGallery)
         self.LIST_songGallery.setGeometry(QtCore.QRect(20, 40, 256, 192))
         self.LIST_songGallery.setObjectName("LIST_songGallery")
         self.PB_addSong = QtWidgets.QPushButton(self.FRAME_songGallery)

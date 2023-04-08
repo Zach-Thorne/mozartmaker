@@ -491,16 +491,6 @@
       <string>REMOVE SELECTED SONG</string>
      </property>
     </widget>
-    <widget class="QListWidget" name="LIST_songGallery">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>100</y>
-       <width>256</width>
-       <height>291</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QLabel" name="LABEL_songGallery">
      <property name="geometry">
       <rect>
@@ -515,6 +505,16 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>100</y>
+       <width>256</width>
+       <height>192</height>
+      </rect>
      </property>
     </widget>
    </widget>

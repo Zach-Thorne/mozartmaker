@@ -14,6 +14,8 @@ from PyQt6 import QtWidgets, uic, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QFrame
 from tkinter import filedialog as fd
+import pandas
+import os
 
 from app.MainWindow import Ui_Dialog
 
@@ -287,9 +289,8 @@ class MainWindow(Ui_Dialog):
         self.FRAME_play.setVisible(True)
 
     def setup_songGallery_screen(self):
-        #
-        #
-        # SET UP SONG GALLERY SCREEN
+        
+        # *** STYLING ***
 
         # frame: dimensions + styling
         self.width_play_screen = self.width_window - self.width_menu
@@ -301,13 +302,13 @@ class MainWindow(Ui_Dialog):
         self.label_width = int(self.width_play_screen)
         self.label_height = int(0.1*self.height_play_screen)
         self.LABEL_songGallery.setGeometry(QtCore.QRect(0, int(0.05*self.height_play_screen), self.label_width, self.label_height))
-        self.LABEL_songGallery.setStyleSheet("QLabel#LABEL_songGallery { color: white; font-style: bold; font-size: 14pt; }")
+        self.LABEL_songGallery.setStyleSheet("QLabel#LABEL_songGallery { color: white; font-style: bold; font-size: 18pt; }")
 
         # push buttons - dimensions
-        self.button_width = int(0.3*self.width_play_screen)
-        self.button_height = int(0.075*self.height_play_screen)
-        self.PB_addSong.setGeometry (QtCore.QRect(int(0.6*self.width_play_screen),  int(0.25*self.height_play_screen), self.button_width, self.button_height))
-        self.PB_removeSong.setGeometry (QtCore.QRect(int(0.6*self.width_play_screen), int(0.35*self.height_play_screen), self.button_width, self.button_height))
+        self.button_width = int(0.225*self.width_play_screen)
+        self.button_height = int(0.07*self.height_play_screen)
+        self.PB_addSong.setGeometry (QtCore.QRect(int(0.25*self.width_play_screen),  int(0.8*self.height_play_screen), self.button_width, self.button_height))
+        self.PB_removeSong.setGeometry (QtCore.QRect(int(0.525*self.width_play_screen), int(0.8*self.height_play_screen), self.button_width, self.button_height))
 
         # push buttons - styling
         self.PB_addSong.setFlat(True)
@@ -315,21 +316,32 @@ class MainWindow(Ui_Dialog):
         self.PB_removeSong.setFlat(True)
         self.PB_removeSong.setStyleSheet("QPushButton#PB_removeSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-        # styling for list
+        # TODO: styling for list
+        self.LIST_songGallery.setGeometry(QtCore.QRect(int(0.25*self.width_play_screen),  int(0.2*self.height_play_screen), int(0.5*self.width_play_screen), int(0.5*self.height_play_screen)))
 
+        # *** INITIALIZE LIST WIDGET ***
+        
+        # 1) read song titles from the CSV
+        songTitles_df = pandas.read_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')),usecols=['name']) # create dataframe of song titles
+        songTitles_list = songTitles_df.values.tolist() # convert dataframe to list
 
-        # *** FUNCTIONALITY ***
-        # populate list from CSV
-        # buttons to add and remove songs
-        # import files
+        # 2) add song titles to the widget
+        for songTitle in songTitles_list:
+            self.LIST_songGallery.addItem(songTitle[0])
 
     #
     #
     # FUNCTION FOR "ADD SONG" BUTTON   
     def addSong_button_clicked(self):
+        
+        # 1) get filepath for user's sheet music
         addSong_filepath = fd.askopenfilename()
         print(addSong_filepath)
-        # call this when the user clicks "add song" button
+        
+        # 2) show screen to show while sheet music is being processed
+        # 3) process sheet music
+        # 4) hide screen
+        # 5) update list widget
 
     #
     #
