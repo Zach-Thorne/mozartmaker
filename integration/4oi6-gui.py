@@ -362,21 +362,17 @@ class MainWindow(Ui_Dialog):
         # 1) change styling to green
         self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         
-        # 2) get filepath for user's sheet music
-        self.addSong_filepath = fd.askopenfilename()
-        print(addSong_filepath)
-        
         # Run loop until valid image is chosen
         while 1:
             
-            # 3) open up explorer interface for user to select file
-            addSong_filepath = fd.askopenfilename()
-            print(addSong_filepath)
+            # 2) open up explorer interface for user to select file
+            self.addSong_filepath = fd.askopenfilename()
+            print(self.addSong_filepath)
 
-            if len(addSong_filepath) > 0:
+            if len(self.addSong_filepath) > 0:
                 
-                # 4) get + check file type
-                file_type = imghdr.what(addSong_filepath) # get file type
+                # 4 & 5) get + check file type
+                file_type = imghdr.what(self.addSong_filepath) # get file type
                 if(file_type == 'png' or file_type == 'jpg' or file_type == 'jpeg'):
 
                     # 5) hide list and ask user for song title
