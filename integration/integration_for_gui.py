@@ -9,6 +9,13 @@ import midi
 import timing
 import threading
 from screeninfo import get_monitors
+import csv
+import os
+
+#Get csv file directgory from computer
+CURRENT_DIR = os.path.dirname(__file__)
+#file path for csv file 
+file_path = os.path.join(CURRENT_DIR, 'song_gallery.csv')
 
 first_flag = 0
 keyboard = None
@@ -209,7 +216,20 @@ def count_in(root, canvas, screen_width, screen_height, note_array):
         time.sleep(constants.FLASH_TIME - blue_time)
         white_time = projection.project_white(root, canvas, screen_width, screen_height, note_array, first_note)    
         time.sleep((constants.sec_adjusted_bpm / constants.BEATSPERBAR) - constants.FLASH_TIME - white_time)
-    
+
+#function to get csv data
+def csv_retrieval(scale_input,file_path):
+    with open(file_path) as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            name, data = row
+            if name == scale_input:
+                scale = data
+                return scale 
+            else:
+                raise Exception("Scale is not valid. Try again\n")
+            
+
 def run_mozart(scale_input, play_mode, timing_state, tempo, no_play_just_disp):
     
     #Create inital outline
@@ -233,23 +253,23 @@ def run_mozart(scale_input, play_mode, timing_state, tempo, no_play_just_disp):
         #     keyboard = midi.initialization()
         #     first_flag = 1        
             # scale_input = input("What Major scale would you like to play?\n")
-        if (scale_input == "C") or (scale_input == "c"):
-            scale = constants.c_major
-        elif (scale_input == "D") or (scale_input == "d"):
-            scale = constants.d_major
-        elif (scale_input == "E") or (scale_input == "e"):
-            scale = constants.e_major
-        elif (scale_input == "F") or (scale_input == "f"):
-            scale = constants.f_major
-        elif (scale_input == "G") or (scale_input == "g"):
-            scale = constants.g_major
-        elif scale_input == "ml":
-            scale = constants.mary
-        elif scale_input == "mhall":
-            scale = constants.mhall
-        else:
-            raise Exception("Scale is not valid. Try again\n")
-        
+        #if (scale_input == "C") or (scale_input == "c"):
+            #scale = constants.c_major
+        #elif (scale_input == "D") or (scale_input == "d"):
+            #scale = constants.d_major
+        #elif (scale_input == "E") or (scale_input == "e"):
+            #scale = constants.e_major
+        #elif (scale_input == "F") or (scale_input == "f"):
+            #scale = constants.f_major
+        #elif (scale_input == "G") or (scale_input == "g"):
+            #scale = constants.g_major
+        #elif scale_input == "ml":
+            #scale = constants.mary
+        #elif scale_input == "mhall":
+            #scale = constants.mhall
+        #else:
+            #raise Exception("Scale is not valid. Try again\n")
+        scale=csv_retrieval(scale_input, file_path)
         print("scale is ", scale)
 
         # play_mode = input("What mode would you like to play in? learn or test?\n")
