@@ -2,15 +2,24 @@ from playsound import playsound
 import time
 import constants
 import finger_placement
+import os
 
 def metronome(adjust,length):
     loop_length = int(length/((1/4) * adjust))  ## integer value of loop length is how many quarter notes there are
+    #Gets path of current directory
+    path_to_ding = os.getcmd()
+    path_to_ding = path_to_ding + "\ding.mp3" 
     
     for i in range(0,int(loop_length)):
         start_time = time.time()
+        #Hardcoded values
         #playsound('C:\\Users\\Garret\\Desktop\\Capstone\\mozartmaker\\integration\\ding.mp3',FALSE)        #garrets desktop
         playsound('D:\\Users\\Documents\\Connor\\Connors Schoolwork\\ELEC ENG 4OI6\\mozartmaker\\integration\\ding.mp3', False)         #connors desktop  
         #playsound('C:\\Users\\royal\\Documents\\Connor\\Connors Schoolwork\\ELEC ENG 4OI6\\mozartmaker\\integration\\ding.mp3', False)         #connors laptop  
+
+        #TODO uncomment to do Without hardcoding        
+        #playsound(path_to_ding, False)   
+
         time.sleep((0.25 * adjust) - (time.time() - start_time)) 
 
 
