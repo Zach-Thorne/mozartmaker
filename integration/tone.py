@@ -1,26 +1,25 @@
 import pyaudio
 import numpy as np
-import scipy
 from scipy.fftpack import fft
-from scipy.io import wavfile as wav
-import wave
-# import matplotlib.pyplot as plt
-from pydub import AudioSegment
 from pydub.utils import get_array_type
 from pydub.silence import split_on_silence
-import constants as c
+import constants
 from array import array
-import crepe
-import time
+from collections import Counter
+import projection
+import timing
 
 #A function for making sure you can find the closest value in a list
 def closest_val(input_list, val):
-
   arr = np.asarray(input_list)
-
   i = (np.abs(arr - val)).argmin()
-
   return arr[i]
+
+def freq_to_note(played_freq, note_freqs, keys):
+    note=closest_val(note_freqs,played_freq)
+    index = note_freqs.index(note)
+    song_note=keys[index]
+    return song_note
 
 def device_identification():
     p = pyaudio.PyAudio()
@@ -32,164 +31,75 @@ def device_identification():
             print("Input Device id ", i, " - ", p.get_device_info_by_host_api_device_index(0, i).get('name'))
 
 #record piano sound, remove the silent parts and save the new audio
-def piano_sound():
-    #os.remove('/Users/emmarobinson/Downloads/piano_audio.wav') #change this according to your computer file
-    #os.remove('/Users/emmarobinson/Downloads/piano_audio_new.wav')   #change this according to your computer file      
-
+def piano_sound():   
+    # constants for audio
+    CHUNK = 1024*2          # samples per frame
+    FORMAT = pyaudio.paInt16     # audio format (bytes per sample?)
+    CHANNELS = 1                 # single channel for microphone
+    RATE = 48000                 # samples per second  
     p = pyaudio.PyAudio()
 
     # stream object to get data from microphone
     stream = p.open(
-        format = c.FORMAT,
-        channels = c.CHANNELS,
-        rate = c.RATE,
-        input_device_index = 1, #change this according to your mic port
-        input=True,
-        output=True,
-        frames_per_buffer = c.CHUNK
-    )
-    frames = []
-    print("* recording")
+        format = FORMAT,
+        channels = CHANNELS,
+        rate = RATE,
+        #input_device_index  = 3, #change this according to the mic port on your computer
+        input = True,
+        frames_per_buffer = CHUNK)
 
-    for i in range(0, int(c.RATE / c.CHUNK * c.RECORD_SECONDS)):
-        data = stream.read(c.CHUNK)
-        stream.write(data, c.CHUNK)
-        frames.append(data)
+    print("* listening")
 
-    # while True:
+    while True:   
+        #print("while")   
+        data = stream.read(CHUNK)
+        data_sample = np.frombuffer(data, dtype=np.int16)
+        data_sample = data_sample * np.blackman(len(data_sample))
+        data_chunk=array('h',data)
+        vol=max(data_chunk)
+        if vol >= 500:
+            fft = np.fft.fft(data_sample)
+            fft=np.absolute(fft)
+            freqs = np.fft.fftfreq(len(fft))
+
+    
+
+            # Find the peak in the coefficients
+            idx = np.argmax(np.abs(fft))
+            freq = freqs[idx]
+            freq_hz = abs(freq * RATE)
+            #print(freq_hz)
+            note_played=[]
+            
+            #get average of played note to make sure its right (cuz when notes taper off it produces diff freq)
+            for i in range(4):
+                note_played.append(freq_to_note(freq_hz, constants.note_freqs, constants.keys))
+            most_common_note= [note for note, note_count in Counter(note_played).most_common(1)]
+            note_play=most_common_note[0]
+            note_play=freq_to_note(freq_hz, constants.note_freqs, constants.keys)
+            print("the note played is : ", note_play)
+
+
+            #stream.stop_stream()
+
+            #stream.close()
+            #p.terminate() 
+            return note_play
+
+def learning_mode_audio(root, canvas, screen_width, screen_height, note_array,scale):
+    note_status = "green"
+    #call function for displaying the first note to play
+    song_fingerings = timing.finger_refactor(scale, note_array)
+    j=0
+    projection.project_key(root, canvas, screen_width, screen_height, note_array, j, note_status, str(song_fingerings[j][2]))
+    #check if note is right based on scale
+    while j<(len(scale)):
+        played_note=piano_sound()
+        #print("supposed note: ",song[j])
+        if played_note==scale[j][0]:
+            projection.project_white(root, canvas, screen_width, screen_height, note_array, j)
+            #print(played_note)
+            #print(j)
+            j=j+1
         
-    #     data = stream.read(c.CHUNK, exception_on_overflow = False)
-    #     data_chunk = array('h',data)
-    #     vol = max(data_chunk)
-    #     if vol >= 400:
-    #         print("* recording")
-    #         for i in range(0, int(c.RATE / c.CHUNK * c.RECORD_SECONDS)):
-    #             stream.write(data, c.CHUNK)
-    #             frames.append(data)
-    #         break
-
-    #     else:
-    #         print("* waiting")
-
-    print("* done")
-
-    stream.stop_stream()
-    stream.close()
-
-    p.terminate()
-    #file_path='C:\\Users\\Garret\\piano_audio.wav' #change this according to your computer file
-    file_path='D:\\Users\\Documents\\Connor\\piano_audio.wav' #change this according to your computer file
-    file_name = file_path.split('\\')[-1]
-    wf = wave.open(file_path, "wb")
-    # set the channels
-    wf.setnchannels(c.CHANNELS)
-    # set the sample format
-    wf.setsampwidth(p.get_sample_size(c.FORMAT))
-    # set the sample rate
-    wf.setframerate(c.RATE)
-    # write the frames as bytes
-    wf.writeframes(b"".join(frames))
-    # close the file
-    wf.close()
-
-    sound = AudioSegment.from_file(file_path, format = 'wav') 
-    audio_chunks = split_on_silence(sound
-                                ,min_silence_len = 100
-                                ,silence_thresh = -45
-                                ,keep_silence = 50
-                            )
-
-    # Putting the file back together
-    combined = AudioSegment.empty()
-    for chunk in audio_chunks:
-        combined += chunk
-    #combined.export(f'C:\\Users\\Garret\\piano_audio_new.wav', format = 'wav') #change this according to your computer file
-    combined.export(f'D:\\Users\\Documents\\Connor\\piano_audio_new.wav', format = 'wav') #change this according to your computer file
-
-def get_bits():
-    #rate, data = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
-    rate, data = wav.read('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
-    #audio_segment = AudioSegment.from_file('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
-    audio_segment = AudioSegment.from_file('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
-
-    duration = len(audio_segment)/1000
-
-    # calculate the length of our chunk in the np.array using sample rate       samples/s * s = samples
-    chunk = int(rate * duration)
-
-    # number of bits in the audio data to decode
-    bits = int(len(data) / chunk)
-    return bits
-
-#get the frequency of the piano note played
-def get_freq(bit):
-
-    #get information about the audio file
-    #rate, data = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
-    rate, data = wav.read('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
-    #audio_segment = AudioSegment.from_file('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
-    audio_segment = AudioSegment.from_file('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
-
-    duration = len(audio_segment)/1000
-
-    # calculate the length of our chunk in the np.array using sample rate       samples/s * s = samples
-    chunk = int(rate * duration)
-    
-    # start position of the current bit
-    strt = (chunk * bit) 
-    
-    # remove the delimiting 1600hz tone
-    end = (strt + chunk) 
-   
-    # slice the array for each bit
-    sliced = data[strt:end]
-
-    w = np.fft.fft(sliced)
-    # plt.figure(1)
-    # plt.title("Signal Wave...")
-    # plt.plot(w)
-    # plt.show(block=False)
-    w = np.absolute(w)
-    # plt.figure(2)
-    # plt.title("Signal Wave...")
-    # plt.plot(w)
-    # plt.show(block=False)
-    freqs = np.fft.fftfreq(len(w))
-
-    # plt.figure(3)
-    # plt.title("Signal Wave...")
-    # plt.plot(freqs)
-    # plt.show(block=False)
-
-    # Find the peak in the coefficients
-    #Change w to be half of the index that it usually is to only get the left half of the freq spectrum
-
-    adjusted_w = w[0:int((len(w)/2))]
-    #idx = np.argmax(np.abs(w))
-    idx = np.argmax(np.abs(adjusted_w))
-    print("idx: ", idx)
-    freq = freqs[idx]
-    print("freq: ", freq)
-    freq_in_hertz = abs(freq * rate)
-    print("freq in hertz: ", freq_in_hertz)
-    return freq_in_hertz
-
-def det_freq():
-    #sr, audio = wav.read('C:\\Users\\Garret\\piano_audio.wav') #change this according to your computer file
-    sr, audio = wav.read('D:\\Users\\Documents\\Connor\\piano_audio.wav') #change this according to your computer file
-    time, frequency, confidence, activation = crepe.predict(audio, sr, viterbi=True, model_capacity="small")
-    freq1=np.array([np.mean(frequency)])
-    return freq1
-
-#decoded_freqs = [get_freq(bit) for bit in range(bits)]
-
-#check with the closest_val function to see what the frequency of the played note is
-# for i in range(len(decoded_freqs)):
-#     note=closest_val(note_freqs,decoded_freqs[i])
-#     index = note_freqs.index(note)
-#     played_note=keys[index]
-
-# x=0
-# if played_note==c_major_scale[x]:
-#     print("yay")
-
+            projection.project_key(root, canvas, screen_width, screen_height, note_array, j, note_status,str(song_fingerings[j][2]))
