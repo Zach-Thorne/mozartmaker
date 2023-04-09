@@ -45,7 +45,10 @@ def convert_to_notes(sheet_music):
     subprocess.run(["oemer", sheet_music])
     
     #Gets Name of musicxml file
-    sheet_xml = sheet_music.split('.')[0]+".musicxml"
+    sheet_xml = sheet_music.split("/")[-1]
+    print(sheet_xml)
+    sheet_xml = sheet_xml.split('.')[0]+".musicxml"
+    print(sheet_xml)
 
   #Take musicXML and use music21 library to convert it
   if(test_mode == 1):
@@ -98,15 +101,16 @@ def convert_to_notes(sheet_music):
       track2_notes.append([msg.note]) 
 
   #TODO we will worry about stuff in bass staff l8r
-  #Pretty sure track 3 corresponds to bass staff
-  print("*******************TRACK 3***********************")
-  for msg in mid.tracks[2]:
-    #print(msg)
-    if msg.type == 'note_on':
-      #print(msg.note)
-      tuple_2 = [msg.note, msg.velocity, msg.time]
-      track3_data.append(tuple_2) 
-      track3_notes.append([msg.note]) 
+  #If need to check base clef exists
+  if(len(mid.tracks) > 2):
+    print("*******************TRACK 3***********************")
+    for msg in mid.tracks[2]:
+      #print(msg)
+      if msg.type == 'note_on':
+        #print(msg.note)
+        tuple_2 = [msg.note, msg.velocity, msg.time]
+        track3_data.append(tuple_2) 
+        track3_notes.append([msg.note]) 
   
   #Before returning track data also need to make it a lil nicer and add finger numbers
   projection_index = []
