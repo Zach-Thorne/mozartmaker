@@ -7,6 +7,11 @@ from music21 import *
 from mido import MidiFile
 import sys
 import midi
+import finger_placement
+import constants
+import projection_luts
+import projection
+import timing
 
 
 #Global Variables for testing
@@ -103,8 +108,22 @@ def convert_to_notes(sheet_music):
       track3_data.append(tuple_2) 
       track3_notes.append([msg.note]) 
   
+  #Before returning track data also need to make it a lil nicer and add finger numbers
+  projection_index = []
+  #print("length of scale: ", len(scale))
+  note_array = np.zeros((len(track2_data), constants.total_keys))
+  for i in range(len(track2_data)):
+    # if (play_mode == 'learntime') or (play_mode == 'testtime'):
+    projection_index.append(projection_luts.note_lut(track2_data[i][0]))
+    # else:
+    #     projection_index.append(projection_luts.note_lut(scale[i]))
+  for n in range(len(track2_data)):
+    note_array[n][projection_index[n]] = 1
+
+  song_fingers = timing.finger_refactor(track2_data, note_array) 
+
   #Return data 
-  return track2_data
+  return song_fingers
 
 if __name__ == "__main__":
   #TEST_MODE ASK 
