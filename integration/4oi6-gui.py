@@ -44,8 +44,8 @@ class MainWindow(Ui_Dialog):
         self.FRAME_feedback.setVisible(False)
         self.FRAME_songGallery.setVisible(False)
 
-        self.tempo_flag = "0" # default = no tempo
-        self.inputType_flag = "0" # default = MIDI
+        self.tempo_flag = FALSE # default = no tempo
+        self.inputType_flag = 0 # default = MIDI
 
         #
         #
@@ -61,7 +61,7 @@ class MainWindow(Ui_Dialog):
         self.PB_removeSong.clicked.connect(self.removeSong_button_clicked)
 
         self.setup_window(dialog)
-        run_mozart("F","learn",0,1,0)
+        run_mozart("F","learn",0,1,0,0)
 
     def setup_window(self, dialog):
 
@@ -285,9 +285,8 @@ class MainWindow(Ui_Dialog):
         self.SPIN_tempo.setStyleSheet("QSpinBox#SPIN_tempo { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 14pt; border-radius: 10px; } ")
 
         # spin box: set values
-        self.SPIN_tempo.setMinimum(0)
-        self.SPIN_tempo.setMaximum(200)
-        self.SPIN_tempo.singleStep()
+        self.SPIN_tempo.setRange(20, 240)
+        self.SPIN_tempo.setSingleStep(10)
 
         #
         #
@@ -561,14 +560,14 @@ class MainWindow(Ui_Dialog):
     #
     # FUNCTIONS FOR INPUT TYPE BUTTONS
     def inputType1_button_clicked(self):
-        self.inputType_flag = "0"
+        self.inputType_flag = 0
 
         # set stylesheets for buttons
         self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
     def inputType2_button_clicked(self):
-        self.inputType_flag = "1"
+        self.inputType_flag = 1
 
         #set stylesheets for buttons
         self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
@@ -635,7 +634,8 @@ class MainWindow(Ui_Dialog):
         # update GUI
         self.FRAME_play.setVisible(False)
         self.FRAME_inProgress.setVisible(True)  
-        print("tempo = ", tempo)
+        # print("tempo = ", tempo)
+        print("input flag ", self.inputType_flag)
         result = run_mozart(self.song_selection, self.mode, self.tempo_flag, tempo, 1, self.inputType_flag)
 
         if result == None:

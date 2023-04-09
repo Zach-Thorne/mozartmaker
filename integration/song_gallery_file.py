@@ -141,9 +141,9 @@ def song_gallery(name, data, action): # ALL GOOD
 # 2. data: data of song to write. if reading, just pass NULL
 # 3. action: "read" or "add"
 
-name = "C Major Scale"
-data = C_major
-action = 'read'
+# name = "C Major Scale"
+# data = C_major
+# action = 'read'
 
-songData = song_gallery(name,data,action)
-print(name, "=", songData)
+# songData = song_gallery(name,data,action)
+# print(name, "=", songData)

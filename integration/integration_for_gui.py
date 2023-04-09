@@ -240,6 +240,7 @@ def run_mozart(scale_input, play_mode, timing_state, tempo, no_play_just_disp, i
 
         if (play_mode == "learn"):
             if (input_type):
+                print("donig live now")
                 tone.learning_mode_audio(root, canvas, screen_width, screen_height, note_array,scale)
             elif(timing_state):
                 learning_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
@@ -250,6 +251,5 @@ def run_mozart(scale_input, play_mode, timing_state, tempo, no_play_just_disp, i
                 return testing_mode_timing(root, canvas, screen_width, screen_height, note_array, scale, keyboard)
             else:
                 projection.project_all_white(root, canvas, screen_width, screen_height, scale)
-                #root.destroy()
                 return testing_mode(scale, keyboard)
 

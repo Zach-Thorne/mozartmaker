@@ -7,7 +7,7 @@ import os
 def metronome(adjust,length):
     loop_length = int(length/((1/4) * adjust))  ## integer value of loop length is how many quarter notes there are
     #Gets path of current directory
-    path_to_ding = os.getcmd()
+    path_to_ding = os.getcwd()
     path_to_ding = path_to_ding + "\ding.mp3" 
     
     for i in range(0,int(loop_length)):
