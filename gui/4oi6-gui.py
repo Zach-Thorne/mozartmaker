@@ -1,13 +1,3 @@
-# updated: 6:46 pm dec. 7
-# TO DO
-# upload different versions with timestamps to show progress lol
-# create global variable to track which tab is open
-# change font size according to size of window
-# combobox: change selection highlight color, change appearance of dropdown arrow
-# once user has selected their preferences, change "play" button to green
-# clear combo box items
-# combo box set default value
-
 import sys
 import imghdr
 from PyQt6 import QtWidgets, uic, QtCore, QtGui
@@ -16,6 +6,7 @@ from PyQt6.QtWidgets import QDialog, QFrame
 from tkinter import filedialog as fd
 import pandas
 import os
+from song_gallery_file import *
 
 from app.MainWindow import Ui_Dialog
 
@@ -60,6 +51,7 @@ class MainWindow(Ui_Dialog):
         self.PB_feedback.clicked.connect(self.reset_play_screen)
         self.PB_addSong.clicked.connect(self.addSong_button_clicked)
         self.PB_addSong_confirm.clicked.connect(self.addSong_confirm_button_clicked)
+        self.PB_removeSong.clicked.connect(self.removeSong_button_clicked)
 
         self.setup_window(dialog)
 
@@ -259,11 +251,14 @@ class MainWindow(Ui_Dialog):
         # combo box: set styling
         self.COMBO_song.setStyleSheet("QComboBox#COMBO_song { color: #343843; background-color: #A5A5A5; border-radius: 10px; font-style: bold; font-size: 12pt; selection-background-color: #7DCB79; } ")
 
-        # combo box: set items
-        self.COMBO_song.setEditable(True)
-        self.COMBO_song.addItem("C Scale")
-        self.COMBO_song.addItem("D Scale")
-        self.COMBO_song.addItem("Mary Had a Little Lamb")
+        # read song titles from the CSV
+        songTitles_df = pandas.read_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')),usecols=['name']) # create dataframe of song titles
+        songTitles_list = songTitles_df.values.tolist() # convert dataframe to list
+
+        # add song titles to the widget
+        self.COMBO_song.clear()
+        for songTitle in songTitles_list:
+            self.COMBO_song.addItem(songTitle[0])
         
         #
         #
@@ -318,11 +313,11 @@ class MainWindow(Ui_Dialog):
 
         # push buttons - styling
         self.PB_addSong.setFlat(True)
-        self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_removeSong.setFlat(True)
-        self.PB_removeSong.setStyleSheet("QPushButton#PB_removeSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_removeSong.setStyleSheet("QPushButton#PB_removeSong { color: #343843; background-color: #E99887; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_addSong_confirm.setFlat(True)
-        self.PB_addSong_confirm.setStyleSheet("QPushButton#PB_addSong_confirm { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+        self.PB_addSong_confirm.setStyleSheet("QPushButton#PB_addSong_confirm { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
         # styling for text box
         self.TB_addSong_title.setGeometry(QtCore.QRect(int(0.25*self.width_play_screen), int(0.4*self.height_play_screen), int(0.5*self.label_width), int(0.5*self.label_height)))
@@ -346,12 +341,13 @@ class MainWindow(Ui_Dialog):
         songTitles_list = songTitles_df.values.tolist() # convert dataframe to list
 
         # 2) add song titles to the widget
+        self.LIST_songGallery.clear()
         for songTitle in songTitles_list:
             self.LIST_songGallery.addItem(songTitle[0])
 
     #
     #
-    # FUNCTION FOR "ADD SONG" BUTTON   
+    # FUNCTIONS FOR "ADD SONG" BUTTONS
     def addSong_button_clicked(self):
         
         # 1) change styling to green
@@ -420,6 +416,37 @@ class MainWindow(Ui_Dialog):
         self.PB_removeSong.setVisible(True)
         self.LABEL_songGallery_loading.setVisible(False)
         self.PB_addSong.setStyleSheet("QPushButton#PB_addSong { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+    #
+    #
+    # FUNCTION FOR "REMOVE SONG" BUTTON
+    def removeSong_button_clicked(self):
+        
+        # 1) get name of selected song to remove
+        removeSong_title = self.LIST_songGallery.currentItem().text()
+        print(removeSong_title)
+        
+        # TODO: add handler for no song selected
+
+        # 2) remove from CSV
+        # get index of song being removed
+        removeSong_index = get_index(removeSong_title)
+        # read contents without the song being removed
+        current_df = pandas.read_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')),usecols=['name','data'],skiprows=[removeSong_index+1])
+        # clear csv so we can overwrite the current contents
+        clear_csv()
+        # create header list for writing to the csv
+        headerList = ['name','data']
+        # write contents to csv without the removed song
+        current_df.to_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')),mode='w',index=True, header=headerList)
+        
+        # 3) update listWidget
+        songTitles_df = pandas.read_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')),usecols=['name']) # create dataframe of song titles
+        songTitles_list = songTitles_df.values.tolist() # convert dataframe to list
+
+        self.LIST_songGallery.clear()
+        for songTitle in songTitles_list:
+            self.LIST_songGallery.addItem(songTitle[0])
 
     #
     #

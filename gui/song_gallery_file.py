@@ -61,7 +61,7 @@ def append_csv(name, data): # good (i think)
 # reset the csv
 def clear_csv(): # ALL GOOD
     dataframe_clear = pandas.DataFrame(list())
-    dataframe_clear.to_csv('song_gallery.csv', mode='w')
+    dataframe_clear.to_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')), mode='w')
 
 #
 #
@@ -71,11 +71,16 @@ def clear_csv(): # ALL GOOD
 def get_index(name): # ALL GOOD
 
     # create dataframe of current contents
-    songData = pandas.read_csv('song_gallery.csv')
-
+    songData = pandas.read_csv(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'song_gallery', 'song_gallery.csv')))
+    
     # get index from song name
     name = str(name)
     songIndex = songData[songData['name']==name].index.to_list()
+
+    print(songData)
+    print(name)
+    print(songIndex)
+    print(songIndex[0])
     
     return songIndex[0]
 
@@ -89,6 +94,8 @@ def create_skip_rows(length, songIndex): # ALL GOOD
             skip_rows_list.append(i+1)
     
     return skip_rows_list
+
+C_major = [['C4',0.25,1,  'D4',0.25,2,  'E4',0.25,3,  'F4',0.25,1,  'G4',0.25,2,  'A4',0.25,3,  'B4',0.25,4,  'C5',0.25,5, 'B4',0.25,4,  'A4',0.25,3,  'G4',0.25,2,  'F4',0.25,1,  'E4',0.25,3,  'D4',0.25,2,  'C4',0.25,1]]
 
 #
 #
@@ -165,9 +172,9 @@ def song_gallery(name, data, action): # ALL GOOD
 # 2. data: data of song to write. if reading, just pass NULL
 # 3. action: "read" or "add"
 
-# name = "E"
-# data = C_major
-# action = 'read'
+name = "E"
+data = C_major
+action = 'read'
 
-# songData = song_gallery(name,data,action)
-# print(name, "=", songData)
+#songData = song_gallery(name,data,action)
+#print(name, "=", songData)

@@ -9,7 +9,7 @@ import midi
 import timing
 import threading
 from screeninfo import get_monitors
-import song_gallery
+from song_gallery_file import *
 
 #***************************************************************************************#
 #*************** NEED TO BE GLOBAL IN ORDER TO BE UPDATED MULTIPLE TIMES ***************#
@@ -224,7 +224,7 @@ def run_mozart(scale_input, play_mode, timing_state, tempo, no_play_just_disp, i
         if not(input_type):
             keyboard = midi.initialization()
 
-        scale = song_gallery.song_gallery(scale_input, None, 'read')
+        scale = song_gallery(scale_input, None, 'read')
 
         projection_index = []
         #print("length of scale: ", len(scale))
