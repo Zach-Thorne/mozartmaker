@@ -69,7 +69,7 @@ def piano_sound():
         format = FORMAT,
         channels = CHANNELS,
         rate = RATE,
-        input_device_index  = 2, #change this according to the mic port on your computer
+        #input_device_index  = 2, #change this according to the mic port on your computer
         input = True,
         frames_per_buffer = CHUNK)
 
@@ -150,11 +150,12 @@ def testing_mode_audio(scale):
         notes.append(played_note)
     notes.pop()
     
-    for i in range(len(notes)):
-        notes[i]=note_to_freq(note_freqs, keys, notes[i])
-    notes=detect_outlier(notes)
-    for i in range(len(notes)):
-        notes[i]=freq_to_note(notes[i], note_freqs, keys)
+    #for i in range(len(notes)):
+       # notes[i] = note_to_freq(note_freqs, keys, notes[i])
+    #notes = detect_outlier(notes)
+    #for i in range(len(notes)):
+        #notes[i]=freq_to_note(notes[i], note_freqs, keys)
+    notes=notes[1::2]
     notes=notes[1::2]
     notes=notes[1::2]
     print(notes)
