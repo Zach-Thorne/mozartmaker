@@ -1,6 +1,6 @@
 import pyaudio
 import numpy as np
-from scipy.fftpack import fft
+from scipy.fftpack import fft, fftfreq
 #from pydub.utils import get_array_type
 #from pydub.silence import split_on_silence
 import constants
@@ -58,14 +58,14 @@ def piano_sound():
         data_chunk=array('h',data)
         vol=max(data_chunk)
         if vol >= 500:
-            fft = np.fft.fft(data_sample)
-            fft=np.absolute(fft)
-            freqs = np.fft.fftfreq(len(fft))
+            sig = fft(data_sample)
+            sig=np.absolute(sig)
+            freqs = fftfreq(len(sig))
 
     
 
             # Find the peak in the coefficients
-            idx = np.argmax(np.abs(fft))
+            idx = np.argmax(np.abs(sig))
             freq = freqs[idx]
             freq_hz = abs(freq * RATE)
             #print(freq_hz)
