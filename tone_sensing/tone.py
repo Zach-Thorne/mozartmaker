@@ -77,6 +77,7 @@ def piano_sound():
         data_chunk=array('h',data)
         vol=max(data_chunk)
         if vol >= 500:
+            
             fft = np.fft.fft(data_sample)
             fft=np.absolute(fft)
             freqs = np.fft.fftfreq(len(fft))
@@ -97,6 +98,7 @@ def piano_sound():
             note_play=most_common_note[0]
             note_play=freq_to_note(freq_hz, note_freqs, keys)
             print("the note played is : ", note_play)
+            #time.sleep(0.5)
 
 
             #stream.stop_stream()

@@ -1,14 +1,14 @@
 import pyaudio
 import numpy as np
 from scipy.fftpack import fft
-from pydub.utils import get_array_type
-from pydub.silence import split_on_silence
+#from pydub.utils import get_array_type
+#from pydub.silence import split_on_silence
 import constants
 from array import array
 from collections import Counter
 import projection
 import timing
-
+import time
 #A function for making sure you can find the closest value in a list
 def closest_val(input_list, val):
   arr = np.asarray(input_list)
@@ -58,6 +58,7 @@ def piano_sound():
         data_chunk=array('h',data)
         vol=max(data_chunk)
         if vol >= 500:
+            time.sleep(0.5)
             fft = np.fft.fft(data_sample)
             fft=np.absolute(fft)
             freqs = np.fft.fftfreq(len(fft))
@@ -80,6 +81,7 @@ def piano_sound():
             print("the note played is : ", note_play)
 
 
+
             #stream.stop_stream()
 
             #stream.close()
@@ -98,8 +100,6 @@ def learning_mode_audio(root, canvas, screen_width, screen_height, note_array,sc
         #print("supposed note: ",song[j])
         if played_note==scale[j][0]:
             projection.project_white(root, canvas, screen_width, screen_height, note_array, j)
-            #print(played_note)
-            #print(j)
             j=j+1
-        
+            time.sleep(0.25)
             projection.project_key(root, canvas, screen_width, screen_height, note_array, j, note_status,str(song_fingerings[j][2]))
