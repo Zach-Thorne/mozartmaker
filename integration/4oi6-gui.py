@@ -567,7 +567,7 @@ class MainWindow(Ui_Dialog):
     #
     #
     # FUNCTIONS FOR MODE SELECTION BUTTONS
-    def mode_1_button_clicked(self):
+    def mode_1_button_clicked(self): # LEARNING
         self.mode = "learn"
 
         # change appearance of training mode button to appear selected
@@ -576,7 +576,7 @@ class MainWindow(Ui_Dialog):
         # reset testing mode button
         self.PB_mode_2.setStyleSheet("QPushButton#PB_mode_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    def mode_2_button_clicked(self):
+    def mode_2_button_clicked(self): # TESTING
         self.mode = "test"
 
         # change appearance of testing mode button to appear selected
@@ -588,14 +588,14 @@ class MainWindow(Ui_Dialog):
     #
     #
     # FUNCTIONS FOR TEMPO SELECTION BUTTONS
-    def tempo_button_1_clicked(self):
+    def tempo_button_1_clicked(self): # WITHOUT TEMPO
         self.tempo_flag = FALSE
 
         # reset training mode button
         self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    def tempo_button_2_clicked(self):
+    def tempo_button_2_clicked(self): # WITH TEMPO
         self.tempo_flag = TRUE
 
         # reset training mode button
@@ -605,19 +605,23 @@ class MainWindow(Ui_Dialog):
     #
     #
     # FUNCTIONS FOR INPUT TYPE BUTTONS
-    def inputType1_button_clicked(self):
+    def inputType1_button_clicked(self): # MIDI
         self.inputType_flag = 0
 
         # set stylesheets for buttons
         self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    def inputType2_button_clicked(self):
+        self.FRAME_tempo.setVisible(True)
+
+    def inputType2_button_clicked(self): # MICROPHONE
         self.inputType_flag = 1
 
         #set stylesheets for buttons
         self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        self.FRAME_tempo.setVisible(False)
 
     #
     #

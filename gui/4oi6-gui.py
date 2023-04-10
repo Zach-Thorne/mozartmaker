@@ -604,19 +604,23 @@ class MainWindow(Ui_Dialog):
     #
     #
     # FUNCTION FOR INPUT TYPE 1 BUTTON
-    def inputType1_button_clicked(self):
+    def inputType1_button_clicked(self): # MIDI
         self.inputType_flag = "0"
 
         # set stylesheets for buttons
         self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    def inputType2_button_clicked(self):
+        self.FRAME_tempo.setVisible(True)
+
+    def inputType2_button_clicked(self): # MICROPHONE
         self.inputType_flag = "1"
 
         #set stylesheets for buttons
         self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        self.FRAME_tempo.setVisible(False)
 
     #
     #
