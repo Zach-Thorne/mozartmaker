@@ -58,7 +58,6 @@ def piano_sound():
         data_chunk=array('h',data)
         vol=max(data_chunk)
         if vol >= 500:
-            time.sleep(0.5)
             fft = np.fft.fft(data_sample)
             fft=np.absolute(fft)
             freqs = np.fft.fftfreq(len(fft))
@@ -73,7 +72,7 @@ def piano_sound():
             note_played=[]
             
             #get average of played note to make sure its right (cuz when notes taper off it produces diff freq)
-            for i in range(4):
+            for i in range(5):
                 note_played.append(freq_to_note(freq_hz, constants.note_freqs, constants.keys))
             most_common_note= [note for note, note_count in Counter(note_played).most_common(1)]
             note_play=most_common_note[0]
@@ -101,5 +100,7 @@ def learning_mode_audio(root, canvas, screen_width, screen_height, note_array,sc
         if played_note==scale[j][0]:
             projection.project_white(root, canvas, screen_width, screen_height, note_array, j)
             j=j+1
-            time.sleep(0.25)
+            if (j == len(scale)):
+                break
             projection.project_key(root, canvas, screen_width, screen_height, note_array, j, note_status,str(song_fingerings[j][2]))
+            
