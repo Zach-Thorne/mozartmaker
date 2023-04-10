@@ -33,10 +33,10 @@ def device_identification():
 #record piano sound, remove the silent parts and save the new audio
 def piano_sound():   
     # constants for audio
-    CHUNK = 1024*2          # samples per frame
+    CHUNK = 1024         # samples per frame
     FORMAT = pyaudio.paInt16     # audio format (bytes per sample?)
     CHANNELS = 1                 # single channel for microphone
-    RATE = 48000                 # samples per second  
+    RATE = 44100                 # samples per second  
     p = pyaudio.PyAudio()
 
     # stream object to get data from microphone
@@ -44,12 +44,12 @@ def piano_sound():
         format = FORMAT,
         channels = CHANNELS,
         rate = RATE,
-        #input_device_index  = 3, #change this according to the mic port on your computer
+        #input_device_index  = 2, #change this according to the mic port on your computer
         input = True,
         frames_per_buffer = CHUNK)
 
     print("* listening")
-
+    noise_time=time.time()
     while True:   
         #print("while")   
         data = stream.read(CHUNK)
@@ -57,35 +57,39 @@ def piano_sound():
         data_sample = data_sample * np.blackman(len(data_sample))
         data_chunk=array('h',data)
         vol=max(data_chunk)
+        #print(vol)
         if vol >= 500:
-            sig = fft(data_sample)
-            sig=np.absolute(sig)
-            freqs = fftfreq(len(sig))
+            noise_time=time.time()
+            f = fft(data_sample)
+            f=np.absolute(f)
+            freqs = fftfreq(len(f))
 
     
 
             # Find the peak in the coefficients
-            idx = np.argmax(np.abs(sig))
+            idx = np.argmax(np.abs(f))
             freq = freqs[idx]
             freq_hz = abs(freq * RATE)
             #print(freq_hz)
             note_played=[]
+            #notes=[]
             
             #get average of played note to make sure its right (cuz when notes taper off it produces diff freq)
-            for i in range(5):
-                note_played.append(freq_to_note(freq_hz, constants.note_freqs, constants.keys))
+            for i in range(4):
+                note_played.append(freq_to_note(freq_hz, note_freqs, keys))
             most_common_note= [note for note, note_count in Counter(note_played).most_common(1)]
             note_play=most_common_note[0]
-            note_play=freq_to_note(freq_hz, constants.note_freqs, constants.keys)
+            #note_play=freq_to_note(freq_hz, note_freqs, keys)
             print("the note played is : ", note_play)
-
-
-
-            #stream.stop_stream()
-
-            #stream.close()
-            #p.terminate() 
+            #notes.append(note_play)
             return note_play
+
+        elif vol<500 and time.time()-noise_time>2:
+            print("Stoping Listening")
+            stream.stop_stream()
+            stream.close()
+            p.terminate()
+            return False
 
 def learning_mode_audio(root, canvas, screen_width, screen_height, note_array,scale):
     note_status = "green"
@@ -103,4 +107,19 @@ def learning_mode_audio(root, canvas, screen_width, screen_height, note_array,sc
             if (j == len(scale)):
                 break
             projection.project_key(root, canvas, screen_width, screen_height, note_array, j, note_status,str(song_fingerings[j][2]))
-            
+
+def testing_mode_audio(scale):
+    notes=[]
+    correct_notes=0
+    while piano_sound():
+        played_note=piano_sound()
+        notes.append(played_note)
+    notes.pop()
+    notes=notes[1::2]
+    notes=notes[1::2]
+    print(notes)
+    for i in range(len(scale)):
+        if notes[i]==scale[i][0]:
+            correct_notes=correct_notes+1
+    result = float(correct_notes / len(scale)) * 100
+    print("Your test score is: ", round(result, 1), "%")
