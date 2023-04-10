@@ -45,7 +45,10 @@ def convert_to_notes(sheet_music):
     subprocess.run(["oemer", sheet_music])
     
     #Gets Name of musicxml file
-    sheet_xml = sheet_music.split('.')[0]+".musicxml"
+    sheet_xml = sheet_music.split("/")[-1]
+    print(sheet_xml)
+    sheet_xml = sheet_xml.split('.')[0]+".musicxml"
+    print(sheet_xml)
 
   #Take musicXML and use music21 library to convert it
   if(test_mode == 1):
@@ -75,38 +78,40 @@ def convert_to_notes(sheet_music):
   track3_notes = []
 
   #Pretty sure track 2 corresponds to treble staff
-  print("*******************TRACK 2***********************")
-  for msg in mid.tracks[1]:
-    #print(msg)
+  if(len(mid.tracks) > 1):
+    print("*******************TRACK 2***********************")
+    for msg in mid.tracks[1]:
+      #print(msg)
 
-    #When note_off can see timestamp properly
-    if msg.type == 'note_off':
-      #print(msg.note)
-      #TODO this shit booty
-      #Get note type from time stamp
-      if(int(msg.time) == EIGHTH): 
-        note_type = 0.125
-      elif(int(msg.time) == QUARTER): 
-        note_type = 0.25
-      elif(int(msg.time) == HALF): 
-        note_type = 0.5
-      elif(int(msg.time) == FULL): 
-        note_type = 1
+      #When note_off can see timestamp properly
+      if msg.type == 'note_off':
+        #print(msg.note)
+        #TODO this shit booty
+        #Get note type from time stamp
+        if(int(msg.time) == EIGHTH): 
+          note_type = 0.125
+        elif(int(msg.time) == QUARTER): 
+          note_type = 0.25
+        elif(int(msg.time) == HALF): 
+          note_type = 0.5
+        elif(int(msg.time) == FULL): 
+          note_type = 1
 
-      tuple_1 = [midi.number_to_note(msg.note), note_type]
-      track2_data.append(tuple_1) 
-      track2_notes.append([msg.note]) 
+        tuple_1 = [midi.number_to_note(msg.note), note_type]
+        track2_data.append(tuple_1) 
+        track2_notes.append([msg.note]) 
 
   #TODO we will worry about stuff in bass staff l8r
-  #Pretty sure track 3 corresponds to bass staff
-  print("*******************TRACK 3***********************")
-  for msg in mid.tracks[2]:
-    #print(msg)
-    if msg.type == 'note_on':
-      #print(msg.note)
-      tuple_2 = [msg.note, msg.velocity, msg.time]
-      track3_data.append(tuple_2) 
-      track3_notes.append([msg.note]) 
+  #If need to check base clef exists
+  if(len(mid.tracks) > 2):
+    print("*******************TRACK 3***********************")
+    for msg in mid.tracks[2]:
+      #print(msg)
+      if msg.type == 'note_on':
+        #print(msg.note)
+        tuple_2 = [msg.note, msg.velocity, msg.time]
+        track3_data.append(tuple_2) 
+        track3_notes.append([msg.note]) 
   
   #Before returning track data also need to make it a lil nicer and add finger numbers
   projection_index = []
@@ -121,9 +126,14 @@ def convert_to_notes(sheet_music):
     note_array[n][projection_index[n]] = 1
 
   song_fingers = timing.finger_refactor(track2_data, note_array) 
+  
+  oned_song = []
+  for i in range (len(song_fingers)):
+    for j in range (len(song_fingers[i])):
+       oned_song.append(song_fingers[i][j])
 
   #Return data 
-  return song_fingers
+  return oned_song
 
 if __name__ == "__main__":
   #TEST_MODE ASK 

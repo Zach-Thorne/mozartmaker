@@ -1,5 +1,7 @@
 import csv
 import os
+import time
+import datetime
 
 CURRENT_DIR = os.path.dirname(__file__)
 file_path = os.path.join(CURRENT_DIR, 'song_gallery.csv')
@@ -17,7 +19,8 @@ def csv_retrieval(scale_input,file_path):
                # raise Exception("Scale is not valid. Try again\n")
             
                 #print(scale)
-print(csv_retrieval(scale_input, file_path))
+#print(csv_retrieval(scale_input, file_path))
+print(datetime.time()+time(0.2))
 
 
     #print(rows[22])
