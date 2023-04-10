@@ -192,6 +192,36 @@ class Ui_Dialog(object):
         self.PB_addSong_confirm.setGeometry(QtCore.QRect(210, 40, 150, 40))
         self.PB_addSong_confirm.setObjectName("PB_addSong_confirm")
 
+        #
+        # USER GUIDE SCREEN
+        self.FRAME_userGuide = QtWidgets.QFrame(self.FRAME_main_window)
+        self.FRAME_userGuide.setGeometry(QtCore.QRect(150, 0, 601, 501))
+        self.FRAME_userGuide.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.FRAME_userGuide.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.FRAME_userGuide.setObjectName("FRAME_userGuide")
+        self.LABEL_userGuide1 = QtWidgets.QLabel(self.FRAME_userGuide)
+        self.LABEL_userGuide1.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_userGuide1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.LABEL_userGuide1.setObjectName("LABEL_userGuide1")
+
+        # user guide scroll area
+        self.SCROLLAREA_userGuide = QtWidgets.QScrollArea(self.FRAME_userGuide)
+        self.SCROLLAREA_userGuide.setGeometry(QtCore.QRect(0, 70, 601, 431))
+        self.SCROLLAREA_userGuide.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.SCROLLAREA_userGuide.setWidgetResizable(True)
+        self.SCROLLAREA_userGuide.setObjectName("SCROLLAREA_userGuide")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 599, 429))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.LABEL_userGuide2 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.LABEL_userGuide2.setGeometry(QtCore.QRect(10, 10, 171, 61))
+        self.LABEL_userGuide2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.LABEL_userGuide2.setObjectName("LABEL_userGuide2")
+        self.verticalLayout.addWidget(self.LABEL_userGuide2)
+        self.SCROLLAREA_userGuide.setWidget(self.scrollAreaWidgetContents)
+
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
@@ -241,4 +271,14 @@ class Ui_Dialog(object):
         self.LABEL_songGallery_loading.setText(_translate("Dialog", "YOUR SONG IS BEING ADDED ..."))
         self.LABEL_addSong_title.setText(_translate("Dialog", "WHAT IS THE NAME OF YOUR NEW SONG?"))
         self.PB_addSong_confirm.setText(_translate("Dialog", "CONFIRM"))
-        
+
+        # user guide labels
+        self.LABEL_userGuide1.setText(_translate("Dialog", "HOW TO USE THE MOZARTMAKER"))
+        self.LABEL_userGuide2.setText(_translate("Dialog", "INTRODUCTION\n\n1. Select the 'PLAY' tab on the left side of the screen.\n2. The menu tab will turn green to indicate your selection.\n3. In this view, select the mode that you would like to use followed by the song you would like to play.\n4. You can choose to play with or without tempo by selecting an option in the final row.\n5. If you choose to play with tempo, you can adjust your desired BPM by changing the number in the third row of options.\n6. When you have selected all of your desired settings, and you are ready to play, click the PLAY button at the bottom of the screen.\n\
+                                                 \n\nMODE 1A: LEARNING MODE WITHOUT TIMING (Available with MIDI + Microphone)\n\nIf you are new to piano, this is the mode for you.\nIn this mode, you can learn which notes are played in the chosen song by progressing through them at your own pace.\nEach note to be played will be highlighted in green, once you play the correct note that's currently being projected.\nNo score will be displayed - it is simply for learning the basics of the song\n\
+                                                 \n\nMODE 1B: LEARNING MODE WITH TIMING (Available with MIDI only)\n\nOnce you've perfected the notes for your song, you can move on to incorporate timing.\nIn this mode, the notes progress in the song at the pace of the chosen BPM, regardless of if you play the correct notes.\nWhen you press play, there will be an 8-beat count-in flashing on the first note to make you familiar with the tempo.\nAfter that, the correct notes and recommended finger placements will be highlighted on the keyboard.\nIf you play a note incorrectly, at the wrong time, or for the wrong duration, the next note will be projected in orange as a warning.\n\
+                                                 \n\nMODE 2A: TESTING MODE WITHOUT TIMING (Available with MIDI + Microphone)\n\nIn this mode, the player must play the correct notes of the chosen song in the correct order regardless of the tempo.\nWhile playing, no feedback is provided to the players with the projector.\nWhen the correct number of notes have been detected (indicating the end of the song), an accuracy score will be displayed.\n\
+                                                 \n\nMODE 2B: TESTING MODE WITH TIMING (Available with MIDI only)\n\nIn this mode, the user chooses a tempo and must play the correct notes at the chosen tempo.\nAt the start of the song, a count-in will commence, allowing the player to become familiar with the tempo and the first note.\nFor the rest of the song, the metronome will play, but there will be no feedback from the projector.\nAt the end of the song, 3 scores will be displayed:\n1. Note accuracy: based on the correctness of the notes played (regardless of timing)\n2. Timing accuracy: based on the correctness of when and for how long the notes were played (regardless of correctness)\n3. The overall score: averaging the correctness and timing scores.\n\
+                                                 \n\nVIEW & EDIT SONG GALLERY\n\nWhen you select the 'SONG GALLERY' menu tab, you will see a list of songs in your gallery, with an option to ADD a new song or REMOVE one.\n1. ADD: To add a song, you will be prompted to enter a song title and select your sheet music file (.png, .jpg, .jpeg).\n2. REMOVE: To remove a song, simply select one from the list of songs, then click 'REMOVE SONG.'\n\
+                                                 \n\nFINGER PLACEMENT\n\nIn learning mode, the projector will display a number between 1 and 5 on the keyboard.\nThese numbers indicate which right-hand finger you should play the note with.\n\
+                                                 "))

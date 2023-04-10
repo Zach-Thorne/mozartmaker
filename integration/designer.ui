@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1522</width>
+    <width>2186</width>
     <height>1024</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1491</width>
+     <width>2051</width>
      <height>1001</height>
     </rect>
    </property>
@@ -558,6 +558,87 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="FRAME_userGuide">
+    <property name="geometry">
+     <rect>
+      <x>1360</x>
+      <y>0</y>
+      <width>601</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="LABEL_userGuide1">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>601</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>HOW TO USE THE MOZARTMAKER</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QScrollArea" name="SCROLLAREA_userGuide">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>70</y>
+       <width>468</width>
+       <height>651</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>445</width>
+        <height>649</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="LABEL_userGuide2">
+       <property name="geometry">
+        <rect>
+         <x>11</x>
+         <y>11</y>
+         <width>2621</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Select the play tab on the left side of the screen. Selected tabs become highlighted in green. From this view, select the mode that you would like to use followed by the song you would like to play. You can choose to play with or without timing elements by selecting an option in the final row. If you choose to play with timing you can adjust your desired BPM by changing the number in the third row of options. When you have selected all of the desired options and are ready to play, click the play button in the bottom middle portion of the screen.
+</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
   </widget>
