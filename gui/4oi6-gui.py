@@ -382,7 +382,7 @@ class MainWindow(Ui_Dialog):
 
         #
         #
-        # SCROLL BAR
+        # SCROLL AREA
         self.SCROLLAREA_userGuide.setGeometry(QtCore.QRect(int(0.05*self.width_userGuide_screen), int(0.15*self.height_userGuide_screen), int(0.9*self.width_userGuide_screen), self.label2_height))
         self.SCROLLAREA_userGuide.setStyleSheet("QAbstractScrollArea { color: black; font-style: bold; font-size: 12pt; background-color: transparent; }")
         self.SCROLLAREA_userGuide.setStyleSheet("QWidget#scrollAreaWidgetContents { background-color: transparent; }")
