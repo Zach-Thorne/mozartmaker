@@ -76,7 +76,7 @@ def piano_sound():
             
             #get average of played note to make sure its right (cuz when notes taper off it produces diff freq)
             for i in range(4):
-                note_played.append(freq_to_note(freq_hz, note_freqs, keys))
+                note_played.append(freq_to_note(freq_hz, constants.note_freqs, constants.keys))
             most_common_note= [note for note, note_count in Counter(note_played).most_common(1)]
             note_play=most_common_note[0]
             #note_play=freq_to_note(freq_hz, note_freqs, keys)
@@ -122,4 +122,5 @@ def testing_mode_audio(scale):
         if notes[i]==scale[i][0]:
             correct_notes=correct_notes+1
     result = float(correct_notes / len(scale)) * 100
-    print("Your test score is: ", round(result, 1), "%")
+    # print("Your test score is: ", round(result, 1), "%")
+    return [None, None, round(result, 1)]
