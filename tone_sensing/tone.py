@@ -1,12 +1,7 @@
 import pyaudio
-
-from struct import pack
-from sys import byteorder
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 from scipy.fftpack import fft, fftfreq
-import time
 from tkinter import *
 from scipy.io import wavfile as wav
 from collections import Counter
@@ -15,10 +10,9 @@ import projection_luts
 from tkinter import *
 import constants
 import projection
-import tone
+import time
 import timing
-import threading
-
+import statistics
 
 
 
@@ -44,18 +38,30 @@ def closest_val(input_list, val):
   return arr[i]
 
 def freq_to_note(played_freq, note_freqs, keys):
-    note=closest_val(note_freqs,played_freq)
-    index = note_freqs.index(note)
-    song_note=keys[index]
+    freq=closest_val(note_freqs,played_freq)
+    ind = note_freqs.index(freq)
+    song_note=keys[ind]
     return song_note
+
+def note_to_freq(note_freqs, keys, note):
+    ind = np.argwhere(keys == note)
+    song_freq=note_freqs[ind[0][0]]
+    return song_freq
+
+def detect_outlier(data_set):
+    thresh = 1
+    mean = statistics.mean(data_set)
+    std = statistics.stdev(data_set)
+    result = [y  for y in data_set if abs((y - mean)/std)<=thresh ]
+    return result
 
 #record piano sound, remove the silent parts and save the new audio
 def piano_sound():   
     # constants for audio
-    CHUNK = 1024*2          # samples per frame
+    CHUNK = 1024         # samples per frame
     FORMAT = pyaudio.paInt16     # audio format (bytes per sample?)
     CHANNELS = 1                 # single channel for microphone
-    RATE = 48000                 # samples per second  
+    RATE = 44100                 # samples per second  
     p = pyaudio.PyAudio()
 
     # stream object to get data from microphone
@@ -63,12 +69,12 @@ def piano_sound():
         format = FORMAT,
         channels = CHANNELS,
         rate = RATE,
-        #input_device_index  = 3, #change this according to the mic port on your computer
+        #input_device_index  = 2, #change this according to the mic port on your computer
         input = True,
         frames_per_buffer = CHUNK)
 
     print("* listening")
-
+    noise_time=time.time()
     while True:   
         #print("while")   
         data = stream.read(CHUNK)
@@ -76,36 +82,44 @@ def piano_sound():
         data_sample = data_sample * np.blackman(len(data_sample))
         data_chunk=array('h',data)
         vol=max(data_chunk)
+        #print(vol)
         if vol >= 500:
-            
-            fft = np.fft.fft(data_sample)
-            fft=np.absolute(fft)
-            freqs = np.fft.fftfreq(len(fft))
+            noise_time=time.time()
+            f = fft(data_sample)
+            f=np.absolute(f)
+            freqs = fftfreq(len(f))
 
     
 
             # Find the peak in the coefficients
-            idx = np.argmax(np.abs(fft))
+            idx = np.argmax(np.abs(f))
             freq = freqs[idx]
             freq_hz = abs(freq * RATE)
             #print(freq_hz)
             note_played=[]
+            #notes=[]
             
             #get average of played note to make sure its right (cuz when notes taper off it produces diff freq)
             for i in range(4):
                 note_played.append(freq_to_note(freq_hz, note_freqs, keys))
             most_common_note= [note for note, note_count in Counter(note_played).most_common(1)]
             note_play=most_common_note[0]
-            note_play=freq_to_note(freq_hz, note_freqs, keys)
+            #note_play=freq_to_note(freq_hz, note_freqs, keys)
             print("the note played is : ", note_play)
-            #time.sleep(0.5)
-
-
-            #stream.stop_stream()
-
-            #stream.close()
-            #p.terminate() 
+            #notes.append(note_play)
             return note_play
+
+        elif vol<500 and time.time()-noise_time>2:
+            print("ahh")
+            stream.stop_stream()
+            stream.close()
+            p.terminate()
+            return False
+
+
+
+            
+
 
 
 def learning_mode_audio(root, canvas, screen_width, screen_height, note_array,scale):
@@ -128,16 +142,56 @@ def learning_mode_audio(root, canvas, screen_width, screen_height, note_array,sc
 
 
 
-#def testing_mode_audio(song)
+def testing_mode_audio(scale):
+    notes=[]
+    correct_notes=0
+    while piano_sound():
+        played_note=piano_sound()
+        notes.append(played_note)
+    notes.pop()
+    
+    for i in range(len(notes)):
+        notes[i]=note_to_freq(note_freqs, keys, notes[i])
+    notes=detect_outlier(notes)
+    for i in range(len(notes)):
+        notes[i]=freq_to_note(notes[i], note_freqs, keys)
+    notes=notes[1::2]
+    notes=notes[1::2]
+    print(notes)
+    for i in range(len(scale)):
+        if notes[i]==scale[i][0]:
+            correct_notes=correct_notes+1
+    result = float(correct_notes / len(scale)) * 100
+    print("Your test score is: ", round(result, 1), "%")
+        
+
+
+
+
 
 if __name__ == "__main__":
+    scale_input = input("What Major scale would you like to play?\n")
+    if (scale_input == "C") or (scale_input == "c"):
+        scale = constants.c_major
+    elif (scale_input == "D") or (scale_input == "d"):
+        scale = constants.d_major
+    elif (scale_input == "E") or (scale_input == "e"):
+        scale = constants.e_major
+    elif (scale_input == "F") or (scale_input == "f"):
+        scale = constants.f_major
+    elif (scale_input == "G") or (scale_input == "g"):
+        scale = constants.g_major
+    elif (scale_input == "A") or (scale_input == "a"):
+        scale = constants.a_major
+    testing_mode_audio(scale)
+    #piano_sound()
     #Create empty array 
     #Initalize Tkinter
-    root = Tk()
+    #root = Tk()
 
     #Initalize midi input. Searches for keyboard and sets as a midi output
     #keyboard = midi.initialization()
-
+'''
     #Initialize Canvas
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -166,7 +220,7 @@ if __name__ == "__main__":
         else:
             note_array[i][projection_luts.note_lut(scale[i][0])] = 1
 
-    learning_mode_audio(root, canvas, screen_width, screen_height, note_array,scale)
-    #piano_sound()
+    #learning_mode_audio(root, canvas, screen_width, screen_height, note_array,scale)'''
+    
 
 #t1=threading.Thread(target=piano_sound)

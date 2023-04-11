@@ -117,6 +117,10 @@ class MainWindow(Ui_Dialog):
         self.PB_user_guide.setFlat(True)
         self.PB_user_guide.setStyleSheet("QPushButton { font-style: bold; font-size: 18pt; color: white; background-color: #696969; border: none; vertical-align: middle; }")
 
+        self.FRAME_userGuide.setVisible(False)
+        self.FRAME_play.setVisible(False)
+        self.FRAME_songGallery.setVisible(False)
+
     def setup_play_screen(self):
 
         #
@@ -354,6 +358,44 @@ class MainWindow(Ui_Dialog):
         for songTitle in songTitles_list:
             self.LIST_songGallery.addItem(songTitle[0])
     
+    def setup_userGuide_screen(self):
+        
+        #
+        #
+        # SET UP SCREEN FRAME
+
+        # screen frame: dimensions
+        self.width_userGuide_screen = self.width_window - self.width_menu
+        self.height_userGuide_screen = self.height_window
+        
+        # user guide screen frame
+        self.FRAME_userGuide.setGeometry(QtCore.QRect(self.width_menu, 0, self.width_userGuide_screen, self.height_userGuide_screen))
+        self.FRAME_userGuide.setStyleSheet("QFrame#FRAME_userGuide { background-color: #343843; }")
+
+        #
+        #
+        # LABELS
+
+        # labels: dimensions
+        self.label_width = self.width_userGuide_screen
+        self.label_height = int(0.1*self.height_userGuide_screen)
+        self.label2_height = int(0.75*self.height_userGuide_screen)
+        
+        # labels: set geometry
+        self.LABEL_userGuide1.setGeometry(QtCore.QRect(0, int(0.025*self.height_userGuide_screen), int(0.95*self.label_width), self.label_height))
+        self.LABEL_userGuide2.setGeometry(QtCore.QRect(int(0.025*self.width_userGuide_screen), int(0.15*self.height_userGuide_screen), int(0.95*self.label_width), int(2*self.label2_height)))
+
+        # labels: styling
+        self.LABEL_userGuide1.setStyleSheet("QLabel#LABEL_userGuide1 { color: white; font-style: bold; font-size: 18pt; }")
+        self.LABEL_userGuide2.setStyleSheet("QLabel#LABEL_userGuide2 { color: black; font-style: bold; font-size: 12pt; }")
+
+        #
+        #
+        # SCROLL BAR
+        self.SCROLLAREA_userGuide.setGeometry(QtCore.QRect(int(0.05*self.width_userGuide_screen), int(0.15*self.height_userGuide_screen), int(0.9*self.width_userGuide_screen), self.label2_height))
+        self.SCROLLAREA_userGuide.setStyleSheet("QAbstractScrollArea { color: black; font-style: bold; font-size: 12pt; background-color: transparent; }")
+        self.SCROLLAREA_userGuide.setStyleSheet("QWidget#scrollAreaWidgetContents { background-color: transparent; }")
+      
     #
     #
     # FUNCTIONS FOR "ADD SONG" BUTTONS   
@@ -470,6 +512,7 @@ class MainWindow(Ui_Dialog):
             self.FRAME_songGallery.setVisible(False)
             self.FRAME_inProgress.setVisible(False)
             self.FRAME_feedback.setVisible(False)
+            self.FRAME_userGuide.setVisible(False)
             self.FRAME_play.setVisible(True)
             
             # change current task indicator
@@ -495,6 +538,7 @@ class MainWindow(Ui_Dialog):
             self.setup_songGallery_screen()
 
             self.FRAME_play.setVisible(False)
+            self.FRAME_userGuide.setVisible(False)
             self.FRAME_songGallery.setVisible(True)
 
             # change current task indicator
@@ -512,8 +556,10 @@ class MainWindow(Ui_Dialog):
             self.PB_user_guide.setStyleSheet("QPushButton#PB_user_guide { font-style: bold; font-size: 18pt; color: 343843; background-color: #7DCB79; border: none; vertical-align: middle; }")
 
             # show user guide screen and hide other screens
+            self.setup_userGuide_screen()
             self.FRAME_play.setVisible(False)
             self.FRAME_songGallery.setVisible(False)
+            self.FRAME_userGuide.setVisible(True)
 
             # change current task indicator
             self.current_task = "user_guide"
@@ -521,7 +567,7 @@ class MainWindow(Ui_Dialog):
     #
     #
     # FUNCTIONS FOR MODE SELECTION BUTTONS
-    def mode_1_button_clicked(self):
+    def mode_1_button_clicked(self): # LEARNING
         self.mode = "learn"
 
         # change appearance of training mode button to appear selected
@@ -530,7 +576,7 @@ class MainWindow(Ui_Dialog):
         # reset testing mode button
         self.PB_mode_2.setStyleSheet("QPushButton#PB_mode_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    def mode_2_button_clicked(self):
+    def mode_2_button_clicked(self): # TESTING
         self.mode = "test"
 
         # change appearance of testing mode button to appear selected
@@ -542,14 +588,14 @@ class MainWindow(Ui_Dialog):
     #
     #
     # FUNCTIONS FOR TEMPO SELECTION BUTTONS
-    def tempo_button_1_clicked(self):
+    def tempo_button_1_clicked(self): # WITHOUT TEMPO
         self.tempo_flag = FALSE
 
         # reset training mode button
         self.PB_tempo_2.setStyleSheet("QPushButton#PB_tempo_2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_tempo_1.setStyleSheet("QPushButton#PB_tempo_1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    def tempo_button_2_clicked(self):
+    def tempo_button_2_clicked(self): # WITH TEMPO
         self.tempo_flag = TRUE
 
         # reset training mode button
@@ -559,19 +605,23 @@ class MainWindow(Ui_Dialog):
     #
     #
     # FUNCTIONS FOR INPUT TYPE BUTTONS
-    def inputType1_button_clicked(self):
+    def inputType1_button_clicked(self): # MIDI
         self.inputType_flag = 0
 
         # set stylesheets for buttons
         self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
 
-    def inputType2_button_clicked(self):
+        self.FRAME_tempo.setVisible(True)
+
+    def inputType2_button_clicked(self): # MICROPHONE
         self.inputType_flag = 1
 
         #set stylesheets for buttons
         self.PB_inputType1.setStyleSheet("QPushButton#PB_inputType1 { color: #343843; background-color: #A5A5A5; font-style: bold; font-size: 12pt; border-radius: 8px; }")
         self.PB_inputType2.setStyleSheet("QPushButton#PB_inputType2 { color: #343843; background-color: #7DCB79; font-style: bold; font-size: 12pt; border-radius: 8px; }")
+
+        self.FRAME_tempo.setVisible(False)
 
     #
     #
