@@ -131,9 +131,11 @@ def convert_to_notes(sheet_music):
   for i in range (len(song_fingers)):
     for j in range (len(song_fingers[i])):
        oned_song.append(song_fingers[i][j])
+  as_string = str(oned_song)
+  as_string = as_string.replace(" ", "")
 
   #Return data 
-  return oned_song
+  return as_string
 
 if __name__ == "__main__":
   #TEST_MODE ASK 
