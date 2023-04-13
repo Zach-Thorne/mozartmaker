@@ -38,11 +38,10 @@ top_of_key = 150
 bot_of_key = top_of_key + 100
 
 # Tone Sensing constants
-# White keys are in Uppercase and black keys (sharps) are in lowercase
 octave = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] 
 base_freq = 440 #Frequency of Note A4
 keys = np.array([x+str(y) for y in range(0,9) for x in octave])
-# Trim to correct # keys
+# Shorten to correct key number
 start = np.where(keys == 'A0')[0][0]
 end = np.where(keys == 'C8')[0][0]
 keys = keys[start:end+1]        #Notes of a piano

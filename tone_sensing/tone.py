@@ -1,6 +1,8 @@
+from __future__ import division
 import pyaudio
 import numpy as np
-from scipy.signal import find_peaks
+from numpy import argmax, mean, diff, log, nonzero
+from scipy.signal import find_peaks, correlate, fftconvolve
 from scipy.fftpack import fft, fftfreq
 from tkinter import *
 from scipy.io import wavfile as wav
@@ -15,12 +17,25 @@ import timing
 import statistics
 
 
+def find(condition):
+    res, = np.nonzero(np.ravel(condition))
+    return res
+def parabolic(f, x):
 
-# White keys are in Uppercase and black keys (sharps) are in lowercase
+    # Requires real division.  Insert float() somewhere to force it?
+    xv = 1/2 * (f[x-1] - f[x+1]) / (f[x-1] - 2 * f[x] + f[x+1]) + x
+    yv = f[x] - 1/4 * (f[x-1] - f[x+1]) * (xv - x)
+    return (xv, yv)
+
+
+
+
+
+
 octave = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'] 
 base_freq = 440 #Frequency of Note A4
 keys = np.array([x+str(y) for y in range(0,9) for x in octave])
-# Trim to correct # keys
+# Shorten to correct key number
 start = np.where(keys == 'A0')[0][0]
 end = np.where(keys == 'C8')[0][0]
 keys = keys[start:end+1]        #Notes of a piano
@@ -57,7 +72,6 @@ def detect_outlier(data_set):
 
 #record piano sound, remove the silent parts and save the new audio
 def piano_sound():   
-    # constants for audio
     CHUNK = 1024         # samples per frame
     FORMAT = pyaudio.paInt16     # audio format (bytes per sample?)
     CHANNELS = 1                 # single channel for microphone
@@ -110,11 +124,11 @@ def piano_sound():
             return note_play
 
         elif vol<500 and time.time()-noise_time>2:
-            print("ahh")
+            print("Stoping Listening")
             stream.stop_stream()
             stream.close()
             p.terminate()
-            return False
+            return False    
 
 
 
@@ -170,20 +184,21 @@ def testing_mode_audio(scale):
 
 
 if __name__ == "__main__":
-    scale_input = input("What Major scale would you like to play?\n")
-    if (scale_input == "C") or (scale_input == "c"):
-        scale = constants.c_major
-    elif (scale_input == "D") or (scale_input == "d"):
-        scale = constants.d_major
-    elif (scale_input == "E") or (scale_input == "e"):
-        scale = constants.e_major
-    elif (scale_input == "F") or (scale_input == "f"):
-        scale = constants.f_major
-    elif (scale_input == "G") or (scale_input == "g"):
-        scale = constants.g_major
-    elif (scale_input == "A") or (scale_input == "a"):
-        scale = constants.a_major
-    testing_mode_audio(scale)
+    piano_sound()
+    #scale_input = input("What Major scale would you like to play?\n")
+    #if (scale_input == "C") or (scale_input == "c"):
+      #  scale = constants.c_major
+   #elif (scale_input == "D") or (scale_input == "d"):
+        #scale = constants.d_major
+   # elif (scale_input == "E") or (scale_input == "e"):
+     #   scale = constants.e_major
+  #  elif (scale_input == "F") or (scale_input == "f"):
+     #   scale = constants.f_major
+   # elif (scale_input == "G") or (scale_input == "g"):
+       # scale = constants.g_major
+   # elif (scale_input == "A") or (scale_input == "a"):
+       # scale = constants.a_major
+   # testing_mode_audio(scale)
     #piano_sound()
     #Create empty array 
     #Initalize Tkinter
