@@ -115,8 +115,8 @@ def testing_mode_audio(scale):
         played_note=piano_sound()
         notes.append(played_note)
     notes.pop()
-    notes=notes[1::2]
-    notes=notes[1::2]
+    for i in range(int(len(notes)/len(scale))):
+        notes=notes[1::2]
     print(notes)
     for i in range(len(scale)):
         if notes[i]==scale[i][0]:
